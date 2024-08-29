@@ -11,9 +11,9 @@ function ScouterApp({children} : Props) {
     <>
     <form>
         <ScouterTab name="Tests">
-            <ScouterQuery queryType="text">Test 1</ScouterQuery>
-            <ScouterQuery queryType="checkbox">Test 2</ScouterQuery>
-            <ScouterQuery queryType="counter">Test 3</ScouterQuery>
+            <ScouterQuery queryType="text">Test 1: </ScouterQuery>
+            <ScouterQuery queryType="checkbox">Test 2: </ScouterQuery>
+            <ScouterQuery queryType="counter">Test 3: </ScouterQuery>
         </ScouterTab>
     </form>
     </>
