@@ -4,16 +4,15 @@ import ScouterTab from "./ScouterTab";
 
 function ScouterApp() {
 
-    const [isSubmitted, submit] = useState(false);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState<Record<string,string> | undefined>(undefined);
 
-    if (isSubmitted)
+    if (formData)
         return <p>{JSON.stringify(formData)}</p>
 
 
     return (
     <>
-    <form onSubmit={(event) => handleSubmit(event, setFormData, submit)}>
+    <form onSubmit={(event) => handleSubmit(event, setFormData)} onReset={handleReset}>
         <ScouterTab name="Tests">
             <ScouterQuery queryType="text" name="Test 1 " />
             <ScouterQuery queryType="checkbox" name="Test 2 " />
@@ -23,6 +22,7 @@ function ScouterApp() {
             <ScouterQuery queryType="radio" name="Test 6 ">{["a","b","c","d"]}</ScouterQuery>
         </ScouterTab>
         <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
     </form>
     </>
     );
@@ -30,8 +30,7 @@ function ScouterApp() {
 
 function handleSubmit(
     event: React.FormEvent<HTMLFormElement>, 
-    setFormData: React.Dispatch<React.SetStateAction<{}>>, 
-    submit: React.Dispatch<React.SetStateAction<boolean>>
+    setFormData: React.Dispatch<React.SetStateAction<Record<string, string> | undefined>>, 
 ){
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
@@ -40,6 +39,11 @@ function handleSubmit(
         formValues[key] = value.toString();
     }
     setFormData(formValues);
-    submit(true)
 }
+
+function handleReset(event: React.FormEvent<HTMLFormElement>) {
+    const formData = new FormData(event.currentTarget);
+    event.preventDefault();
+}
+
 export default ScouterApp;
