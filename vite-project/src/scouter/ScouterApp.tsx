@@ -12,7 +12,7 @@ function ScouterApp() {
 
     return (
     <>
-    <form onSubmit={(event) => handleSubmit(event, setFormData)} onReset={handleReset}>
+    <form onSubmit={(event) => handleSubmit(event, setFormData)}>
         <ScouterTab name="Tests">
             <ScouterQuery queryType="text" name="Test 1 " />
             <ScouterQuery queryType="checkbox" name="Test 2 " />
@@ -39,11 +39,6 @@ function handleSubmit(
         formValues[key] = value.toString();
     }
     setFormData(formValues);
-}
-
-function handleReset(event: React.FormEvent<HTMLFormElement>) {
-    const formData = new FormData(event.currentTarget);
-    event.preventDefault();
 }
 
 export default ScouterApp;
