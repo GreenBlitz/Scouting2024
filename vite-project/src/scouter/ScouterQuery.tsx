@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 
-type QueryType = "text" | "counter" | "checkbox";
+type QueryType = "text" | "counter" | "checkbox" | "number" | "list" | "radio";
 
 interface Props {
-    children: string;
+    name: string;
     queryType: QueryType;
+    children?: string[];
 }
 
-function ScouterQuery({children, queryType} : Props) {
-    const name = children;
+function ScouterQuery({name, queryType, children} : Props) {
 
     return (
     <div className="scouter-query">
         <h2>{name}</h2>
-        {getInput(queryType, children)}
+        {getInput(queryType, name, children)}
     </div>
     );
 }
@@ -30,10 +30,30 @@ function CounterQuery({name} : {name?:string}) {
     )
 }
 
-function getInput(queryType : QueryType, name? : string) {
+function getInput(queryType : QueryType, name : string, children?: string[]) {
     if (queryType == "counter") {
         return <CounterQuery name={name}/>
     }
+
+    if (queryType == "list") {
+        return (
+        <select name={name} id={name}>
+            {children?.map((item) => <option value={item}>{item}</option>)}
+        </select>
+        )
+    }
+
+    if (queryType == "radio") {
+        return (
+            children?.map((item) => 
+            <>
+            <input type="radio" id={item} name={name} value={item} />
+            <label htmlFor={item}>{item}</label>
+            </>
+        )
+        )
+    }
+
     return <input type={queryType} id={name} name={name} />
 }
 
