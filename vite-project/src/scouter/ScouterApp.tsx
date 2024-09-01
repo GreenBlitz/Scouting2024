@@ -19,7 +19,7 @@ function ScouterApp() {
             <ScouterQuery queryType="checkbox" name="Test 2 " />
             <ScouterQuery queryType="counter" name="Test 3 " />
             <ScouterQuery queryType="number" name="Test 4 " />
-            <ScouterQuery queryType="list" name="Test 5 ">{["1","2","323232"]}</ScouterQuery>
+            <ScouterQuery queryType="list" name="Test 5 ">{["1","2","3"]}</ScouterQuery>
             <ScouterQuery queryType="radio" name="Test 6 ">{["a","b","c","d"]}</ScouterQuery>
 
         </ScouterTab>
