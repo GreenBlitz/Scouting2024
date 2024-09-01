@@ -8,8 +8,6 @@
   h3, h2 , button{
     display: inline;
   }
-<<<<<<< Updated upstream
-=======
   to {
     transform: rotate(360deg);
   }
@@ -27,12 +25,4 @@
 
 .read-the-docs {
   color: #888;
-}
-
-
-.scouter-query {
-  h3, input, button {
-    display: inline-block;
-  }
->>>>>>> Stashed changes
 }
