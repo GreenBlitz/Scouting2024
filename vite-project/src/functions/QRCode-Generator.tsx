@@ -23,7 +23,7 @@ function QRCodeGenerator({text}: Props) {
   }, [text]);
 
   return (
-    <img src={qrCodeData + ""} alt="QR code" /> // Show the image
+    <img src={qrCodeData + ""} alt="QR code" />
   );
 }
 
