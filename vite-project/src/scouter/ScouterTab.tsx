@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface Props {
     name: string;
-    children?: ReactNode[];
+    children?: ReactNode[] | ReactNode;
 }
 
 function ScouterTab({name, children} : Props) {

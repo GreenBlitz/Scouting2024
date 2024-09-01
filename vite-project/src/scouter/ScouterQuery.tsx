@@ -18,7 +18,7 @@ function ScouterQuery({children, queryType} : Props) {
     );
 }
 
-function CounterQuery() {
+function CounterQuery({name} : {name?:string}) {
     const [count, setCount] = useState(0)
     return (
         <>
@@ -31,7 +31,7 @@ function CounterQuery() {
 
 function getInput(queryType : QueryType, name? : string) {
     if (queryType == "counter") {
-        return <CounterQuery />
+        return <CounterQuery name={name}/>
     }
     return <input type={queryType} id={name} name={name} />
 }
