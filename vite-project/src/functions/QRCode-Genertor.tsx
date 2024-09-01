@@ -23,7 +23,7 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ text }) => {
   }, [text]);
 
   return (
-    <>{qrCodeData}</> // Return the Base64 string or null
+    <img src={qrCodeData + ""} alt="QR code" /> // Return the Base64 string or null
   );
 };
 
