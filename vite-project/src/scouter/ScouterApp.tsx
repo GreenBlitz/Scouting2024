@@ -21,7 +21,6 @@ function ScouterApp() {
             <ScouterQuery queryType="number" name="Test 4 " />
             <ScouterQuery queryType="list" name="Test 5 ">{["1","2","3"]}</ScouterQuery>
             <ScouterQuery queryType="radio" name="Test 6 ">{["a","b","c","d"]}</ScouterQuery>
-
         </ScouterTab>
         <button type="submit">Submit</button>
     </form>
@@ -36,7 +35,7 @@ function handleSubmit(
 ){
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
-    let formValues: Partial<Record<string, string>> = {};
+    let formValues: Record<string, string> = {};
     for (let [key, value] of formData.entries()) {
         formValues[key] = value.toString();
     }
