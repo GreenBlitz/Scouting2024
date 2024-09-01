@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 
-type Props = {
-  text: string; // The text to encode in the QR code
+interface Props {
+  text: string;
 };
 
 function QRCodeGenerator({text}: Props) {
