@@ -20,6 +20,7 @@ function ScouterApp() {
 
     function handleReset(event: React.FormEvent<HTMLFormElement>) {
         localStorage.clear();
+        window.location.reload();
     }
 
     const [formData, setFormData] = useState<Record<string,string> | undefined>(undefined);
