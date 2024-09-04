@@ -44,7 +44,7 @@ function ScouterQuery({name, queryType, required, children} : Props) {
                 const newValue = localStorage.getItem(name) === "true" ? "false" : "true";
                 localStorage.setItem(name, newValue);
             }
-            return <input type={queryType} id={name} name={name} required={required} onChange={updateCheckbox}/>
+            return <input type={queryType} id={name} name={name} required={required} onChange={updateCheckbox} defaultChecked={initialValue === "true"}/>
         }
     
         return <input type={queryType} id={name} name={name} required={required} defaultValue={initialValue} onChange={(event) => localStorage.setItem(name, event.target.value)}/>
