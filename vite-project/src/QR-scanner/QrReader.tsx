@@ -80,7 +80,7 @@ const QrReader = () => {
       <div ref={qrBoxEl} className="qr-box">
         <img
           src={QrFrame}
-          alt="Qr Frame"
+          alt=""
           width={256}
           height={256}
           className="qr-frame"
