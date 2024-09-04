@@ -7,9 +7,7 @@ function ScouterApp() {
     undefined
   );
 
-  function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
     let formValues: Record<string, string> = {};
@@ -17,7 +15,6 @@ function ScouterApp() {
       formValues[key] = value.toString();
     }
     setFormData(formValues);
-    localStorage.clear(); //TODO: wtf is this
   }
 
   function handleReset() {
@@ -30,17 +27,18 @@ function ScouterApp() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      onReset={handleReset}
-    >
-        <h1 className="scouter-tab">Tests</h1>
-        <ScouterQuery queryType="text" name="Test 1 " />
-        <ScouterQuery queryType="checkbox" name="Test 2 " />
-        <ScouterQuery queryType="counter" name="Test 3 " />
-        <ScouterQuery queryType="number" name="Test 4 " />
-        <ScouterQuery queryType="list" name="Test 5 " listOptions={["1", "2", "3"]} />
-        <ScouterQuery queryType="radio" name="Test 6 " listOptions={["a", "b", "c", "d"]} />
+    <form onSubmit={handleSubmit} onReset={handleReset}>
+      <h1 className="scouter-tab">Tests</h1>
+      <ScouterQuery queryType="text" name="Test 1 " />
+      <ScouterQuery queryType="checkbox" name="Test 2 " />
+      <ScouterQuery queryType="counter" name="Test 3 " />
+      <ScouterQuery queryType="number" name="Test 4 " />
+      <ScouterQuery queryType="list" name="Test 5 " list={["1", "2", "3"]} />
+      <ScouterQuery
+        queryType="radio"
+        name="Test 6 "
+        list={["a", "b", "c", "d"]}
+      />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
     </form>

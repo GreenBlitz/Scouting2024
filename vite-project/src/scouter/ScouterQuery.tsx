@@ -1,97 +1,64 @@
-import { useState } from "react";
-
+import CheckboxQuery from "./querytypes/CheckboxQuery";
+import CounterQuery from "./querytypes/CounterQuery";
+import ListQuery from "./querytypes/ListQuery";
+import RadioQuery from "./querytypes/RadioQuery";
 interface ScouterQueryProps {
   name: string;
   queryType: "text" | "counter" | "checkbox" | "number" | "list" | "radio";
   required?: boolean | undefined;
-  listOptions?: string[];
+  list?: string[];
 }
 
 const ScouterQuery: React.FC<ScouterQueryProps> = ({
   name,
   queryType,
   required,
-  listOptions: list
+  list,
 }) => {
   function renderInput() {
     const initialValue = localStorage.getItem(name) || "";
-    if (queryType === "counter") {
-      return <CounterQuery name={name} defaultValue={initialValue} />;
-    }
 
-    if (queryType === "list") {
-      return (
-        <select
-          name={name}
-          id={name}
-          required={required}
-          defaultValue={initialValue}
-          onChange={(event) => localStorage.setItem(name, event.target.value)}
-        >
-          {list?.map((item: string) => (
-            <option value={item} key={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-      );
+    switch (queryType) {
+      case "counter":
+        return <CounterQuery name={name} initialValue={initialValue} />;
+      case "checkbox":
+        return (
+          <CheckboxQuery
+            name={name}
+            required={required || false}
+            initialValue={initialValue}
+          />
+        );
+      case "list":
+        return (
+          <ListQuery
+            name={name}
+            required={required}
+            initialValue={initialValue}
+            list={list ? list : []}
+          />
+        );
+      case "radio":
+        return (
+          <RadioQuery
+            name={name}
+            required={required}
+            initialValue={initialValue}
+            list={list ? list : []}
+          />
+        );
+      default:
+        return (
+          <input
+            type={queryType}
+            id={name}
+            name={name}
+            required={required}
+            defaultValue={initialValue}
+            onChange={(event) => localStorage.setItem(name, event.target.value)}
+          />
+        );
     }
-
-    if (queryType === "radio") {
-      return list?.map((item: string) => (
-        <>
-          {item === initialValue ? (
-            <input
-              type="radio"
-              id={item}
-              name={name}
-              value={item}
-              required={required}
-              onChange={() => localStorage.setItem(name, item)}
-              defaultChecked
-            />
-          ) : (
-            <input
-              type="radio"
-              id={item}
-              name={name}
-              value={item}
-              required={required}
-              onChange={() => localStorage.setItem(name, item)}
-            />
-          )}
-          <label htmlFor={item}>{item}</label>
-        </>
-      ));
-    }
-    if (queryType === "checkbox") {
-      function updateCheckbox() {
-        const newValue =
-          localStorage.getItem(name) === "true" ? "false" : "true";
-        localStorage.setItem(name, newValue);
-      }
-      return (
-        <input
-          type={queryType}
-          id={name}
-          name={name}
-          required={required}
-          onChange={updateCheckbox}
-          defaultChecked={initialValue === "true"}
-        />
-      );
-    }
-
-    return (
-      <input
-        type={queryType}
-        id={name}
-        name={name}
-        required={required}
-        defaultValue={initialValue}
-        onChange={(event) => localStorage.setItem(name, event.target.value)}
-      />
-    );
   }
 
   return (
@@ -101,34 +68,5 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
     </div>
   );
 };
-
-function CounterQuery({
-  name,
-  defaultValue,
-}: {
-  name: string;
-  defaultValue: string;
-}) {
-  const startingNumber = defaultValue === "" ? 0 : parseInt(defaultValue);
-  const [count, setCountState] = useState(startingNumber);
-
-  function setCount(newCount: number) {
-    localStorage.setItem(name, newCount + "");
-    setCountState(newCount);
-  }
-
-  return (
-    <>
-      <button type="button" onClick={() => setCount(Math.max(count - 1, 0))}>
-        -
-      </button>
-      <h3>{count}</h3>
-      <input type="hidden" id={name} name={name} value={count} />
-      <button type="button" onClick={() => setCount(count + 1)}>
-        +
-      </button>
-    </>
-  );
-}
 
 export default ScouterQuery;
