@@ -4,6 +4,24 @@ import ScouterTab from "./ScouterTab";
 
 function ScouterApp() {
 
+    function handleSubmit(
+        event: React.FormEvent<HTMLFormElement>, 
+        setFormData: React.Dispatch<React.SetStateAction<Record<string, string> | undefined>>, 
+    ){
+        const formData = new FormData(event.currentTarget);
+        event.preventDefault();
+        let formValues: Record<string, string> = {};
+        for (let [key, value] of formData.entries()) {
+            formValues[key] = value.toString();
+        }
+        setFormData(formValues);
+        localStorage.clear();
+    }
+
+    function handleReset(event: React.FormEvent<HTMLFormElement>) {
+        localStorage.clear();
+    }
+
     const [formData, setFormData] = useState<Record<string,string> | undefined>(undefined);
 
     if (formData)
@@ -12,7 +30,7 @@ function ScouterApp() {
 
     return (
     <>
-    <form onSubmit={(event) => handleSubmit(event, setFormData)}>
+    <form onSubmit={(event) => handleSubmit(event, setFormData)} onReset={handleReset}>
         <ScouterTab name="Tests">
             <ScouterQuery queryType="text" name="Test 1 " />
             <ScouterQuery queryType="checkbox" name="Test 2 " />
@@ -28,17 +46,6 @@ function ScouterApp() {
     );
 }
 
-function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>, 
-    setFormData: React.Dispatch<React.SetStateAction<Record<string, string> | undefined>>, 
-){
-    const formData = new FormData(event.currentTarget);
-    event.preventDefault();
-    let formValues: Record<string, string> = {};
-    for (let [key, value] of formData.entries()) {
-        formValues[key] = value.toString();
-    }
-    setFormData(formValues);
-}
+
 
 export default ScouterApp;
