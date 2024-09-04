@@ -45,7 +45,7 @@ function ScouterQuery({name, queryType, required, children} : Props) {
     }
 
     return (
-    <div className="scouter-query" key={name}>
+    <div className="scouter-query">
         <h2>{name}</h2>
         {renderInput()}
     </div>
@@ -64,10 +64,10 @@ function CounterQuery({name, defaultValue} : {name:string, defaultValue: string}
 
     return (
         <>
-        <button type="button" onClick={() => setCount(Math.max(count - 1,0))} key={name + "-"}>-</button>
+        <button type="button" onClick={() => setCount(Math.max(count - 1,0))}>-</button>
             <h3>{count}</h3>
             <input type="hidden" id={name} name={name} value={count} onReset={(event) => setCount(0)} />
-        <button type="button" onClick={() => setCount(count + 1)} key={name + "+"}>+</button>
+        <button type="button" onClick={() => setCount(count + 1)}>+</button>
         </>
     )
 }
