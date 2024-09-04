@@ -48,6 +48,4 @@ function ScouterApp() {
     );
 }
 
-
-
 export default ScouterApp;

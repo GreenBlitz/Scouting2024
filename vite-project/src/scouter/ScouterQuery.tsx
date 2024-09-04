@@ -78,6 +78,4 @@ function CounterQuery({name, defaultValue} : {name:string, defaultValue: string}
     )
 }
 
-
-
 export default ScouterQuery;
