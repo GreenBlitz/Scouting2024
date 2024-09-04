@@ -29,14 +29,22 @@ function ScouterQuery({name, queryType, required, children} : Props) {
             return (
                 children?.map((item) => 
                 <>
-                {initialValue === item 
-                ? <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)} checked/>
-                : <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)}/>
+                {
+                    item === initialValue 
+                    ? <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)} defaultChecked/>
+                    : <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)}/>
                 }
                 <label htmlFor={item}>{item}</label>
                 </>
+                )
             )
-            )
+        }
+        if (queryType === "checkbox") {
+            function updateCheckbox() {
+                const newValue = localStorage.getItem(name) === "true" ? "false" : "true";
+                localStorage.setItem(name, newValue);
+            }
+            return <input type={queryType} id={name} name={name} required={required} onChange={updateCheckbox}/>
         }
     
         return <input type={queryType} id={name} name={name} required={required} defaultValue={initialValue} onChange={(event) => localStorage.setItem(name, event.target.value)}/>
