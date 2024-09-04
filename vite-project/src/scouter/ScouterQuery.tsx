@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-type QueryType = "text" | "counter" | "checkbox" | "number" | "list" | "radio";
-type Required = boolean | undefined;
 interface Props {
     name: string;
-    queryType: QueryType;
-    required?: Required;
+    queryType: "text" | "counter" | "checkbox" | "number" | "list" | "radio";
+    required?: boolean | undefined;
     children?: string[];
 }
 
@@ -14,7 +12,7 @@ function ScouterQuery({name, queryType, required, children} : Props) {
     
     
     function renderInput() {
-        const initialValue = localStorage.getItem(name) || "";
+        const initialValue = localStorage.getItem(name) + "";
         if (queryType === "counter") {
             return <CounterQuery name={name} defaultValue={initialValue}/>
         }
@@ -32,8 +30,8 @@ function ScouterQuery({name, queryType, required, children} : Props) {
                 children?.map((item) => 
                 <>
                 {initialValue === item 
-                ? <input type="radio" id={item} name={name} value={item} required={required} onChange={(event) => localStorage.setItem(name, item)} checked/>
-                : <input type="radio" id={item} name={name} value={item} required={required} onChange={(event) => localStorage.setItem(name, item)}/>
+                ? <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)} checked/>
+                : <input type="radio" id={item} name={name} value={item} required={required} onChange={() => localStorage.setItem(name, item)}/>
                 }
                 <label htmlFor={item}>{item}</label>
                 </>
@@ -66,7 +64,7 @@ function CounterQuery({name, defaultValue} : {name:string, defaultValue: string}
         <>
         <button type="button" onClick={() => setCount(Math.max(count - 1,0))}>-</button>
             <h3>{count}</h3>
-            <input type="hidden" id={name} name={name} value={count} onReset={(event) => setCount(0)} />
+            <input type="hidden" id={name} name={name} value={count}/>
         <button type="button" onClick={() => setCount(count + 1)}>+</button>
         </>
     )
