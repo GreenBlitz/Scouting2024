@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import ScouterTab from "./ScouterTab";
+import QRCodeGenerator from "../functions/QRCode-Generator";
 
 function ScouterApp() {
 
@@ -26,7 +27,7 @@ function ScouterApp() {
     const [formData, setFormData] = useState<Record<string,string> | undefined>(undefined);
 
     if (formData)
-        return <p>{JSON.stringify(formData)}</p>
+        return <QRCodeGenerator text={JSON.stringify(formData)} />
 
 
     return (
