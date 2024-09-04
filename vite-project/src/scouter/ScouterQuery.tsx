@@ -12,7 +12,7 @@ function ScouterQuery({name, queryType, required, children} : Props) {
     
     
     function renderInput() {
-        const initialValue = localStorage.getItem(name) + "";
+        const initialValue = localStorage.getItem(name) || "";
         if (queryType === "counter") {
             return <CounterQuery name={name} defaultValue={initialValue}/>
         }
