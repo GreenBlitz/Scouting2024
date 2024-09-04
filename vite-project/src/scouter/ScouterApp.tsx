@@ -18,7 +18,7 @@ function ScouterApp() {
         localStorage.clear();
     }
 
-    function handleReset(event: React.FormEvent<HTMLFormElement>) {
+    function handleReset() {
         localStorage.clear();
         window.location.reload();
     }
