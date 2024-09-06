@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import QRCodeGenerator from "../components/QRCode-Generator";
+import MapQuery from "./querytypes/MapQuery";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
@@ -38,6 +39,11 @@ function ScouterApp() {
         queryType="radio"
         name="Test 6 "
         list={["a", "b", "c", "d"]}
+      />
+      <MapQuery
+        width={500}
+        height={500}
+        imagePath="./src/assets/Crescendo Map.png"
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
