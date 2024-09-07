@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 
+// Honestly I have no idea why but there is an offset of 20 pixels on the top of the screen (I checked for multiple images and it's the same)
+const HEIGHT_IMAGE_OFFSET = 20;
+
 interface MapQueryProps {
   width: number;
   height: number;
@@ -15,33 +18,32 @@ const MapQuery: React.FC<MapQueryProps> = ({ width, height, imagePath }) => {
   const [points, setPoints] = useState<Point[]>([]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  function draw(ctx: CanvasRenderingContext2D | null, clickedPoint: Point) {
-    if (ctx) {
-      ctx.fillStyle = clickedPoint.color;
-      ctx.beginPath();
-      ctx.arc(clickedPoint.x / 5, clickedPoint.y / 5, 20, 0, 2 * Math.PI);
-      ctx.fill();
-      console.log(clickedPoint);
+  function drawPoint(
+    context: CanvasRenderingContext2D | null,
+    clickedPoint: Point
+  ) {
+    const pointRadius = 5;
+    if (context) {
+      context.fillStyle = clickedPoint.color;
+      context.beginPath();
+      context.arc(clickedPoint.x, clickedPoint.y, pointRadius, 0, 2 * Math.PI);
+      context.fill();
     }
   }
+
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const { clientX, clientY } = event;
-    const clickedPoint: Point = { x: clientX, y: clientY, color: "#000000" };
+    const clickedPoint: Point = {
+      x: clientX - event.currentTarget.offsetLeft,
+      y: clientY - event.currentTarget.offsetTop + HEIGHT_IMAGE_OFFSET,
+      color: "#000000",
+    };
     setPoints([...points, clickedPoint]);
 
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
-
-      var background = new Image();
-      background.src = imagePath;
-      if (context) {
-        background.onload = function () {
-          context.drawImage(background, 0, 0);
-        };
-      }
-
-      draw(context, clickedPoint);
+      drawPoint(context, clickedPoint);
     }
   }
 
@@ -51,10 +53,10 @@ const MapQuery: React.FC<MapQueryProps> = ({ width, height, imagePath }) => {
       <div
         onClick={handleClick}
         style={{
-          // backgroundImage: 'url("' + imagePath + '")',
+          backgroundImage: 'url("' + imagePath + '")',
+          backgroundSize: "100% 100%",
           width: width,
           height: height,
-          position: "relative",
         }}
       >
         <canvas ref={canvasRef} width={width} height={height}></canvas>
