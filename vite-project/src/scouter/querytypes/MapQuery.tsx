@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
-// Honestly I have no idea why but there is an offset of 20 pixels on the top of the screen (I checked for multiple images and it's the same)
-const HEIGHT_IMAGE_OFFSET = 20;
+//In my home computer it is 20 for some reason?? im gonna have to understand why
+const HEIGHT_IMAGE_OFFSET = 0;
 
 interface MapQueryProps {
   width: number;
@@ -20,9 +20,9 @@ const MapQuery: React.FC<MapQueryProps> = ({ width, height, imagePath }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   function drawPoint(
     context: CanvasRenderingContext2D | null,
-    clickedPoint: Point
+    clickedPoint: Point,
+    pointRadius: number
   ) {
-    const pointRadius = 5;
     if (context) {
       context.fillStyle = clickedPoint.color;
       context.beginPath();
@@ -43,7 +43,7 @@ const MapQuery: React.FC<MapQueryProps> = ({ width, height, imagePath }) => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
-      drawPoint(context, clickedPoint);
+      drawPoint(context, clickedPoint, 5);
     }
   }
 
