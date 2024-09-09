@@ -49,7 +49,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       color: "#000000",
       data: pressedButtons,
     };
-    setPoints([...points, clickedPoint]);
+    setPoints((prev) => [...prev, clickedPoint]);
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
@@ -57,18 +57,9 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
   }
 
-  function putOnClickFunction(element: React.ReactElement<MapButtonProps>) {
-    element.props.pick = (key, value) => {
-      pressedButtons[key] = value;
-      setPressedButtons(pressedButtons);
-    };
-  }
   return (
     <>
       <br />
-      {Array.isArray(children)
-        ? children.map(putOnClickFunction)
-        : putOnClickFunction(children)}
       <div
         style={{
           backgroundImage: 'url("' + imagePath + '")',

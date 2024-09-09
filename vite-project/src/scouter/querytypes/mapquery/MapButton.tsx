@@ -1,11 +1,7 @@
-export interface MapButtonProps {
-  name: string;
-  options: Record<string, string>;
-  pick?: (key: string, value: string, color: string) => void;
-}
+export interface MapButtonProps {}
 
-const MapButton: React.FC<MapButtonProps> = ({ name, pick }) => {
-  return <button id={name} />;
+const MapButton: React.FC<MapButtonProps> = ({}) => {
+  return <button />;
 };
 
 export default MapButton;
