@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { MapButtonProps } from "./MapButton";
 
 interface MapQueryProps {
+  name: string;
   width: number;
   height: number;
   imagePath: string;
@@ -74,6 +75,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
           height={height}
           onClick={handleClick}
         ></canvas>
+        <input type="hidden" id="MAP QUERY" />
       </div>
     </>
   );

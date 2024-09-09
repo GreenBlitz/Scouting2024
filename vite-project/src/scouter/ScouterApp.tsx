@@ -42,11 +42,12 @@ function ScouterApp() {
         list={["a", "b", "c", "d"]}
       />
       <MapQuery
+        name="CRESCENDO"
         width={500}
         height={500}
         imagePath="./src/assets/Crescendo Map.png"
       >
-        <MapButton name="sus" options={{ amp: "Amp", speaker: "Speaker" }} />
+        <MapButton />
       </MapQuery>
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
