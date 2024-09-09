@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import QRCodeGenerator from "../components/QRCode-Generator";
-import MapQuery from "./querytypes/MapQuery";
+import MapQuery from "./querytypes/mapquery/MapQuery";
+import MapButton from "./querytypes/mapquery/MapButton";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
@@ -44,7 +45,9 @@ function ScouterApp() {
         width={500}
         height={500}
         imagePath="./src/assets/Crescendo Map.png"
-      />
+      >
+        <MapButton name="sus" />
+      </MapQuery>
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
     </form>
