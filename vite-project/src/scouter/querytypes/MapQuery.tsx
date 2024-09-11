@@ -41,12 +41,19 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
   }
 
+  function removeLastPoint() {
+    setPoints((prev) => {
+      prev.pop();
+      console.log(prev);
+      return [...prev];
+    });
+  }
+
   function getPointsAsString(): string {
     let stringValue = "";
     for (let point of points) {
       stringValue += JSON.stringify(point);
     }
-
     return stringValue;
   }
 
@@ -91,6 +98,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
             <label htmlFor={option[0]}>{option[0]}</label>
           </>
         ))}
+      </div>
+      <div className={name + "-secondary"}>
         {seconderyButtons?.map((button) =>
           button[1].map((option) => (
             <>
@@ -112,6 +121,9 @@ const MapQuery: React.FC<MapQueryProps> = ({
           ))
         )}
       </div>
+      <button type="button" onClick={removeLastPoint}>
+        Remove Point
+      </button>
       <div
         style={{
           backgroundImage: 'url("' + imagePath + '")',
@@ -126,14 +138,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
           height={height}
           onClick={addPoint}
         ></canvas>
-        {points.length > 0 && (
+        {
           <input
             type="hidden"
             id={name}
             name={name}
             value={getPointsAsString()}
           />
-        )}
+        }
       </div>
     </>
   );
