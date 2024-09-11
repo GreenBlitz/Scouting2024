@@ -26,13 +26,10 @@ const MapQuery: React.FC<MapQueryProps> = ({
   const [pressedButtons, setPressedButtons] =
     useState<[string, Record<string, string>]>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvas = canvasRef.current;
+  const context = canvas ? canvas.getContext("2d") : null;
 
-  function drawPoint(
-    context: CanvasRenderingContext2D | null,
-    clickedPoint: Point,
-    color: string,
-    pointRadius: number
-  ) {
+  function drawPoint(clickedPoint: Point, color: string, pointRadius: number) {
     if (context) {
       context.fillStyle = color;
       context.beginPath();
@@ -41,12 +38,20 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
   }
 
+  function drawAllPoints() {
+    for (let point of points) {
+      drawPoint(point, primaryButtons[point.data["primary"]], 5);
+    }
+  }
+
   function removeLastPoint() {
+    points.pop();
     setPoints((prev) => {
-      prev.pop();
-      console.log(prev);
+      prev = points;
       return [...prev];
     });
+    context?.clearRect(0, 0, width, height);
+    drawAllPoints();
   }
 
   function getPointsAsString(): string {
@@ -58,26 +63,20 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+    if (!pressedButtons) {
+      return;
+    }
     const [clientX, clientY] = [event.pageX, event.pageY];
     const clickedPoint: Point = {
       x: clientX - event.currentTarget.offsetLeft,
       y: clientY - event.currentTarget.offsetTop,
       data: {
-        primary: pressedButtons?.[0] || "",
-        ...(pressedButtons?.[1] || {}),
+        primary: pressedButtons[0],
+        ...pressedButtons[1],
       },
     };
     setPoints((prev) => [...prev, clickedPoint]);
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const context = canvas.getContext("2d");
-      drawPoint(
-        context,
-        clickedPoint,
-        primaryButtons[pressedButtons?.[0] || "000000"],
-        5
-      );
-    }
+    drawPoint(clickedPoint, primaryButtons[pressedButtons[0]], 5);
   }
 
   return (
@@ -122,7 +121,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
         )}
       </div>
       <button type="button" onClick={removeLastPoint}>
-        Remove Point
+        Undo
       </button>
       <div
         style={{
