@@ -53,7 +53,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   function drawAllPoints() {
-    console.log("draw");
     if (context) {
       context.clearRect(0, 0, width, height);
     }
@@ -99,7 +98,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     drawAllPoints();
   });
   useEffect(() => {
-    localStorage.setItem("Points", JSON.stringify(points));
+    localStorage.setItem("Queries/" + name + "/Points", JSON.stringify(points));
     drawAllPoints();
   }, [points]);
 

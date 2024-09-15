@@ -19,7 +19,16 @@ function ScouterApp() {
   }
 
   function handleReset() {
-    localStorage.clear();
+    let itemNumber = 0;
+    let item = localStorage.key(itemNumber);
+    while (item != null) {
+      if (item.startsWith("Queries/")) {
+        localStorage.removeItem(item);
+      } else {
+        itemNumber++;
+      }
+      item = localStorage.key(itemNumber);
+    }
     window.location.reload();
   }
 
