@@ -32,8 +32,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
 
   function isAllFilled(): boolean {
     if (pressedButtons[0] === "") return false;
-    for (let key in pressedButtons[1]) {
-      if (!pressedButtons[1][key]) {
+    for (let key of seconderyButtons || []) {
+      if (!pressedButtons[1][key[0]]) {
         return false;
       }
     }
