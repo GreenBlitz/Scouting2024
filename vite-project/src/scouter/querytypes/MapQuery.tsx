@@ -23,7 +23,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   seconderyButtons,
 }) => {
   const [points, setPoints] = useState<Point[]>(
-    JSON.parse(localStorage.getItem("Points") || "[]")
+    JSON.parse(localStorage.getItem("Queries/" + name + "/Points") || "[]")
   );
   const [pressedButtons, setPressedButtons] = useState<string>("");
 
@@ -31,8 +31,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     Record<string, string>
   >({});
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvas = canvasRef.current;
-  const context = canvas ? canvas.getContext("2d") : null;
+  const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
 
   function isAllFilled(): boolean {
     if (pressedButtons === "") return false;
@@ -43,6 +42,23 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
     return true;
   }
+
+  function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+    if (!isAllFilled()) {
+      return;
+    }
+    const [clientX, clientY] = [event.pageX, event.pageY];
+    const clickedPoint: Point = {
+      x: clientX - event.currentTarget.offsetLeft,
+      y: clientY - event.currentTarget.offsetTop,
+      data: {
+        primary: pressedButtons,
+        ...pressedSeconderies,
+      },
+    };
+    setPoints((prev) => [...prev, clickedPoint]);
+  }
+
   function drawPoint(clickedPoint: Point, color: string, pointRadius: number) {
     if (context) {
       context.fillStyle = color;
@@ -76,22 +92,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
       stringValue += JSON.stringify(point);
     }
     return stringValue;
-  }
-
-  function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    if (!isAllFilled()) {
-      return;
-    }
-    const [clientX, clientY] = [event.pageX, event.pageY];
-    const clickedPoint: Point = {
-      x: clientX - event.currentTarget.offsetLeft,
-      y: clientY - event.currentTarget.offsetTop,
-      data: {
-        primary: pressedButtons,
-        ...pressedSeconderies,
-      },
-    };
-    setPoints((prev) => [...prev, clickedPoint]);
   }
 
   useEffect(() => {
@@ -128,13 +128,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
                 name={name + "-" + button[0]}
                 id={option}
                 value={option}
-                onChange={() =>
-                  setPressedSeconderies((prev) => {
-                    const previousValue = prev;
-                    pressedSeconderies[button[0]] = option;
-                    return previousValue;
-                  })
-                }
+                onChange={() => (pressedSeconderies[button[0]] = option)}
               />
               <label htmlFor={option}>{option}</label>
             </>

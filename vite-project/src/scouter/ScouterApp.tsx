@@ -51,8 +51,8 @@ function ScouterApp() {
       />
       <MapQuery
         name="CRESCENDO"
-        width={500}
-        height={500}
+        width={640}
+        height={360}
         imagePath="./src/assets/Crescendo Map.png"
         primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
         seconderyButtons={[["Successfulness", ["Successful", "Unsuccessful"]]]}
