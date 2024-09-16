@@ -55,7 +55,7 @@ function ScouterApp() {
         height={360}
         imagePath="./src/assets/Crescendo Map.png"
         primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
-        seconderyButtons={[["Successfulness", ["Successful", "Unsuccessful"]]]}
+        secondaryButtons={[["Successfulness", ["Successful", "Unsuccessful"]]]}
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>

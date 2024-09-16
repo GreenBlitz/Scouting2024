@@ -6,7 +6,7 @@ interface MapQueryProps {
   height: number;
   imagePath: string;
   primaryButtons: Record<string, string>;
-  seconderyButtons?: [string, string[]][];
+  secondaryButtons?: [string, string[]][];
 }
 interface Point {
   x: number;
@@ -14,28 +14,29 @@ interface Point {
   data: Record<string, string>;
 }
 
+const pointRadius = 5;
+
 const MapQuery: React.FC<MapQueryProps> = ({
   name,
   width,
   height,
   imagePath,
   primaryButtons,
-  seconderyButtons,
+  secondaryButtons: secondaryButtons,
 }) => {
+  const localStorageKey = "Queries/" + name + "/Points";
   const [points, setPoints] = useState<Point[]>(
-    JSON.parse(localStorage.getItem("Queries/" + name + "/Points") || "[]")
+    JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
-  const [pressedButtons, setPressedButtons] = useState<string>("");
+  const [pressedPrimary, setPressedPrimary] = useState<string>("");
 
-  const [pressedSeconderies, setPressedSeconderies] = useState<
-    Record<string, string>
-  >({});
+  const [pressedSeconderies] = useState<Record<string, string>>({});
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
 
   function isAllFilled(): boolean {
-    if (pressedButtons === "") return false;
-    for (let key of seconderyButtons || []) {
+    if (pressedPrimary === "") return false;
+    for (let key of secondaryButtons || []) {
       if (!pressedSeconderies[key[0]]) {
         return false;
       }
@@ -52,14 +53,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
       x: clientX - event.currentTarget.offsetLeft,
       y: clientY - event.currentTarget.offsetTop,
       data: {
-        primary: pressedButtons,
+        primary: pressedPrimary,
         ...pressedSeconderies,
       },
     };
     setPoints((prev) => [...prev, clickedPoint]);
   }
 
-  function drawPoint(clickedPoint: Point, color: string, pointRadius: number) {
+  function drawPoint(clickedPoint: Point, color: string) {
     if (context) {
       context.fillStyle = color;
       context.beginPath();
@@ -73,7 +74,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       context.clearRect(0, 0, width, height);
     }
     for (let point of points) {
-      drawPoint(point, primaryButtons[point.data["primary"]], 5);
+      drawPoint(point, primaryButtons[point.data["primary"]]);
     }
   }
 
@@ -83,7 +84,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
       prev = points;
       return [...prev];
     });
-    context?.clearRect(0, 0, width, height);
   }
 
   function getPointsAsString(): string {
@@ -95,16 +95,12 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(points));
     drawAllPoints();
-  });
-  useEffect(() => {
-    localStorage.setItem("Queries/" + name + "/Points", JSON.stringify(points));
-    drawAllPoints();
-  }, [points]);
+  }, [points, addPoint]);
 
-  return (
+  const buttons = (
     <>
-      <br />
       <div className={name + "-primary"}>
         {Object.entries(primaryButtons).map((option) => (
           <>
@@ -113,14 +109,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
               name={name + "-primary"}
               id={option[0]}
               value={option[0]}
-              onChange={() => setPressedButtons(option[0])}
+              onChange={() => setPressedPrimary(option[0])}
             />
             <label htmlFor={option[0]}>{option[0]}</label>
           </>
         ))}
       </div>
       <div className={name + "-secondary"}>
-        {seconderyButtons?.map((button) =>
+        {secondaryButtons?.map((button) =>
           button[1].map((option) => (
             <>
               <input
@@ -138,6 +134,13 @@ const MapQuery: React.FC<MapQueryProps> = ({
       <button type="button" onClick={removeLastPoint}>
         Undo
       </button>
+    </>
+  );
+
+  return (
+    <>
+      <br />
+      {buttons}
       <div
         style={{
           backgroundImage: 'url("' + imagePath + '")',
