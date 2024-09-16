@@ -6,7 +6,7 @@ interface MapQueryProps {
   height: number;
   imagePath: string;
   primaryButtons: Record<string, string>;
-  secondaryButtons?: [string, string[]][];
+  secondaryButtons?: Record<string, string[]>;
 }
 interface Point {
   x: number;
@@ -36,7 +36,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
 
   function isAllFilled(): boolean {
     if (pressedPrimary === "") return false;
-    for (let key of secondaryButtons || []) {
+    for (let key of Object.entries(secondaryButtons || {})) {
       if (!pressedSeconderies[key[0]]) {
         return false;
       }
@@ -116,7 +116,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
         ))}
       </div>
       <div className={name + "-secondary"}>
-        {secondaryButtons?.map((button) =>
+        {Object.entries(secondaryButtons || {}).map((button) =>
           button[1].map((option) => (
             <>
               <input
