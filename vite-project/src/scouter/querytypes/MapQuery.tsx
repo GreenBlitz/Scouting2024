@@ -22,7 +22,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   height,
   imagePath,
   primaryButtons,
-  secondaryButtons: secondaryButtons,
+  secondaryButtons,
 }) => {
   const localStorageKey = "Queries/" + name + "/Points";
   const [points, setPoints] = useState<Point[]>(
@@ -34,7 +34,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
 
-  function isAllFilled(): boolean {
+  function areButtonsPressed(): boolean {
     if (pressedPrimary === "") return false;
     for (let key of Object.entries(secondaryButtons || {})) {
       if (!pressedSeconderies[key[0]]) {
@@ -45,7 +45,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    if (!isAllFilled()) {
+    if (!areButtonsPressed()) {
       return;
     }
     const clickedPoint: Point = {
