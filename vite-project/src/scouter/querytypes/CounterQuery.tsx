@@ -10,7 +10,7 @@ const CounterQuery: React.FC<CounterQueryProps> = ({ name, initialValue }) => {
   const [count, setCountState] = useState(startingNumber);
 
   function setCount(newCount: number) {
-    localStorage.setItem(name, newCount + "");
+    sessionStorage.setItem(name, newCount + "");
     setCountState(newCount);
   }
 

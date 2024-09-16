@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface MatchListProps {}
 
 const MatchList: React.FC<MatchListProps> = ({}) => {
   const location = useLocation();
-  const [statefulInfo, setStateful] = useState({});
-
-  useEffect(() => {
-    setStateful(location.state);
-  }, [location]);
-  return <>{JSON.stringify(statefulInfo)}</>;
+  const navigate = useNavigate();
+  return (
+    <>
+      <button type="button" onClick={() => navigate("/")}>
+        Scout Game
+      </button>
+    </>
+  );
 };
 export default MatchList;

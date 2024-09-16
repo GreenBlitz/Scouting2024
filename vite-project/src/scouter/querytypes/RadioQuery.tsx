@@ -20,7 +20,7 @@ const RadioQuery: React.FC<RadioQueryProps> = ({
           name={name}
           value={item}
           required={required}
-          onChange={() => localStorage.setItem(name, item)}
+          onChange={() => sessionStorage.setItem(name, item)}
           defaultChecked
         />
       ) : (
@@ -30,7 +30,7 @@ const RadioQuery: React.FC<RadioQueryProps> = ({
           name={name}
           value={item}
           required={required}
-          onChange={() => localStorage.setItem(name, item)}
+          onChange={() => sessionStorage.setItem(name, item)}
         />
       )}
       <label htmlFor={item}>{item}</label>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ScouterQuery from "./ScouterQuery";
-import QRCodeGenerator from "../components/QRCode-Generator";
 import { useNavigate } from "react-router-dom";
 
 function ScouterApp() {
@@ -21,7 +20,7 @@ function ScouterApp() {
   }
 
   function handleReset() {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
   }
 
@@ -46,6 +45,9 @@ function ScouterApp() {
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
+      <button type="button" onClick={() => navigate("/MatchList")}>
+        MatchList
+      </button>
     </form>
   );
 }

@@ -1,4 +1,4 @@
-import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ScouterApp from "./scouter/ScouterApp";
 import MatchList from "./scouter/MatchList";

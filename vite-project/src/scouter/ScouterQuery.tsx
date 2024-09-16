@@ -16,7 +16,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
   list,
 }) => {
   function renderInput() {
-    const initialValue = localStorage.getItem(name) || "";
+    const initialValue = sessionStorage.getItem(name) || "";
 
     switch (queryType) {
       case "counter":
@@ -55,7 +55,9 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
             name={name}
             required={required}
             defaultValue={initialValue}
-            onChange={(event) => localStorage.setItem(name, event.target.value)}
+            onChange={(event) =>
+              sessionStorage.setItem(name, event.target.value)
+            }
           />
         );
     }

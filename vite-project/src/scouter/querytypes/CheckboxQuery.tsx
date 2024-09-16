@@ -10,8 +10,8 @@ const CheckboxQuery: React.FC<CheckboxQueryProps> = ({
   initialValue,
 }) => {
   function updateCheckbox() {
-    const newValue = localStorage.getItem(name) === "true" ? "false" : "true";
-    localStorage.setItem(name, newValue);
+    const newValue = sessionStorage.getItem(name) === "true" ? "false" : "true";
+    sessionStorage.setItem(name, newValue);
   }
   return (
     <input
