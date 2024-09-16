@@ -48,10 +48,9 @@ const MapQuery: React.FC<MapQueryProps> = ({
     if (!isAllFilled()) {
       return;
     }
-    const [clickedPointX, clickedPointY] = [event.pageX, event.pageY];
     const clickedPoint: Point = {
-      x: clickedPointX - event.currentTarget.offsetLeft,
-      y: clickedPointY - event.currentTarget.offsetTop,
+      x: event.pageX - event.currentTarget.offsetLeft,
+      y: event.pageY - event.currentTarget.offsetTop,
       data: {
         primary: pressedPrimary,
         ...pressedSeconderies,
@@ -97,18 +96,21 @@ const MapQuery: React.FC<MapQueryProps> = ({
   const buttons = (
     <>
       <div className={name + "-primary"}>
-        {Object.entries(primaryButtons).map((option) => (
-          <>
-            <input
-              type="radio"
-              name={name + "-primary"}
-              id={option[0]}
-              value={option[0]}
-              onChange={() => setPressedPrimary(option[0])}
-            />
-            <label htmlFor={option[0]}>{option[0]}</label>
-          </>
-        ))}
+        {Object.entries(primaryButtons).map((option) => {
+          const buttonName = option[0];
+          return (
+            <>
+              <input
+                type="radio"
+                name={name + "-primary"}
+                id={buttonName}
+                value={buttonName}
+                onChange={() => setPressedPrimary(buttonName)}
+              />
+              <label htmlFor={buttonName}>{buttonName}</label>
+            </>
+          );
+        })}
       </div>
       <div className={name + "-secondary"}>
         {Object.entries(secondaryButtons || {}).map((button) =>
