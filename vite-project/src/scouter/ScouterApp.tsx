@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import QRCodeGenerator from "../components/QRCode-Generator";
+import { useNavigate } from "react-router-dom";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
     undefined
   );
+
+  const navigate = useNavigate();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const formData = new FormData(event.currentTarget);
@@ -22,9 +25,11 @@ function ScouterApp() {
     window.location.reload();
   }
 
-  if (formData) {
-    return <QRCodeGenerator text={JSON.stringify(formData)} />;
-  }
+  useEffect(() => {
+    if (formData) {
+      navigate("/MatchList", { state: formData });
+    }
+  }, [formData]);
 
   return (
     <form onSubmit={handleSubmit} onReset={handleReset}>
