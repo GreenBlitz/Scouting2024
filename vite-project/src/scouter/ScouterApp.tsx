@@ -16,9 +16,10 @@ function ScouterApp() {
       formValues[key] = value.toString();
     }
     setFormData(formValues);
+    clearQueryStorage();
   }
 
-  function handleReset() {
+  function clearQueryStorage() {
     let itemNumber = 0;
     let item = localStorage.key(itemNumber);
     while (item != null) {
@@ -29,6 +30,10 @@ function ScouterApp() {
       }
       item = localStorage.key(itemNumber);
     }
+  }
+
+  function handleReset() {
+    clearQueryStorage();
     window.location.reload();
   }
 
