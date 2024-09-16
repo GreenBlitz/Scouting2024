@@ -14,7 +14,7 @@ interface Point {
   data: Record<string, string>;
 }
 
-const pointRadius = 5;
+const pointRadius: number = 5;
 
 const MapQuery: React.FC<MapQueryProps> = ({
   name,
@@ -29,8 +29,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
-
   const [pressedSeconderies] = useState<Record<string, string>>({});
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
 
@@ -48,34 +48,16 @@ const MapQuery: React.FC<MapQueryProps> = ({
     if (!isAllFilled()) {
       return;
     }
-    const [clientX, clientY] = [event.pageX, event.pageY];
+    const [clickedPointX, clickedPointY] = [event.pageX, event.pageY];
     const clickedPoint: Point = {
-      x: clientX - event.currentTarget.offsetLeft,
-      y: clientY - event.currentTarget.offsetTop,
+      x: clickedPointX - event.currentTarget.offsetLeft,
+      y: clickedPointY - event.currentTarget.offsetTop,
       data: {
         primary: pressedPrimary,
         ...pressedSeconderies,
       },
     };
     setPoints((prev) => [...prev, clickedPoint]);
-  }
-
-  function drawPoint(clickedPoint: Point, color: string) {
-    if (context) {
-      context.fillStyle = color;
-      context.beginPath();
-      context.arc(clickedPoint.x, clickedPoint.y, pointRadius, 0, 2 * Math.PI);
-      context.fill();
-    }
-  }
-
-  function drawAllPoints() {
-    if (context) {
-      context.clearRect(0, 0, width, height);
-    }
-    for (let point of points) {
-      drawPoint(point, primaryButtons[point.data["primary"]]);
-    }
   }
 
   function removeLastPoint() {
@@ -86,17 +68,30 @@ const MapQuery: React.FC<MapQueryProps> = ({
     });
   }
 
-  function getPointsAsString(): string {
-    let stringValue = "";
-    for (let point of points) {
-      stringValue += JSON.stringify(point);
+  function drawPoints() {
+    if (!context) {
+      return;
     }
-    return stringValue;
+    context.clearRect(0, 0, width, height);
+    for (let point of points) {
+      context.fillStyle = primaryButtons[point.data["primary"]];
+      context.beginPath();
+      context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
+      context.fill();
+    }
+  }
+
+  function getPointsAsString(): string {
+    let value: string = "";
+    for (let point of points) {
+      value += JSON.stringify(point);
+    }
+    return value;
   }
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(points));
-    drawAllPoints();
+    drawPoints();
   }, [points, addPoint]);
 
   const buttons = (
@@ -155,14 +150,12 @@ const MapQuery: React.FC<MapQueryProps> = ({
           height={height}
           onClick={addPoint}
         />
-        {
-          <input
-            type="hidden"
-            id={name}
-            name={name}
-            value={getPointsAsString()}
-          />
-        }
+        <input
+          type="hidden"
+          id={name}
+          name={name}
+          value={getPointsAsString()}
+        />
       </div>
     </>
   );

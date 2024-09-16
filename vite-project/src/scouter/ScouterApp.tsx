@@ -22,7 +22,7 @@ function ScouterApp() {
   function clearQueryStorage() {
     let itemNumber = 0;
     let item = localStorage.key(itemNumber);
-    while (item != null) {
+    while (item) {
       if (item.startsWith("Queries/")) {
         localStorage.removeItem(item);
       } else {
