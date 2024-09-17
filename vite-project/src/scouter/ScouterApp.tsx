@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import { useNavigate } from "react-router-dom";
+import MapQuery from "./querytypes/MapQuery";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
@@ -17,11 +18,17 @@ function ScouterApp() {
       formValues[key] = value.toString();
     }
     setFormData(formValues);
-    sessionStorage.clear();
+    clearQueryStorage();
+  }
+
+  function clearQueryStorage() {
+    Object.keys(sessionStorage)
+      .filter((item) => item.startsWith("Queries/"))
+      .forEach((item) => sessionStorage.removeItem(item));
   }
 
   function handleReset() {
-    sessionStorage.clear();
+    clearQueryStorage();
     window.location.reload();
   }
 
@@ -43,6 +50,14 @@ function ScouterApp() {
         queryType="radio"
         name="Test 6 "
         list={["a", "b", "c", "d"]}
+      />
+      <MapQuery
+        name="CRESCENDO"
+        width={640}
+        height={360}
+        imagePath="./src/assets/Crescendo Map.png"
+        primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
+        secondaryButtons={{ Successfulness: ["Successful", "Unsuccessful"] }}
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>

@@ -19,8 +19,8 @@ const ListQuery: React.FC<ListQueryProps> = ({
       defaultValue={initialValue}
       onChange={(event) => sessionStorage.setItem(name, event.target.value)}
     >
-      {list?.map((item: string) => (
-        <option value={item} key={item}>
+      {list?.map((item, index) => (
+        <option value={item} key={index}>
           {item}
         </option>
       ))}
