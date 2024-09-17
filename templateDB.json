@@ -1,0 +1,63 @@
+{
+    "_id": "_template",
+  
+    "mobility": "swerve/tank",
+  
+    "collection": {
+      "object": "note",
+      "collection_locations": "ground"
+    },
+  
+    "deposit_location": "speaker",
+  
+    "automation": {
+      "actions": ["moved", "scored", "moved_other_side"],
+      "crossed": true,
+  
+  
+      "score": [
+        {"location": "speaker", "total_tries": 8, "success": 3, "fails": 5},
+        {"location": "AMP", "total_tries": 10, "success": 6, "fails": 4}
+      ],
+  
+      "starting_position": "close/mid/far"
+    },
+  
+  
+  
+  
+    "endgame": {
+  
+      "started_to_climb": "4:12",
+      "level_achieved": "level"
+    },
+  
+    "piloting": {
+  
+      "functionality": {
+        "stopped":true,
+        "reasons": "program, electricity",
+        "occurrences": 4
+      },
+      "score": [
+        {"location": "speaker", "total_tries": 8, "success": 3, "fails": 5},
+        {"location": "AMP", "total_tries": 10, "success": 6, "fails": 4}
+      ],
+      "team_evaluation": 2,
+  
+      "robot_evaluation": 3,
+  
+      "robot_speed_evaluation": 2,
+  
+      "defense_evaluation": 3,
+  
+      "defense_duration": 32.45
+    },
+  
+    "statistics": {
+      "AMP": "100*(S/T)",
+      "RP_gained": "Total",
+      "speaker": "100*(S/T)"
+    }
+  
+  }
