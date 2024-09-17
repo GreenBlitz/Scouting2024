@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-
+import { Point } from "../../Utils";
+import React from "react";
 interface MapQueryProps {
   name: string;
   width: number;
@@ -8,9 +9,7 @@ interface MapQueryProps {
   primaryButtons: Record<string, string>;
   secondaryButtons?: Record<string, string[]>;
 }
-interface Point {
-  x: number;
-  y: number;
+interface DataPoint extends Point {
   data: Record<string, string>;
 }
 
@@ -25,7 +24,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   secondaryButtons,
 }) => {
   const localStorageKey = "Queries/" + name + "/Points";
-  const [points, setPoints] = useState<Point[]>(
+  const [dataPoints, setDataPoints] = useState<DataPoint[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
@@ -48,7 +47,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     if (!areButtonsPressed()) {
       return;
     }
-    const clickedPoint: Point = {
+    const clickedPoint: DataPoint = {
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
       data: {
@@ -56,13 +55,13 @@ const MapQuery: React.FC<MapQueryProps> = ({
         ...pressedSeconderies,
       },
     };
-    setPoints((prev) => [...prev, clickedPoint]);
+    setDataPoints((prev) => [...prev, clickedPoint]);
   }
 
   function removeLastPoint() {
-    points.pop();
-    setPoints((prev) => {
-      prev = points;
+    dataPoints.pop();
+    setDataPoints((prev) => {
+      prev = dataPoints;
       return [...prev];
     });
   }
@@ -72,7 +71,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       return;
     }
     context.clearRect(0, 0, width, height);
-    for (let point of points) {
+    for (let point of dataPoints) {
       context.fillStyle = primaryButtons[point.data["primary"]];
       context.beginPath();
       context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
@@ -81,17 +80,17 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(points));
+    localStorage.setItem(localStorageKey, JSON.stringify(dataPoints));
     drawPoints();
-  }, [points, addPoint]);
+  }, [dataPoints, addPoint]);
 
   const buttons = (
     <>
       <div className={name + "-primary"}>
-        {Object.entries(primaryButtons).map((option) => {
+        {Object.entries(primaryButtons).map((option, index) => {
           const buttonName = option[0];
           return (
-            <>
+            <React.Fragment key={index}>
               <input
                 type="radio"
                 name={name + "-primary"}
@@ -100,14 +99,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
                 onChange={() => setPressedPrimary(buttonName)}
               />
               <label htmlFor={buttonName}>{buttonName}</label>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
       <div className={name + "-secondary"}>
-        {Object.entries(secondaryButtons || {}).map((button) =>
-          button[1].map((option) => (
-            <>
+        {Object.entries(secondaryButtons || {}).map((button, buttonIndex) =>
+          button[1].map((option, optionIndex) => (
+            <React.Fragment key={optionIndex + "," + buttonIndex}>
               <input
                 type="radio"
                 name={name + "-" + button[0]}
@@ -116,7 +115,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
                 onChange={() => (pressedSeconderies[button[0]] = option)}
               />
               <label htmlFor={option}>{option}</label>
-            </>
+            </React.Fragment>
           ))
         )}
       </div>
@@ -148,7 +147,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
           type="hidden"
           id={name}
           name={name}
-          value={JSON.stringify(points)}
+          value={JSON.stringify(dataPoints)}
         />
       </div>
     </>
