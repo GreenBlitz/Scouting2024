@@ -17,6 +17,7 @@ function ScouterApp() {
       formValues[key] = value.toString();
     }
     setFormData(formValues);
+    sessionStorage.clear();
   }
 
   function handleReset() {
@@ -33,10 +34,10 @@ function ScouterApp() {
   return (
     <form onSubmit={handleSubmit} onReset={handleReset}>
       <h1 className="scouter-tab">Tests</h1>
-      <ScouterQuery queryType="text" name="Test 1 " />
+      <ScouterQuery queryType="text" name="Name" />
       <ScouterQuery queryType="checkbox" name="Test 2 " />
       <ScouterQuery queryType="counter" name="Test 3 " />
-      <ScouterQuery queryType="number" name="Test 4 " />
+      <ScouterQuery queryType="number" name="Qual" />
       <ScouterQuery queryType="list" name="Test 5 " list={["1", "2", "3"]} />
       <ScouterQuery
         queryType="radio"
