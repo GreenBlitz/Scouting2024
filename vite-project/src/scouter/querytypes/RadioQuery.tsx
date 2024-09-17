@@ -1,3 +1,5 @@
+import React from "react";
+
 interface RadioQueryProps {
   name: string;
   required: boolean | undefined;
@@ -11,8 +13,8 @@ const RadioQuery: React.FC<RadioQueryProps> = ({
   initialValue,
   list,
 }) => {
-  return list?.map((item: string) => (
-    <>
+  return list?.map((item, index) => (
+    <React.Fragment key={index}>
       {item === initialValue ? (
         <input
           type="radio"
@@ -34,7 +36,7 @@ const RadioQuery: React.FC<RadioQueryProps> = ({
         />
       )}
       <label htmlFor={item}>{item}</label>
-    </>
+    </React.Fragment>
   ));
 };
 

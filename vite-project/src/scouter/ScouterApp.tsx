@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ScouterQuery from "./ScouterQuery";
 import QRCodeGenerator from "../components/QRCode-Generator";
+import MapQuery from "./querytypes/MapQuery";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
@@ -15,10 +16,17 @@ function ScouterApp() {
       formValues[key] = value.toString();
     }
     setFormData(formValues);
+    clearQueryStorage();
+  }
+
+  function clearQueryStorage() {
+    Object.keys(localStorage)
+      .filter((item) => item.startsWith("Queries/"))
+      .forEach((item) => localStorage.removeItem(item));
   }
 
   function handleReset() {
-    localStorage.clear();
+    clearQueryStorage();
     window.location.reload();
   }
 
@@ -38,6 +46,14 @@ function ScouterApp() {
         queryType="radio"
         name="Test 6 "
         list={["a", "b", "c", "d"]}
+      />
+      <MapQuery
+        name="CRESCENDO"
+        width={640}
+        height={360}
+        imagePath="./src/assets/Crescendo Map.png"
+        primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
+        secondaryButtons={{ Successfulness: ["Successful", "Unsuccessful"] }}
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>

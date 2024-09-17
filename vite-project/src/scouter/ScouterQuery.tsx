@@ -16,15 +16,15 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
   list,
 }) => {
   function renderInput() {
-    const initialValue = localStorage.getItem(name) || "";
-
+    const queryName = `Queries/${name}`;
+    const initialValue = localStorage.getItem(queryName) || "";
     switch (queryType) {
       case "counter":
-        return <CounterQuery name={name} initialValue={initialValue} />;
+        return <CounterQuery name={queryName} initialValue={initialValue} />;
       case "checkbox":
         return (
           <CheckboxQuery
-            name={name}
+            name={queryName}
             required={required || false}
             initialValue={initialValue}
           />
@@ -32,7 +32,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
       case "list":
         return (
           <ListQuery
-            name={name}
+            name={queryName}
             required={required}
             initialValue={initialValue}
             list={list ? list : []}
@@ -41,7 +41,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
       case "radio":
         return (
           <RadioQuery
-            name={name}
+            name={queryName}
             required={required}
             initialValue={initialValue}
             list={list ? list : []}
@@ -51,11 +51,13 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
         return (
           <input
             type={queryType}
-            id={name}
-            name={name}
+            id={queryName}
+            name={queryName}
             required={required}
             defaultValue={initialValue}
-            onChange={(event) => localStorage.setItem(name, event.target.value)}
+            onChange={(event) =>
+              localStorage.setItem(queryName, event.target.value)
+            }
           />
         );
     }
