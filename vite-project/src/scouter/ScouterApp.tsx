@@ -37,7 +37,7 @@ function ScouterApp() {
       <ScouterQuery queryType="text" name="Name" />
       <ScouterQuery queryType="checkbox" name="Test 2 " />
       <ScouterQuery queryType="counter" name="Test 3 " />
-      <ScouterQuery queryType="number" name="Qual" />
+      <ScouterQuery queryType="number" name="Qual" required />
       <ScouterQuery queryType="list" name="Test 5 " list={["1", "2", "3"]} />
       <ScouterQuery
         queryType="radio"

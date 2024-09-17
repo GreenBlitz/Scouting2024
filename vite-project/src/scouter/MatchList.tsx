@@ -3,9 +3,7 @@ import Collapsible from "react-collapsible";
 import React, { useState } from "react";
 import QRCodeGenerator from "../components/QRCode-Generator";
 
-interface MatchListProps {}
-
-const MatchList: React.FC<MatchListProps> = ({}) => {
+const MatchList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,8 +12,10 @@ const MatchList: React.FC<MatchListProps> = ({}) => {
       .filter((match) => match.startsWith("Matches/"))
       .map((matchName) => JSON.parse(localStorage.getItem(matchName) || "{}"))
   );
+
   const latestMatch = location.state;
   location.state = {};
+
   if (latestMatch?.["Qual"]) {
     matches.push(latestMatch);
     localStorage.setItem(
@@ -26,16 +26,18 @@ const MatchList: React.FC<MatchListProps> = ({}) => {
 
   function removeMatch(qualNumber: string, index: number) {
     localStorage.removeItem(`Matches/${qualNumber}`);
-    const filtered = [...matches].splice(index, 1);
-    console.log(index);
-    console.log(filtered);
+    const filtered = [...matches];
+    filtered.splice(index, 1);
     setMatches(filtered);
   }
 
   return (
-    <>
+    <div className="match-list">
       {matches.map((match, index) => (
-        <Collapsible trigger={match["Qual"]}>
+        <Collapsible
+          trigger={`Qual ${match["Qual"]}`}
+          triggerStyle={{ borderStyle: "solid" }}
+        >
           <QRCodeGenerator text={JSON.stringify(match)} />
           <br />
           <button
@@ -49,7 +51,7 @@ const MatchList: React.FC<MatchListProps> = ({}) => {
       <button type="button" onClick={() => navigate("/")}>
         Scout Game
       </button>
-    </>
+    </div>
   );
 };
 export default MatchList;
