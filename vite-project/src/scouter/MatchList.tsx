@@ -32,6 +32,7 @@ const MatchList: React.FC = () => {
     const filtered = [...matches];
     filtered.splice(index, 1);
     setMatches(filtered);
+    navigate("/MatchList");
   }
 
   return (

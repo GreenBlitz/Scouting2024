@@ -22,7 +22,8 @@ function ScouterApp() {
 
   function handleReset() {
     sessionStorage.clear();
-    window.location.reload();
+    // window.location.reload();
+    navigate("/");
   }
 
   useEffect(() => {
