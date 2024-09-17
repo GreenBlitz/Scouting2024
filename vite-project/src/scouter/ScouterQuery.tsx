@@ -16,7 +16,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
   list,
 }) => {
   function renderInput() {
-    const queryName = "Queries/" + name;
+    const queryName = `Queries/${name}`;
     const initialValue = localStorage.getItem(queryName) || "";
     switch (queryType) {
       case "counter":

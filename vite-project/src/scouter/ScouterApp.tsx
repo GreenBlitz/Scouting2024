@@ -20,16 +20,9 @@ function ScouterApp() {
   }
 
   function clearQueryStorage() {
-    let itemNumber = 0;
-    let item = localStorage.key(itemNumber);
-    while (item) {
-      if (item.startsWith("Queries/")) {
-        localStorage.removeItem(item);
-      } else {
-        itemNumber++;
-      }
-      item = localStorage.key(itemNumber);
-    }
+    Object.keys(localStorage)
+      .filter((x) => x.startsWith("TM_"))
+      .forEach((x) => localStorage.removeItem(x));
   }
 
   function handleReset() {

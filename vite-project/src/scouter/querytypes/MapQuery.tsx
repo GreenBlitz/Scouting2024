@@ -80,14 +80,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
   }
 
-  function getPointsAsString(): string {
-    let value: string = "";
-    for (let point of points) {
-      value += JSON.stringify(point);
-    }
-    return value;
-  }
-
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(points));
     drawPoints();
@@ -156,7 +148,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
           type="hidden"
           id={name}
           name={name}
-          value={getPointsAsString()}
+          value={JSON.stringify(points)}
         />
       </div>
     </>
