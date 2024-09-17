@@ -17,10 +17,12 @@ const MatchList: React.FC = () => {
   );
 
   const latestMatch = location.state;
+  console.log(latestMatch);
   location.state = {};
 
   if (latestMatch?.[matchName]) {
     matches.push(latestMatch);
+    console.log(matches);
     localStorage.setItem(
       matchesTab + latestMatch[matchName],
       JSON.stringify(latestMatch)

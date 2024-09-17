@@ -13,7 +13,7 @@ interface DataPoint extends Point {
   data: Record<string, string>;
 }
 
-const pointRadius: number = 5;
+const pointRadius: number = 2;
 
 const MapQuery: React.FC<MapQueryProps> = ({
   name,
