@@ -1,10 +1,6 @@
-
-interface StrategyAppProps {
-
-}
+interface StrategyAppProps {}
 const StrategyApp: React.FC<StrategyAppProps> = () => {
-    return <>
-    </>
-}
+  return <></>;
+};
 
 export default StrategyApp;
