@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import ScouterQuery from "./ScouterQuery";
+import ScouterQuery, { localStorageTabName } from "./ScouterQuery";
 import { useNavigate } from "react-router-dom";
 import MapQuery from "./querytypes/MapQuery";
+import { matchName } from "./MatchList";
 
 function ScouterApp() {
   const [formData, setFormData] = useState<Record<string, string> | undefined>(
@@ -22,9 +23,9 @@ function ScouterApp() {
   }
 
   function clearQueryStorage() {
-    Object.keys(sessionStorage)
-      .filter((item) => item.startsWith("Queries/"))
-      .forEach((item) => sessionStorage.removeItem(item));
+    Object.keys(localStorage)
+      .filter((item) => item.startsWith(localStorageTabName))
+      .forEach((item) => localStorage.removeItem(item));
   }
 
   function handleReset() {
@@ -44,7 +45,7 @@ function ScouterApp() {
       <ScouterQuery queryType="text" name="Name" />
       <ScouterQuery queryType="checkbox" name="Test 2 " />
       <ScouterQuery queryType="counter" name="Test 3 " />
-      <ScouterQuery queryType="number" name="Qual" required />
+      <ScouterQuery queryType="number" name={matchName} required />
       <ScouterQuery queryType="list" name="Test 5 " list={["1", "2", "3"]} />
       <ScouterQuery
         queryType="radio"
@@ -53,8 +54,8 @@ function ScouterApp() {
       />
       <MapQuery
         name="CRESCENDO"
-        width={300}
-        height={150}
+        width={640}
+        height={340}
         imagePath="./src/assets/Crescendo Map.png"
         primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
         secondaryButtons={{ Successfulness: ["Successful", "Unsuccessful"] }}

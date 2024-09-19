@@ -1,16 +1,18 @@
 import { useState } from "react";
+import { localStorageTabName } from "../ScouterQuery";
 
 interface CounterQueryProps {
   name: string;
-  initialValue: string;
 }
 
-const CounterQuery: React.FC<CounterQueryProps> = ({ name, initialValue }) => {
+const CounterQuery: React.FC<CounterQueryProps> = ({ name }) => {
+  const localStorageKey = localStorageTabName + name;
+  const initialValue = localStorage.getItem(localStorageKey) || "";
   const startingNumber = initialValue === "" ? 0 : parseInt(initialValue);
   const [count, setCountState] = useState(startingNumber);
 
   function setCount(newCount: number) {
-    sessionStorage.setItem(name, newCount + "");
+    localStorage.setItem(localStorageKey, newCount + "");
     setCountState(newCount);
   }
 

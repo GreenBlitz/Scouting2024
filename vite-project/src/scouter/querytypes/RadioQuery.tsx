@@ -1,28 +1,24 @@
 import React from "react";
+import { localStorageTabName } from "../ScouterQuery";
 
 interface RadioQueryProps {
   name: string;
   required: boolean | undefined;
-  initialValue: string;
   list: string[];
 }
 
-const RadioQuery: React.FC<RadioQueryProps> = ({
-  name,
-  required,
-  initialValue,
-  list,
-}) => {
+const RadioQuery: React.FC<RadioQueryProps> = ({ name, required, list }) => {
+  const localStorageKey = localStorageTabName + name;
   return list?.map((item, index) => (
     <React.Fragment key={index}>
-      {item === initialValue ? (
+      {item === localStorage.getItem(localStorageKey) ? (
         <input
           type="radio"
           id={item}
           name={name}
           value={item}
           required={required}
-          onChange={() => sessionStorage.setItem(name, item)}
+          onChange={() => localStorage.setItem(localStorageKey, item)}
           defaultChecked
         />
       ) : (
@@ -32,7 +28,7 @@ const RadioQuery: React.FC<RadioQueryProps> = ({
           name={name}
           value={item}
           required={required}
-          onChange={() => sessionStorage.setItem(name, item)}
+          onChange={() => localStorage.setItem(localStorageKey, item)}
         />
       )}
       <label htmlFor={item}>{item}</label>

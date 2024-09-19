@@ -3,7 +3,7 @@ import Collapsible from "react-collapsible";
 import React, { useState } from "react";
 import QRCodeGenerator from "../components/QRCode-Generator";
 
-const matchName = "Qual";
+export const matchName = "Qual";
 const matchesTab = "Matches/";
 
 const MatchList: React.FC = () => {

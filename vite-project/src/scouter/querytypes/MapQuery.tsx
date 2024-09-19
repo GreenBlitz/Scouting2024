@@ -23,9 +23,9 @@ const MapQuery: React.FC<MapQueryProps> = ({
   primaryButtons,
   secondaryButtons,
 }) => {
-  const sessionStorageKey = "Queries/" + name + "/Points";
+  const localStorageKey = "Queries/" + name + "/Points";
   const [dataPoints, setDataPoints] = useState<DataPoint[]>(
-    JSON.parse(sessionStorage.getItem(sessionStorageKey) || "[]")
+    JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
   const [pressedSeconderies] = useState<Record<string, string>>({});
@@ -80,7 +80,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   useEffect(() => {
-    sessionStorage.setItem(sessionStorageKey, JSON.stringify(dataPoints));
+    localStorage.setItem(localStorageKey, JSON.stringify(dataPoints));
     drawPoints();
   }, [dataPoints, addPoint]);
 

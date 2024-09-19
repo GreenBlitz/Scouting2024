@@ -1,17 +1,16 @@
+import { localStorageTabName } from "../ScouterQuery";
+
 interface CheckboxQueryProps {
   name: string;
   required: boolean;
-  initialValue: string;
 }
 
-const CheckboxQuery: React.FC<CheckboxQueryProps> = ({
-  name,
-  required,
-  initialValue,
-}) => {
+const CheckboxQuery: React.FC<CheckboxQueryProps> = ({ name, required }) => {
+  const localStorageKey = localStorageTabName + name;
   function updateCheckbox() {
-    const newValue = sessionStorage.getItem(name) === "true" ? "false" : "true";
-    sessionStorage.setItem(name, newValue);
+    const newValue =
+      localStorage.getItem(localStorageKey) === "true" ? "false" : "true";
+    localStorage.setItem(localStorageKey, newValue);
   }
   return (
     <input
@@ -20,7 +19,7 @@ const CheckboxQuery: React.FC<CheckboxQueryProps> = ({
       name={name}
       required={required}
       onChange={updateCheckbox}
-      defaultChecked={initialValue === "true"}
+      defaultChecked={localStorage.getItem(localStorageKey) === "true"}
     />
   );
 };
