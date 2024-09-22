@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Collapsible from "react-collapsible";
 import React, { useState } from "react";
-import QRCodeGenerator from "../components/QRCode-Generator";
+import QRCodeGenerator from "../../components/QRCode-Generator";
 
 export const matchName = "Qual";
 const matchesTab = "Matches/";
