@@ -3,9 +3,13 @@ import ViteExpress from "vite-express";
 
 const app = express();
 
-//Robotica IP lmao 
+app.get("/testAPI",(req, res) => {
+    res.status(200).send("Mr p");
+})
+
 const server = app.listen(5173, "0.0.0.0", () =>
     console.log("Server is listening...")
   );
   
-  ViteExpress.bind(app, server);
+
+ ViteExpress.bind(app, server);

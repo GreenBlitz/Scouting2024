@@ -9,6 +9,7 @@ const matchesTab = "Matches/";
 const MatchList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [apiResponse, setResponse] = useState({ apiResponse: "" });
 
   const [matches, setMatches] = useState<Record<string, string>[]>(
     Object.keys(localStorage)
@@ -35,6 +36,13 @@ const MatchList: React.FC = () => {
     navigate("/");
   }
 
+  function sendMatch(match: Record<string, string>) {
+    const testAPI = fetch("http://localhost:5173/testAPI");
+    testAPI
+      .then((res) => res.text())
+      .then((res) => setResponse({ apiResponse: res }));
+  }
+
   return (
     <div className="match-list">
       {matches.map((match, index) => (
@@ -50,6 +58,10 @@ const MatchList: React.FC = () => {
           >
             Delete
           </button>
+          <button type="button" onClick={() => sendMatch(match)}>
+            Send
+          </button>
+          <h2>{apiResponse["apiResponse"]}</h2>
         </Collapsible>
       ))}
     </div>
