@@ -2,7 +2,7 @@ import { localStorageTabName } from "../ScouterQuery";
 
 interface CheckboxQueryProps {
   name: string;
-  required: boolean;
+  required: boolean | undefined;
 }
 
 const CheckboxQuery: React.FC<CheckboxQueryProps> = ({ name, required }) => {

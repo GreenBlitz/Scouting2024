@@ -22,7 +22,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
       case "counter":
         return <CounterQuery name={name} />;
       case "checkbox":
-        return <CheckboxQuery name={name} required={required || false} />;
+        return <CheckboxQuery name={name} required={required} />;
       case "list":
         return (
           <ListQuery name={name} required={required} list={list ? list : []} />

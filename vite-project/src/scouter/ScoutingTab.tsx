@@ -21,10 +21,7 @@ function ScouterTab() {
   function clearQueryStorage() {
     Object.keys(localStorage)
       .filter((item) => item.startsWith(localStorageTabName))
-      .forEach((item) => {
-        console.log(item);
-        localStorage.removeItem(item);
-      });
+      .forEach((item) => localStorage.removeItem(item));
   }
 
   function handleReset() {

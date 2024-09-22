@@ -46,6 +46,10 @@
   text-decoration: underline;
 }
 
+.collapsible-trigger {
+  border-style: solid;
+}
+
 .card {
   padding: 2em;
 }

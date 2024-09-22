@@ -40,7 +40,7 @@ const MatchList: React.FC = () => {
       {matches.map((match, index) => (
         <Collapsible
           trigger={`${matchName} ${match[matchName]}`}
-          triggerStyle={{ borderStyle: "solid" }}
+          triggerClassName={"collapsible-trigger"}
         >
           <QRCodeGenerator text={JSON.stringify(match)} />
           <br />
