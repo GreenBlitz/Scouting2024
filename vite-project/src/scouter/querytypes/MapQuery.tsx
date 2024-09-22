@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Point } from "../../Utils";
 import React from "react";
+import { localStorageTabName } from "../ScouterQuery";
 interface MapQueryProps {
   name: string;
   width: number;
@@ -23,7 +24,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   primaryButtons,
   secondaryButtons,
 }) => {
-  const localStorageKey = "Queries/" + name + "/Points";
+  const localStorageKey = localStorageTabName + name + "/Points";
   const [dataPoints, setDataPoints] = useState<DataPoint[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );

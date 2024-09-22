@@ -1,23 +1,22 @@
+import { localStorageTabName } from "../ScouterQuery";
+
 interface ListQueryProps {
   name: string;
   required: boolean | undefined;
-  initialValue: string;
   list: string[];
 }
 
-const ListQuery: React.FC<ListQueryProps> = ({
-  name,
-  required,
-  initialValue,
-  list,
-}) => {
+const ListQuery: React.FC<ListQueryProps> = ({ name, required, list }) => {
+  const localStorageKey = localStorageTabName + name;
   return (
     <select
       name={name}
       id={name}
       required={required}
-      defaultValue={initialValue}
-      onChange={(event) => localStorage.setItem(name, event.target.value)}
+      defaultValue={localStorage.getItem(localStorageKey) || ""}
+      onChange={(event) =>
+        localStorage.setItem(localStorageKey, event.target.value)
+      }
     >
       {list?.map((item, index) => (
         <option value={item} key={index}>
