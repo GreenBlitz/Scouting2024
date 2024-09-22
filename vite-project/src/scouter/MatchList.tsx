@@ -52,9 +52,6 @@ const MatchList: React.FC = () => {
           </button>
         </Collapsible>
       ))}
-      <button type="button" onClick={() => navigate("/ScouterTab")}>
-        Scout Game
-      </button>
     </div>
   );
 };
