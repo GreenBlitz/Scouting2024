@@ -17,12 +17,10 @@ const MatchList: React.FC = () => {
   );
 
   const latestMatch = location.state;
-  console.log(latestMatch);
   location.state = {};
 
   if (latestMatch?.[matchName]) {
     matches.push(latestMatch);
-    console.log(matches);
     localStorage.setItem(
       matchesTab + latestMatch[matchName],
       JSON.stringify(latestMatch)
@@ -34,7 +32,7 @@ const MatchList: React.FC = () => {
     const filtered = [...matches];
     filtered.splice(index, 1);
     setMatches(filtered);
-    navigate("/MatchList");
+    navigate("/");
   }
 
   return (
@@ -54,7 +52,7 @@ const MatchList: React.FC = () => {
           </button>
         </Collapsible>
       ))}
-      <button type="button" onClick={() => navigate("/")}>
+      <button type="button" onClick={() => navigate("/ScouterTab")}>
         Scout Game
       </button>
     </div>

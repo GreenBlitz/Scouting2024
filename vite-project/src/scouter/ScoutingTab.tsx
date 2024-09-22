@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MapQuery from "./querytypes/MapQuery";
 import { matchName } from "./MatchList";
 
-function ScouterApp() {
-  const [formData, setFormData] = useState<Record<string, string> | undefined>(
-    undefined
-  );
-
+function ScouterTab() {
   const navigate = useNavigate();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -18,26 +14,23 @@ function ScouterApp() {
     for (let [key, value] of formData.entries()) {
       formValues[key] = value.toString();
     }
-    setFormData(formValues);
     clearQueryStorage();
+    navigate("/", { state: formValues });
   }
 
   function clearQueryStorage() {
     Object.keys(localStorage)
       .filter((item) => item.startsWith(localStorageTabName))
-      .forEach((item) => localStorage.removeItem(item));
+      .forEach((item) => {
+        console.log(item);
+        localStorage.removeItem(item);
+      });
   }
 
   function handleReset() {
     clearQueryStorage();
     window.location.reload();
   }
-
-  useEffect(() => {
-    if (formData) {
-      navigate("/MatchList", { state: formData });
-    }
-  }, [formData]);
 
   return (
     <form onSubmit={handleSubmit} onReset={handleReset}>
@@ -69,4 +62,4 @@ function ScouterApp() {
   );
 }
 
-export default ScouterApp;
+export default ScouterTab;
