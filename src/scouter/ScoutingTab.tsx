@@ -51,9 +51,6 @@ function ScouterTab() {
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
-      <button type="button" onClick={() => navigate("/MatchList")}>
-        MatchList
-      </button>
     </form>
   );
 }
