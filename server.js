@@ -1,7 +1,10 @@
-//e.g server.js
 import express from "express";
 import ViteExpress from "vite-express";
 
 const app = express();
 
-ViteExpress.listen(app, 3000, () => console.log("Server is listening..."));
+const server = app.listen(5173, "192.168.1.126", () =>
+    console.log("Server is listening...")
+  );
+  
+  ViteExpress.bind(app, server);

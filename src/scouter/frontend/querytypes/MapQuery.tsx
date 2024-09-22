@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Point } from "../../Utils";
+import { Point } from "../../../Utils";
 import React from "react";
 import { localStorageTabName } from "../ScouterQuery";
 interface MapQueryProps {
