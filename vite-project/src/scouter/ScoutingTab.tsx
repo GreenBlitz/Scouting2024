@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import ScouterQuery, { localStorageTabName } from "./ScouterQuery";
 import { useNavigate } from "react-router-dom";
 import MapQuery from "./querytypes/MapQuery";
