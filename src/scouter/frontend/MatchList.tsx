@@ -36,16 +36,11 @@ const MatchList: React.FC = () => {
   }
 
   function sendMatch(match: Record<string, string>) {
-    const testAPI = fetch("http://192.168.1.126:5173/SubmitMatch", {
+    fetch("http://192.168.1.126:5173/SubmitMatch", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
     });
-    testAPI
-      .then((res) => res.text())
-      .then((res) => {
-        // setResponse({ apiResponse: res });
-      });
   }
 
   return (

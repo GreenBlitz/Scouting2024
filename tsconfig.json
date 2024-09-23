@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "ES2022",
     "esModuleInterop": true,
-    "moduleResolution": "bundler" 
+    "moduleResolution": "bundler",
+    "outDir": "src/scouter/backend/compiled"
   },
-  "files": ["server.ts"],
+  "files": ["src/scouter/backend/server.ts"],
 }
