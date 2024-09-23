@@ -9,7 +9,6 @@ const matchesTab = "Matches/";
 const MatchList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [apiResponse, setResponse] = useState({ apiResponse: "" });
 
   const [matches, setMatches] = useState<Record<string, string>[]>(
     Object.keys(localStorage)
@@ -45,7 +44,7 @@ const MatchList: React.FC = () => {
     testAPI
       .then((res) => res.text())
       .then((res) => {
-        setResponse({ apiResponse: res });
+        // setResponse({ apiResponse: res });
       });
   }
 
@@ -67,7 +66,6 @@ const MatchList: React.FC = () => {
           <button type="button" onClick={() => sendMatch(match)}>
             Send
           </button>
-          <h2>{apiResponse["apiResponse"]}</h2>
         </Collapsible>
       ))}
     </div>
