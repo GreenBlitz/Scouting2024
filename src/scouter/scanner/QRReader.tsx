@@ -5,7 +5,6 @@ import "./QRStyles.css";
 
 // Qr Scanner
 import QrScanner from "qr-scanner";
-import QrFrame from "../assets/qr-frame.svg";
 
 const QRReader = () => {
   // QR States
@@ -78,13 +77,13 @@ const QRReader = () => {
       {/* QR */}
       <video ref={videoEl}></video>
       <div ref={qrBoxEl} className="qr-box">
-        <img
+        {/* <img
           src={QrFrame}
           alt=""
           width={256}
           height={256}
           className="qr-frame"
-        />
+        /> */}
       </div>
 
       {/* Show Data Result if scan is success */}
