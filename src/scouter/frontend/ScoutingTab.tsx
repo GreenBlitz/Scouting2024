@@ -2,6 +2,7 @@ import ScouterQuery, { localStorageTabName } from "./ScouterQuery";
 import { useNavigate } from "react-router-dom";
 import MapQuery from "./querytypes/MapQuery";
 import { matchName } from "./MatchList";
+import React from "react";
 
 function ScouterTab() {
   const navigate = useNavigate();

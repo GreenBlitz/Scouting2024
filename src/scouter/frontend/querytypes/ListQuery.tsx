@@ -1,3 +1,4 @@
+import React from "react";
 import { localStorageTabName } from "../ScouterQuery";
 
 interface ListQueryProps {
