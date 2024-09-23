@@ -2,7 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ScouterTab from "./scouter/ScoutingTab";
 import MatchList from "./scouter/MatchList";
-import ScanningTab from "./scouter/ScanningTab";
+import ScanningTab from "./scouter/scanner/ScanningTab";
 
 function App() {
   function renderNavBar() {
