@@ -27,7 +27,7 @@ function App() {
   return (
     <>
       <StrategyApp></StrategyApp>
-      <RadarComponent inputs={inputsArr}></RadarComponent>
+      <RadarComponent inputs={inputsArr} width={800}></RadarComponent>
     </>
   );
 }
