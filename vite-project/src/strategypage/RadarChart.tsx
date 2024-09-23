@@ -22,20 +22,18 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const polygonPoints: Point[] = new Array(inputs.length);
-  const statPoints: Point[] = new Array(inputs.length);
-
   //function that draws the outer regular polygos
 
   function drawOuterPolygon(
     polygonRadius: number,
-    canvas: HTMLCanvasElement,
-    polygonPoints: Point[]
-  ): void {
+    canvas: HTMLCanvasElement
+  ): Point[] {
     const context = canvas.getContext("2d");
-    const canvasRadius: number = width / 2;
+    const canvasRadius: number = canvas.width / 2;
+    const polygonPoints: Point[] = new Array(inputs.length);
+
     if (!context) {
-      return;
+      return polygonPoints;
     }
     context.beginPath();
 
@@ -55,6 +53,8 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     }
     context.closePath();
     context.stroke();
+
+    return polygonPoints;
   }
 
   //function that draws the inner regular polygos
@@ -62,11 +62,13 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
   function drawInnerPolygon(
     polygonRadius: number,
     canvas: HTMLCanvasElement
-  ): void {
+  ): Point[] {
     const context = canvas.getContext("2d");
     const canvasRadius: number = canvas.width / 2;
+    const polygonPoints: Point[] = new Array(inputs.length);
+
     if (!context) {
-      return;
+      return polygonPoints;
     }
     context.beginPath();
 
@@ -84,6 +86,8 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     }
     context.closePath();
     context.stroke();
+
+    return polygonPoints;
   }
 
   // Places regularly-spaced labels around
@@ -111,7 +115,9 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
   function findeStatPoints(
     canvas: HTMLCanvasElement,
     polygonPoints: Point[]
-  ): void {
+  ): Point[] {
+    const statPoints: Point[] = new Array(inputs.length);
+
     for (let i = 0; i < inputs.length; i++) {
       const canvasRadius: number = canvas.width / 2;
 
@@ -125,10 +131,15 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
       statPoints[i] = { x: currentX, y: currentY };
     }
+
+    return statPoints;
   }
 
   // function that draws inner shape and fills it in
-  function drawStatPolygon(context: CanvasRenderingContext2D): void {
+  function drawStatPolygon(
+    context: CanvasRenderingContext2D,
+    statPoints: Point[]
+  ): void {
     context.beginPath();
 
     for (let i = 0; i < inputs.length; i++) {
@@ -207,7 +218,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     context.lineWidth = 3;
     context.strokeStyle = "white";
 
-    drawOuterPolygon(polygonRadius, canvas, polygonPoints);
+    const polygonPoints: Point[] = drawOuterPolygon(polygonRadius, canvas);
 
     context.closePath();
 
@@ -228,14 +239,14 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
     context.beginPath();
 
-    findeStatPoints(canvas, polygonPoints);
+    const statPoints: Point[] = findeStatPoints(canvas, polygonPoints);
 
     context.closePath();
 
     // draws inner shape and fills it in
 
     context.fillStyle = "rgb(96, 190, 235, 0.5)";
-    drawStatPolygon(context);
+    drawStatPolygon(context, statPoints);
 
     context.lineWidth = 3;
     context.stroke();
