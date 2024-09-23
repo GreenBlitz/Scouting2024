@@ -2,6 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ScouterTab from "./scouter/ScoutingTab";
 import MatchList from "./scouter/MatchList";
+import ScanningTab from "./scouter/ScanningTab";
 
 function App() {
   function renderNavBar() {
@@ -14,6 +15,9 @@ function App() {
           <li>
             <Link to="/ScouterTab">Scout Game</Link>
           </li>
+          <li>
+            <Link to="/ScannerTab">Scan Match</Link>
+          </li>
         </ul>
       </nav>
     );
@@ -23,6 +27,7 @@ function App() {
     <BrowserRouter>
       {renderNavBar()}
       <Routes>
+        <Route path="/ScannerTab" Component={ScanningTab} />
         <Route path="/ScouterTab" Component={ScouterTab} />
         <Route path="/" Component={MatchList} />
       </Routes>

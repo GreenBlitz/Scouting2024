@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MapQuery from "./querytypes/MapQuery";
 import { matchName } from "./MatchList";
 
-function ScouterTab() {
+const ScouterTab: React.FC = () => {
   const navigate = useNavigate();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -53,6 +53,6 @@ function ScouterTab() {
       <button type="reset">Reset</button>
     </form>
   );
-}
+};
 
 export default ScouterTab;
