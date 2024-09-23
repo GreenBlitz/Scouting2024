@@ -52,9 +52,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
       context.lineTo(canvasRadius, canvasRadius);
       context.lineTo(currentX, currentY);
 
-      const currentPoint: Point = { x: currentX, y: currentY };
-
-      polygonPoints[i] = currentPoint;
+      polygonPoints[i] = { x: currentX, y: currentY };
     }
     context.closePath();
     context.strokeStyle = stokeColor;
@@ -85,9 +83,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
       context.lineTo(currentX, currentY);
 
-      const currentPoint: Point = { x: currentX, y: currentY };
-
-      polygonPoints[i] = currentPoint;
+      polygonPoints[i] = { x: currentX, y: currentY };
     }
     context.closePath();
     context.strokeStyle = stokeColor;
@@ -131,8 +127,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
       const currentY: number =
         (canvasRadius * l + polygonPoints[i].y * k) / inputs[i].max;
 
-      const currentPoint: Point = { x: currentX, y: currentY };
-      statPoints[i] = currentPoint;
+      statPoints[i] = { x: currentX, y: currentY };
     }
   }
 
