@@ -41,6 +41,7 @@ const MatchList: React.FC = () => {
     testAPI
       .then((res) => res.text())
       .then((res) => setResponse({ apiResponse: res }));
+    match;
   }
 
   return (

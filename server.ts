@@ -1,9 +1,9 @@
-import express from "express";
+import express, {Request, Response} from "express";
 import ViteExpress from "vite-express";
 
 const app = express();
 
-app.get("/testAPI",(req, res) => {
+app.get("/testAPI",(req:Request, res:Response) => {
     res.status(200).send("Mr p");
 })
 
