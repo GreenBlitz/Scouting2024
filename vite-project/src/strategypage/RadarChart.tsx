@@ -30,8 +30,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
   function drawOuterPolygon(
     polygonRadius: number,
     canvas: HTMLCanvasElement,
-    polygonPoints: Point[],
-    stokeColor: string
+    polygonPoints: Point[]
   ): void {
     const context = canvas.getContext("2d");
     const canvasRadius: number = width / 2;
@@ -55,7 +54,6 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
       polygonPoints[i] = { x: currentX, y: currentY };
     }
     context.closePath();
-    context.strokeStyle = stokeColor;
     context.stroke();
   }
 
@@ -63,8 +61,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
   function drawInnerPolygon(
     polygonRadius: number,
-    canvas: HTMLCanvasElement,
-    stokeColor: string
+    canvas: HTMLCanvasElement
   ): void {
     const context = canvas.getContext("2d");
     const canvasRadius: number = canvas.width / 2;
@@ -86,11 +83,10 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
       polygonPoints[i] = { x: currentX, y: currentY };
     }
     context.closePath();
-    context.strokeStyle = stokeColor;
     context.stroke();
   }
 
-  //function that puts lables in a regular shape placement
+  // Places regularly-spaced labels around
 
   function drawLables(polygonRadius: number, canvas: HTMLCanvasElement): void {
     const context = canvas.getContext("2d");
@@ -132,12 +128,8 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
   }
 
   // function that draws inner shape and fills it in
-  function drawStatPolygon(
-    context: CanvasRenderingContext2D,
-    fillStyle: string
-  ): void {
+  function drawStatPolygon(context: CanvasRenderingContext2D): void {
     context.beginPath();
-    context.fillStyle = fillStyle;
 
     for (let i = 0; i < inputs.length; i++) {
       context.lineTo(statPoints[i].x, statPoints[i].y);
@@ -149,11 +141,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
   }
 
   //function that places the 10-100 digit
-  function placeStatDigits(
-    context: CanvasRenderingContext2D,
-    fillStyle: string,
-    strokeStyle: string
-  ): void {
+  function placeStatDigits(context: CanvasRenderingContext2D): void {
     const canvasRadius: number = context.canvas.width / 2;
     const polygonRadius: number = canvasRadius * 0.75;
 
@@ -161,9 +149,6 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
       x: polygonRadius + polygonRadius / 3.35,
       y: polygonRadius + polygonRadius / 2.3,
     };
-
-    context.strokeStyle = strokeStyle;
-    context.fillStyle = fillStyle;
 
     for (let i = 1; i <= 10; i++) {
       context.font = canvasRadius / 27 + "px Arial";
@@ -207,8 +192,9 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     context.beginPath();
     context.lineWidth = 1.5;
 
+    context.strokeStyle = "gray";
     for (var i = 1; i < 10; i++) {
-      drawInnerPolygon((polygonRadius * i) / 10, canvas, "gray");
+      drawInnerPolygon((polygonRadius * i) / 10, canvas);
       context.moveTo(canvasRadius, canvasRadius);
     }
 
@@ -219,8 +205,9 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     context.beginPath();
 
     context.lineWidth = 3;
+    context.strokeStyle = "white";
 
-    drawOuterPolygon(polygonRadius, canvas, polygonPoints, "white");
+    drawOuterPolygon(polygonRadius, canvas, polygonPoints);
 
     context.closePath();
 
@@ -247,7 +234,8 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
     // draws inner shape and fills it in
 
-    drawStatPolygon(context, "rgb(96, 190, 235, 0.5)");
+    context.fillStyle = "rgb(96, 190, 235, 0.5)";
+    drawStatPolygon(context);
 
     context.lineWidth = 3;
     context.stroke();
@@ -257,7 +245,10 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
     context.beginPath();
 
-    placeStatDigits(context, "white", "black");
+    context.fillStyle = "white";
+    context.strokeStyle = "black";
+
+    placeStatDigits(context);
 
     context.closePath();
   });
