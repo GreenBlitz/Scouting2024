@@ -2,7 +2,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Collapsible from "react-collapsible";
 import React, { useState } from "react";
 import QRCodeGenerator from "../../components/QRCode-Generator";
-import { getServerHostname } from "../../Utils";
+import {
+  getServerHostname,
+  matchToSheet,
+  matchValuesToSheet,
+} from "../../Utils";
 
 export const matchName = "Qual";
 const matchesTab = "Matches/";
@@ -48,6 +52,20 @@ const MatchList: React.FC = () => {
       });
   }
 
+  function printMatches() {
+    fetch(`http://${getServerHostname()}/Matches`)
+      .then((res) => res.json())
+      .then((res) => {
+        const listy: Record<string, string>[] = res;
+        let stringy = "";
+        stringy += matchToSheet(listy[0]);
+        for (const item of listy) {
+          stringy += "\n" + matchValuesToSheet(item);
+        }
+        console.log(stringy);
+      });
+  }
+
   return (
     <div className="match-list">
       {matches.map((match, index) => (
@@ -64,7 +82,13 @@ const MatchList: React.FC = () => {
           >
             Delete
           </button>
-          <button type="button" onClick={() => sendMatch(match, index)}>
+          <button
+            type="button"
+            onClick={() => {
+              printMatches();
+              sendMatch(match, index);
+            }}
+          >
             Send
           </button>
         </Collapsible>
