@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { localStorageTabName } from "../ScouterQuery";
+import React from "react";
 
 interface CounterQueryProps {
   name: string;

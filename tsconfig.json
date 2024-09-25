@@ -1,7 +1,9 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "module": "ES2022",
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "outDir": "compiled"
+  },
+  "files": ["src/scouter/backend/server.ts"]
 }

@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Collapsible from "react-collapsible";
 import React, { useState } from "react";
-import QRCodeGenerator from "../components/QRCode-Generator";
+import QRCodeGenerator from "../../components/QRCode-Generator";
+import { getServerHostname } from "../../Utils";
 
 export const matchName = "Qual";
 const matchesTab = "Matches/";
@@ -35,12 +36,25 @@ const MatchList: React.FC = () => {
     navigate("/");
   }
 
+  function sendMatch(match: Record<string, string>, index: number) {
+    fetch(`http://${getServerHostname()}/Match`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(match),
+    })
+      .then(() => removeMatch(match?.[matchName], index))
+      .catch(() => {
+        alert("Unable To Send Match.");
+      });
+  }
+
   return (
     <div className="match-list">
       {matches.map((match, index) => (
         <Collapsible
           trigger={`${matchName} ${match[matchName]}`}
           triggerClassName={"collapsible-trigger"}
+          key={index}
         >
           <QRCodeGenerator text={JSON.stringify(match)} />
           <br />
@@ -49,6 +63,9 @@ const MatchList: React.FC = () => {
             onClick={() => removeMatch(match?.[matchName], index)}
           >
             Delete
+          </button>
+          <button type="button" onClick={() => sendMatch(match, index)}>
+            Send
           </button>
         </Collapsible>
       ))}

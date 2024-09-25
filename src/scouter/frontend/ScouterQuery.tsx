@@ -1,3 +1,4 @@
+import React from "react";
 import CheckboxQuery from "./querytypes/CheckboxQuery";
 import CounterQuery from "./querytypes/CounterQuery";
 import ListQuery from "./querytypes/ListQuery";
