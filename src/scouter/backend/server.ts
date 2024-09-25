@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import ViteExpress from "vite-express";
 import { Db, MongoClient } from "mongodb";
+import {serverPort} from "../ScouterConstants"
 
 const app = express();
 
-const hostName = "192.168.1.126";
-const port = 5173;
+const hostName = "0.0.0.0";
 
 app.use(express.json());
 const mongoURI = "mongodb://0.0.0.0:27017";
@@ -47,8 +47,8 @@ app.get("/Matches", async (req, res) => {
   }
 });
 
-const server = app.listen(port, hostName, () =>
-  console.log(`Server is listening on ${hostName}:${port}`)
+const server = app.listen(serverPort, hostName, () =>
+  console.log(`Server is listening on ${hostName}:${serverPort}`)
 );
 
 ViteExpress.bind(app, server);

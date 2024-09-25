@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Collapsible from "react-collapsible";
 import React, { useState } from "react";
 import QRCodeGenerator from "../../components/QRCode-Generator";
+import { serverHostName, serverPort } from "../scouterConstants";
 
 export const matchName = "Qual";
 const matchesTab = "Matches/";
@@ -36,7 +37,7 @@ const MatchList: React.FC = () => {
   }
 
   function sendMatch(match: Record<string, string>) {
-    fetch("http://192.168.1.126:5173/Match", {
+    fetch(`http://${serverHostName}:${serverPort}/Match`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
