@@ -36,12 +36,16 @@ const MatchList: React.FC = () => {
     navigate("/");
   }
 
-  function sendMatch(match: Record<string, string>) {
+  function sendMatch(match: Record<string, string>, index: number) {
     fetch(`http://${serverHostName}:${serverPort}/Match`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
-    });
+    })
+      .then(() => removeMatch(match?.[matchName], index))
+      .catch(() => {
+        alert("Unable To Send Match.");
+      });
   }
 
   return (
@@ -60,7 +64,7 @@ const MatchList: React.FC = () => {
           >
             Delete
           </button>
-          <button type="button" onClick={() => sendMatch(match)}>
+          <button type="button" onClick={() => sendMatch(match, index)}>
             Send
           </button>
         </Collapsible>
