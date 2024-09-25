@@ -36,7 +36,7 @@ const MatchList: React.FC = () => {
   }
 
   function sendMatch(match: Record<string, string>) {
-    fetch("http://192.168.1.126:5173/SubmitMatch", {
+    fetch("http://192.168.1.126:5173/Matches", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
@@ -49,6 +49,7 @@ const MatchList: React.FC = () => {
         <Collapsible
           trigger={`${matchName} ${match[matchName]}`}
           triggerClassName={"collapsible-trigger"}
+          key={index}
         >
           <QRCodeGenerator text={JSON.stringify(match)} />
           <br />
