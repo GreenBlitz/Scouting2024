@@ -252,7 +252,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
     context.stroke();
     context.fill();
 
-    //places the 10-100 digit
+    //places the 10-100 digits
 
     context.beginPath();
 
