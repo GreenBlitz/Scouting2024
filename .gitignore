@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 src/scouter/backend/compiled/*.js
-# package-lock.json
+package-lock.json
 
 # Editor directories and files
 .vscode/*
