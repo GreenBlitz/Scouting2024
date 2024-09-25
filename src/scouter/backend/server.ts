@@ -8,7 +8,7 @@ const hostName = "192.168.1.126";
 const port = 5173;
 
 app.use(express.json());
-const mongoURI = "mongodb://localhost:27017";
+const mongoURI = "mongodb://0.0.0.0:27017";
 
 let db: Db;
 
@@ -17,10 +17,9 @@ MongoClient.connect(mongoURI)
     console.log("Connected to MongoDB");
     db = client.db("admin");
   })
-  .catch((err) => console.error("cannot connect: \n" + err));
+  .catch((error) => console.error(`cannot connect: \n${error}`));
 
-
-app.post("/Matches", async (req: Request, res: Response) => {
+app.post("/Match", async (req: Request, res: Response) => {
   if (!db) {
     return res.status(500).send("Database not connected");
   }
@@ -42,14 +41,14 @@ app.get("/Matches", async (req, res) => {
   const matchCollection = db.collection("matches");
   try {
     const items = await matchCollection.find().toArray();
-    res.json(items);
-  } catch (err) {
-    res.status(500).send(err);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 
 const server = app.listen(port, hostName, () =>
-  console.log("Server is listening on " + hostName + ":" + port)
+  console.log(`Server is listening on ${hostName}:${port}`)
 );
 
 ViteExpress.bind(app, server);

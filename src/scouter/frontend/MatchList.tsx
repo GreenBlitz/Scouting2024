@@ -36,7 +36,7 @@ const MatchList: React.FC = () => {
   }
 
   function sendMatch(match: Record<string, string>) {
-    fetch("http://192.168.1.126:5173/Matches", {
+    fetch("http://192.168.1.126:5173/Match", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
