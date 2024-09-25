@@ -5,16 +5,16 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface TestProps {
-  labels: string[];
-  data: number[];
-  backgroundColors: string[];
+  pieData: Record<string, [number, string]>;
 }
 
-const Chart: React.FC<TestProps> = ({labels, data, backgroundColors}) => {
+const Chart: React.FC<TestProps> = ({ pieData }) => {
+  const names = Object.keys(pieData);
+  const data = Object.values(pieData).map(([num, _]) => { return num; });
+  const backgroundColors = Object.values(pieData).map(([_, color]) => { return color; });
 
-
-  const chardata = {
-    labels,
+  const charData = {
+    names,
     datasets: [
       {
         data,
@@ -33,7 +33,7 @@ const Chart: React.FC<TestProps> = ({labels, data, backgroundColors}) => {
 
   return (
     <div style={{ width: '100%', maxWidth: '600px' }}>
-      <Pie data={chardata} options={options} />
+      <Pie data={charData} options={options} />
     </div>
   );
 };
