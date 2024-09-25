@@ -10,6 +10,8 @@ const port = 4590;
 app.use(express.json());
 const mongoURI = "mongodb://0.0.0.0:27017";
 
+//	
+
 let db: Db;
 
 MongoClient.connect(mongoURI)
