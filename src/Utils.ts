@@ -1,8 +1,8 @@
 export interface Point {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
-export const getServerHostName = () => {
-    return location.host;
+export const getServerHostname = () => {
+  return location.host;
 };

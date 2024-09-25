@@ -4,7 +4,7 @@ import { Db, MongoClient } from "mongodb";
 
 const app = express();
 
-const hostName = "0.0.0.0";
+const hostname = "0.0.0.0";
 const port = 4590;
 
 app.use(express.json());
@@ -47,8 +47,8 @@ app.get("/Matches", async (req, res) => {
   }
 });
 
-const server = app.listen(port, hostName, () =>
-  console.log(`Server is listening on ${hostName}:${port}`)
+const server = app.listen(port, hostname, () =>
+  console.log(`Server is listening on ${hostname}:${port}`)
 );
 
 ViteExpress.bind(app, server);
