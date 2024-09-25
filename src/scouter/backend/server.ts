@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import ViteExpress from "vite-express";
 import { Db, MongoClient } from "mongodb";
-import {serverPort} from "../ScouterConstants"
+import {serverPort} from "../ScouterConstants.js"// The file is when it is compiled lmao.
 
 const app = express();
 

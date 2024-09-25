@@ -3,7 +3,7 @@
     "module": "ES2022",
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "outDir": "src/scouter/backend/compiled"
+    "outDir": "compiled"
   },
-  "files": ["src/scouter/backend/server.ts"],
+  "files": ["src/scouter/backend/server.ts"]
 }

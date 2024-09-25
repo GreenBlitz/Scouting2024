@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-src/scouter/backend/compiled/*.js
+compiled
 package-lock.json
 
 # Editor directories and files
