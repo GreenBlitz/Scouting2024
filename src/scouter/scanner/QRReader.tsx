@@ -11,42 +11,56 @@ const QRReader = () => {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
-  const [qrOn, setQrOn] = useState<boolean>(true);
+  const [qrOn, setQrOn] = useState<boolean>(false);
 
   // Result
   const [scannedResult, setScannedResult] = useState<string | undefined>("");
 
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
-    // 🖨 Print the "result" to browser console.
     console.log(result);
-    // ✅ Handle success.
-    // 😎 You can do whatever you want with the scanned result.
     setScannedResult(result?.data);
+    
+
+
+
   };
 
   // Fail
   const onScanFail = (err: string | Error) => {
-    // 🖨 Print the "err" to browser console.
     console.log(err);
   };
 
-  useEffect(() => {
+  // Request camera access
+  const requestCameraAccess = async () => {
+    try {
+      // Request camera permission from the user
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      // If permission is granted, set video element to stream
+      if (videoEl?.current) {
+        videoEl.current.srcObject = stream;
+      }
+      // Set QR scanner after getting camera stream
+      initializeScanner();
+    } catch (error) {
+      // If permission is denied, show an alert
+      alert("Camera access denied. Please allow access to scan QR codes.");
+      setQrOn(false);
+    }
+  };
+
+  // Initialize QR Scanner
+  const initializeScanner = () => {
     if (videoEl?.current && !scanner.current) {
-      // 👉 Instantiate the QR Scanner
       scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
         onDecodeError: onScanFail,
-        // 📷 This is the camera facing mode. In mobile devices, "environment" means back camera and "user" means front camera.
         preferredCamera: "environment",
-        // 🖼 This will help us position our "QrFrame.svg" so that user can only scan when qr code is put in between our QrFrame.svg.
         highlightScanRegion: true,
-        // 🔥 This will produce a yellow (default color) outline around the qr code that we scan, showing a proof that our qr-scanner is scanning that qr code.
         highlightCodeOutline: true,
-        // 📦 A custom div which will pair with "highlightScanRegion" option above 👆. This gives us full control over our scan region.
         overlay: qrBoxEl?.current || undefined,
       });
 
-      // 🚀 Start QR Scanner
+      // Start QR Scanner
       scanner?.current
         ?.start()
         .then(() => setQrOn(true))
@@ -54,9 +68,12 @@ const QRReader = () => {
           if (err) setQrOn(false);
         });
     }
+  };
 
-    // 🧹 Clean up on unmount.
-    // 🚨 This removes the QR Scanner from rendering and using camera when it is closed or removed from the UI.
+  // On component mount, request camera access
+  useEffect(() => {
+    requestCameraAccess();
+
     return () => {
       if (!videoEl?.current) {
         scanner?.current?.stop();
@@ -64,7 +81,7 @@ const QRReader = () => {
     };
   }, []);
 
-  // ❌ If "camera" is not allowed in browser permissions, show an alert.
+  // Handle no camera access state
   useEffect(() => {
     if (!qrOn)
       alert(
@@ -75,18 +92,12 @@ const QRReader = () => {
   return (
     <div className="qr-reader">
       {/* QR */}
-      <video ref={videoEl}></video>
+      <video ref={videoEl} autoPlay></video>
       <div ref={qrBoxEl} className="qr-box">
-        {/* <img
-          src={QrFrame}
-          alt=""
-          width={256}
-          height={256}
-          className="qr-frame"
-        /> */}
+        {/* Optional overlay like QrFrame.svg can go here */}
       </div>
 
-      {/* Show Data Result if scan is success */}
+      {/* Show Data Result if scan is successful */}
       {scannedResult && (
         <p
           style={{
