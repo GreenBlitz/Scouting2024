@@ -1,5 +1,4 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import "./App.css";
 import ScouterTab from "./ScoutingTab";
 import MatchList from "./MatchList";
 import React from "react";

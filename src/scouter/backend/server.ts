@@ -10,7 +10,7 @@ const port = 4590;
 app.use(express.json());
 const mongoURI = "mongodb://0.0.0.0:27017";
 
-//	
+//
 
 let db: Db;
 
@@ -36,13 +36,18 @@ app.post("/Match", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/Matches", async (req, res) => {
+app.get("/Matches/:type/:value", async (req, res) => {
   if (!db) {
     return res.status(500).send("Database not connected");
   }
   const matchCollection = db.collection("matches");
   try {
-    const items = await matchCollection.find().toArray();
+    const items = (await matchCollection.find().toArray()).filter((item) => {
+      if (req.params.type) {
+        return item[req.params.type] === req.params.value;
+      }
+      return true;
+    });
     res.status(200).json(items);
   } catch (error) {
     res.status(500).send(error);
