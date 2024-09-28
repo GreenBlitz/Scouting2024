@@ -1,34 +1,8 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import "./App.css";
-import ScouterTab from "./scouter/frontend/ScoutingTab";
-import MatchList from "./scouter/frontend/MatchList";
 import React from "react";
+import ScouterApp from "./scouter/frontend/ScouterApp";
 
-function App() {
-  function renderNavBar() {
-    return (
-      <nav className="scouter-nav-bar">
-        <ul>
-          <li>
-            <Link to="/">Match List</Link>
-          </li>
-          <li>
-            <Link to="/ScouterTab">Scout Game</Link>
-          </li>
-        </ul>
-      </nav>
-    );
-  }
-
-  return (
-    <BrowserRouter>
-      {renderNavBar()}
-      <Routes>
-        <Route path="/ScouterTab" Component={ScouterTab} />
-        <Route path="/" Component={MatchList} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+const App: React.FC = () => {
+  return <ScouterApp />;
+};
 
 export default App;
