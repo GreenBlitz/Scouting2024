@@ -48,7 +48,6 @@ const ScanningTab = () => {
       initializeScanner();
     } catch (error) {
       // If permission is denied, show an alert
-      alert("Camera access denied. Please allow access to scan QR codes.");
       setQrOn(false);
     }
   };
@@ -87,6 +86,7 @@ const ScanningTab = () => {
 
   // Handle no camera access state
   useEffect(() => {
+    console.log(qrOn);
     if (!qrOn)
       alert(
         "Camera is blocked or not accessible. Please allow camera in your browser permissions and Reload."
