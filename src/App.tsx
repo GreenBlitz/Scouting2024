@@ -1,7 +1,8 @@
 import "./App.css";
+import StrategyApp from "./strategy/StrategyApp";
 
 function App() {
-  return <></>
+  return <StrategyApp></StrategyApp>;
 }
 
 export default App;
