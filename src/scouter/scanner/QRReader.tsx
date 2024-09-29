@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 // Styles
 import "./QRStyles.css";
 
@@ -18,9 +18,10 @@ const QRReader = () => {
 
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
+    const navigate = useNavigate();
     console.log(result);
     setScannedResult(result?.data);
-    
+    navigate("/",{state: result});
 
 
 
