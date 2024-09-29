@@ -5,5 +5,5 @@
     "moduleResolution": "bundler",
     "outDir": "compiled"
   },
-  "files": ["src/scouter/backend/server.ts"]
+  "files": ["server.ts"]
 }
