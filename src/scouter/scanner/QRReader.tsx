@@ -18,10 +18,17 @@ const QRReader = () => {
 
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
+
     const navigate = useNavigate();
+
     console.log(result);
-    setScannedResult(result?.data);
-    navigate("/",{state: result});
+
+    const DecodedData = btoa(result.data)
+
+    setScannedResult(DecodedData);
+
+    navigate("/", { state: { result: DecodedData } });
+
 
 
 
