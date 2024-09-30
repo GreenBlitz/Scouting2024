@@ -8,36 +8,44 @@ interface TableChartProps {
   matches: Record<string, string>[];
   calculations?: Record<string, (match: Record<string, string>) => string>;
   idName: string;
+  height: number;
+  widthOfItem: number;
 }
 
 const TableChart: React.FC<TableChartProps> = ({
   matches,
   idName,
   calculations,
+  height,
+  widthOfItem,
 }) => {
+  
+  const matchesData = matches.map((match) => {
+    return { ...match };
+  });
+
   if (calculations) {
-    matches.forEach((match) =>
+    matchesData.forEach((match) =>
       Object.entries(calculations).forEach(
         ([calculationName, calculationFunction]) =>
           (match[calculationName] = calculationFunction(match))
       )
     );
   }
+
   const columnNames: Set<string> = new Set<string>();
-  matches.forEach((match) => {
+  matchesData.forEach((match) => {
     Object.keys(match).forEach((item) => columnNames.add(item));
   });
 
   const columns: GridColDef[] = [...columnNames.values()].map((columnName) => {
-    return { field: columnName, headerName: columnName, width: 130 };
+    return { field: columnName, headerName: columnName, width: widthOfItem };
   });
 
-  console.log(columnNames);
-
   return (
-    <Paper sx={{ height: 400, width: "100%" }}>
+    <Paper sx={{ height: height, width: "100%" }}>
       <DataGrid
-        rows={matches}
+        rows={matchesData}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}

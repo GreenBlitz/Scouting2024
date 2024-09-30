@@ -12,6 +12,8 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         skibidi: (match) => match["Test1"] + " " + match["Jimmy"],
       }}
       idName="Test1"
+      widthOfItem={130}
+      height={400}
     ></TableChart>
   );
 };
