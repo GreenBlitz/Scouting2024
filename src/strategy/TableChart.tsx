@@ -19,7 +19,7 @@ const TableChart: React.FC<TableChartProps> = ({
   height,
   widthOfItem,
 }) => {
-  
+
   const matchesData = matches.map((match) => {
     return { ...match };
   });
@@ -38,7 +38,7 @@ const TableChart: React.FC<TableChartProps> = ({
     Object.keys(match).forEach((item) => columnNames.add(item));
   });
 
-  const columns: GridColDef[] = [...columnNames.values()].map((columnName) => {
+  const columns: GridColDef[] = [...columnNames].map((columnName) => {
     return { field: columnName, headerName: columnName, width: widthOfItem };
   });
 
