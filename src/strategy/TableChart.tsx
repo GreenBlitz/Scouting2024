@@ -1,8 +1,8 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import React from "react";
+import React, { useEffect } from "react";
 
-const columns: GridColDef[] = [
+const columnSSs: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "firstName", headerName: "First name", width: 130 },
   { field: "lastName", headerName: "Last name", width: 130 },
@@ -37,21 +37,31 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 interface TableChartProps {
   matches: Record<string, string>[];
+  idName: string;
 }
 
-const TableChart: React.FC<TableChartProps> = ({ matches }) => {
+const TableChart: React.FC<TableChartProps> = ({ matches, idName }) => {
+  const table: Record<string, string[]> = {};
+  matches.forEach((match) => {
+    Object.entries(match).forEach(([key, value]) => {
+      if (!table[key]) table[key] = [value];
+      table[key] = [...table[key], value];
+    });
+  });
 
-    function getTypes() {
-        Object.keys(matches)
-    }
+  const columns: GridColDef[] = Object.keys(table).map((header) => {
+    return { field: header, headerName: header, width: 130 };
+  });
+
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={matches}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
         sx={{ border: 0 }}
+        getRowId={(row) => row[idName]}
       />
     </Paper>
   );
