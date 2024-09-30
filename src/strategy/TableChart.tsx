@@ -6,24 +6,33 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 interface TableChartProps {
   matches: Record<string, string>[];
-  calculations?: Record<string,(match: Record<string,string>) => string>;
+  calculations?: Record<string, (match: Record<string, string>) => string>;
   idName: string;
 }
 
-const TableChart: React.FC<TableChartProps> = ({ matches, idName, calculations}) => {
-  const table: Record<string, string[]> = {};
+const TableChart: React.FC<TableChartProps> = ({
+  matches,
+  idName,
+  calculations,
+}) => {
+  if (calculations) {
+    matches.forEach((match) =>
+      Object.entries(calculations).forEach(
+        ([calculationName, calculationFunction]) =>
+          (match[calculationName] = calculationFunction(match))
+      )
+    );
+  }
+  const columnNames: Set<string> = new Set<string>();
   matches.forEach((match) => {
-    Object.entries(match).forEach(([key, value]) => {
-      if (!table[key]) table[key] = [];
-      table[key] = [...table[key], value];
-    });
+    Object.keys(match).forEach((item) => columnNames.add(item));
   });
 
-  const columns: GridColDef[] = Object.keys(table).map((header) => {
-    return { field: header, headerName: header, width: 130 };
+  const columns: GridColDef[] = [...columnNames.values()].map((columnName) => {
+    return { field: columnName, headerName: columnName, width: 130 };
   });
 
-  const rows = matches.map((match) => {})
+  console.log(columnNames);
 
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
