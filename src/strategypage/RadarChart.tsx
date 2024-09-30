@@ -111,7 +111,7 @@ export const RadarComponent: React.FC<RadarComponentProps> = ({
 
     context.beginPath();
 
-    for (let i in inputs) {
+    for (const i in inputs) {
       const text = inputs[i].name;
 
       [context.textAlign, context.textBaseline] = vertices[i].directionFrom(centre, 10);
