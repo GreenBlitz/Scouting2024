@@ -6,10 +6,11 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 interface TableChartProps {
   matches: Record<string, string>[];
+  calculations?: Record<string,(match: Record<string,string>) => string>;
   idName: string;
 }
 
-const TableChart: React.FC<TableChartProps> = ({ matches, idName }) => {
+const TableChart: React.FC<TableChartProps> = ({ matches, idName, calculations}) => {
   const table: Record<string, string[]> = {};
   matches.forEach((match) => {
     Object.entries(match).forEach(([key, value]) => {
@@ -21,6 +22,8 @@ const TableChart: React.FC<TableChartProps> = ({ matches, idName }) => {
   const columns: GridColDef[] = Object.keys(table).map((header) => {
     return { field: header, headerName: header, width: 130 };
   });
+
+  const rows = matches.map((match) => {})
 
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
