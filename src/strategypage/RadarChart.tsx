@@ -1,9 +1,84 @@
 import React, { useRef, useEffect } from "react";
 
-export interface Point {
-  x: number;
-  y: number;
+/// A class representing a single point on a 2D plane
+class Point {
+  constructor(public x: number, public y: number) {}
+
+  /// The origin (0, 0)
+  static ORIGIN = new Point(0, 0);
+
+  /// Make a `Point` from polar coordinates (r, theta)
+  static polar(r: number, theta: number): Point {
+    return new Point(
+      r * Math.cos(theta),
+      r * Math.sin(theta),
+    );
+  }
+
+  /// Make a `Point` representing the centre of the given `canvas`
+  static canvasCentre(canvas: HTMLCanvasElement): Point {
+    return new Point(canvas.width, canvas.height).scale(1/2);
+  }
+
+  get xy(): [number, number] {
+    return [this.x, this.y];
+  }
+
+  /// Add two points
+  add(offset: Point): Point {
+    return new Point(this.x + offset.x, this.y + offset.y);
+  }
+
+  /// Scale a point around another point.
+  scale(scale: number, around: Point = Point.ORIGIN): Point {
+    return new Point(
+      (this.x - around.x) * scale + around.x,
+      (this.y - around.y) * scale + around.y,
+    ); 
+  }
+
+  /// Returns the direction this point is in from the given point, along the x and y axes.
+  directionFrom(point: Point, precision: number = 1): [CanvasTextAlign, CanvasTextBaseline] {
+    const dx = Math.round((this.x - point.x) / precision) * precision;
+    const dy = Math.round((this.y - point.y) / precision) * precision;
+
+    const align = dx > 0 ? "left" : dx == 0  ? "center" : "right";
+    const baseline = dy > 0 ? "top" : dy == 0 ? "middle" : "bottom";
+
+    return [align, baseline];
+  }
 }
+
+/// Make an array with `length` `Point`s, each equally spaced on the circle defined by `centre` and `radius`.
+function pointsOnCircle(centre: Point, radius: number, length: number): Point[] {
+  return [...Array(length).keys()].map(
+    i => centre.add(Point.polar(
+      radius,
+      i * Math.PI * 2 / length,
+    )),
+  );
+}
+
+/// Draw a polygon with the given `vertices` to the `context`.
+function drawPolygon(context: CanvasRenderingContext2D, vertices: Point[]) {
+  context.beginPath();
+
+  const last = vertices[vertices.length - 1];
+  context.moveTo(...last.xy);
+
+  for (const point of vertices) {
+    context.lineTo(...point.xy);
+  }
+
+  context.stroke();
+}
+
+export interface Statistic {
+  name: string;
+  maxValue: number;
+}
+export type Schema = Statistic[]
+export type Datum = number
 
 export interface RadarInput {
   name: string;
@@ -13,260 +88,100 @@ export interface RadarInput {
 
 export interface RadarComponentProps {
   inputs: RadarInput[];
-  width: number;
+  /// Width & height of the entire canvas element of a `RadarComponent`
+  size: number;
+  /// Number of smaller polygons drawn as ruler markings
+  substeps: number;
 }
 
 export const RadarComponent: React.FC<RadarComponentProps> = ({
   inputs,
-  width,
+  size,
+  substeps,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  //function that draws the outer regular polygos
+  // TODO: better metric
+  const polygonRadius = size / 2 * 0.75;
 
-  function drawOuterPolygon(
-    polygonRadius: number,
-    canvas: HTMLCanvasElement
-  ): Point[] {
-    const context = canvas.getContext("2d");
-    const canvasRadius: number = canvas.width / 2;
-    const polygonPoints: Point[] = new Array(inputs.length);
+  /// Places regularly-spaced labels around the component
+  function drawLables(context: CanvasRenderingContext2D) {
+    const centre = Point.canvasCentre(context.canvas);
+    const vertices = pointsOnCircle(centre, polygonRadius + 10, inputs.length);
 
-    if (!context) {
-      return polygonPoints;
-    }
     context.beginPath();
 
-    for (let i = 0; i < inputs.length + 1; i++) {
-      const currentX: number =
-        polygonRadius * Math.sin((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
-      const currentY: number =
-        polygonRadius * Math.cos((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
+    for (let i in inputs) {
+      const text = inputs[i].name;
 
-      context.lineTo(currentX, currentY);
-      context.lineTo(canvasRadius, canvasRadius);
-      context.lineTo(currentX, currentY);
+      [context.textAlign, context.textBaseline] = vertices[i].directionFrom(centre, 10);
 
-      polygonPoints[i] = { x: currentX, y: currentY };
+      context.fillText(text, ...vertices[i].xy);
     }
+
     context.closePath();
+    context.fill();
     context.stroke();
-
-    return polygonPoints;
   }
 
-  //function that draws the inner regular polygos
+  /// Draw the entire radar chart
+  function draw(context: CanvasRenderingContext2D) {
+    const centre = Point.canvasCentre(context.canvas);
+    const outerPolygon = pointsOnCircle(centre, polygonRadius, inputs.length);
 
-  function drawInnerPolygon(
-    polygonRadius: number,
-    canvas: HTMLCanvasElement
-  ): Point[] {
-    const context = canvas.getContext("2d");
-    const canvasRadius: number = canvas.width / 2;
-    const polygonPoints: Point[] = new Array(inputs.length);
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    if (!context) {
-      return polygonPoints;
-    }
-    context.beginPath();
-
-    for (let i = 0; i < inputs.length + 1; i++) {
-      const currentX: number =
-        polygonRadius * Math.sin((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
-      const currentY: number =
-        polygonRadius * Math.cos((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
-
-      context.lineTo(currentX, currentY);
-
-      polygonPoints[i] = { x: currentX, y: currentY };
-    }
-    context.closePath();
-    context.stroke();
-
-    return polygonPoints;
-  }
-
-  // Places regularly-spaced labels around
-
-  function drawLables(polygonRadius: number, canvas: HTMLCanvasElement): void {
-    const context = canvas.getContext("2d");
-    const canvasRadius: number = canvas.width / 2;
-
-    for (let i = 0; i < inputs.length; i++) {
-      const currentX: number =
-        polygonRadius * Math.sin((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
-      const currentY: number =
-        polygonRadius * Math.cos((i * Math.PI * 2) / inputs.length) +
-        canvasRadius;
-
-      if (!context) {
-        return;
-      }
-      context.fillText(inputs[i].name, currentX, currentY);
-    }
-  }
-
-  //functions that findes stat points
-  function findeStatPoints(
-    canvas: HTMLCanvasElement,
-    polygonPoints: Point[]
-  ): Point[] {
-    const statPoints: Point[] = new Array(inputs.length);
-
-    for (let i = 0; i < inputs.length; i++) {
-      const canvasRadius: number = canvas.width / 2;
-
-      let k = inputs[i].value;
-      const l = inputs[i].max - inputs[i].value;
-
-      const currentX: number =
-        (canvasRadius * l + polygonPoints[i].x * k) / inputs[i].max;
-      const currentY: number =
-        (canvasRadius * l + polygonPoints[i].y * k) / inputs[i].max;
-
-      statPoints[i] = { x: currentX, y: currentY };
-    }
-
-    return statPoints;
-  }
-
-  // function that draws inner shape and fills it in
-  function drawStatPolygon(
-    context: CanvasRenderingContext2D,
-    statPoints: Point[]
-  ): void {
-    context.beginPath();
-
-    for (let i = 0; i < inputs.length; i++) {
-      context.lineTo(statPoints[i].x, statPoints[i].y);
-    }
-
-    context.lineTo(statPoints[0].x, statPoints[0].y);
-
-    context.closePath();
-  }
-
-  //function that places the 10-100 digit
-  function placeStatDigits(context: CanvasRenderingContext2D): void {
-    const canvasRadius: number = context.canvas.width / 2;
-    const polygonRadius: number = canvasRadius * 0.75;
-
-    const digitPoint: Point = {
-      x: polygonRadius + polygonRadius / 3.35,
-      y: polygonRadius + polygonRadius / 2.3,
-    };
-
-    for (let i = 1; i <= 10; i++) {
-      context.font = canvasRadius / 27 + "px Arial";
-      context.strokeText(String(i * 10), digitPoint.x, digitPoint.y);
-
-      context.fill();
-
-      context.font = canvasRadius / 27 + "px Arial";
-      context.fillText(String(i * 10), digitPoint.x, digitPoint.y);
-
-      context.fill();
-
-      digitPoint.y = digitPoint.y + polygonRadius / 10;
-      context.moveTo(digitPoint.x, digitPoint.y);
-    }
-  }
-
-  // draws the commponent
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-
-    canvas.width = width;
-    canvas.height = width;
-
-    const context = canvasRef.current.getContext("2d");
-    if (!context) {
-      return;
-    }
-
-    const canvasRadius: number = canvas.width / 2;
-    const polygonRadius: number = canvasRadius * 0.75;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // draws the inner polygons
-
-    context.moveTo(canvasRadius, canvasRadius);
-
-    context.beginPath();
+    // Evenly-spaced regular polygons
     context.lineWidth = 1.5;
-
     context.strokeStyle = "gray";
-    for (var i = 1; i < 10; i++) {
-      drawInnerPolygon((polygonRadius * i) / 10, canvas);
-      context.moveTo(canvasRadius, canvasRadius);
+    for (let i = 1; i <= substeps; i++) {
+      if (i == substeps) {
+        // Stronger outer polygon
+        context.lineWidth = 3;
+        context.strokeStyle = "white";
+      }
+      drawPolygon(context, pointsOnCircle(centre, polygonRadius * i / substeps, inputs.length));
     }
 
-    context.closePath();
+    // Lines to each vertex
+    context.lineWidth = .5;
+    context.strokeStyle = "gray";
+    context.beginPath()
+    for (const point of outerPolygon) {
+      context.moveTo(...centre.xy);
+      context.lineTo(...point.xy);
+      context.stroke()
+    }
 
-    //draws the outter polygon
-
-    context.beginPath();
-
+    // Data labels
     context.lineWidth = 3;
-    context.strokeStyle = "white";
-
-    const polygonPoints: Point[] = drawOuterPolygon(polygonRadius, canvas);
-
-    context.closePath();
-
-    //puts lablse on the corners
-
-    context.beginPath();
     context.fillStyle = "white";
-    context.font = canvasRadius / 27 + "px Arial";
+    context.font = "12pt Arial";
+    drawLables(context);
 
-    drawLables(polygonRadius * 1.21, canvas);
+    // Values polygon
+    const statVertices = pointsOnCircle(centre, polygonRadius, inputs.length)
+      .map((p, i) => p.scale(inputs[i].value / inputs[i].max, centre));
 
-    context.closePath();
-    context.lineWidth = 3;
-    context.fill();
-    context.stroke();
-
-    //findes stat points
-
-    context.beginPath();
-
-    const statPoints: Point[] = findeStatPoints(canvas, polygonPoints);
-
-    context.closePath();
-
-    // draws inner shape and fills it in
-
+    context.strokeStyle = "white"
     context.fillStyle = "rgb(96, 190, 235, 0.5)";
-    drawStatPolygon(context, statPoints);
-
     context.lineWidth = 3;
-    context.stroke();
+    drawPolygon(context, statVertices);
     context.fill();
+  }
 
-    //places the 10-100 digits
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext("2d")!;
 
-    context.beginPath();
-
-    context.fillStyle = "white";
-    context.strokeStyle = "black";
-
-    placeStatDigits(context);
-
-    context.closePath();
+    draw(context);
   });
 
   return (
     <>
-      <canvas id="Canvas" ref={canvasRef}></canvas>
+      <canvas ref={canvasRef}></canvas>
     </>
   );
 };
