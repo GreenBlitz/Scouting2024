@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite ./src",
+    "build": "tsc -b && vite build ./src",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview ./src"
   },
   "dependencies": {
     "chart.js": "^4.4.4",
