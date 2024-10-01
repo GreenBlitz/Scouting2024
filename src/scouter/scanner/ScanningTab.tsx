@@ -1,58 +1,43 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Styles
 import "./QRStyles.css";
-
-// Qr Scanner
 import QrScanner from "qr-scanner";
 import React from "react";
 
 const ScanningTab = () => {
-  // QR States
+  const navigate = useNavigate();
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
-  const [qrOn, setQrOn] = useState<boolean>(false);
-
-  // Result
+  const [qrOn, setQrOn] = useState<boolean>(false); // Tracks if the QR scanner is on
   const [scannedResult, setScannedResult] = useState<string | undefined>("");
 
-  // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
-    const navigate = useNavigate();
-
     console.log(result);
-
-    const DecodedData = btoa(result.data);
-
+    const DecodedData = btoa(result.data); 
     setScannedResult(DecodedData);
-
     navigate("/", { state: { result: DecodedData } });
   };
 
-  // Fail
   const onScanFail = (err: string | Error) => {
-    console.log(err);
+    console.log("QR scan failed:", err);
   };
 
-  // Request camera access
   const requestCameraAccess = async () => {
+    console.log("Requesting camera access...");
     try {
-      // Request camera permission from the user
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      // If permission is granted, set video element to stream
       if (videoEl?.current) {
+        console.log("Camera access granted");
         videoEl.current.srcObject = stream;
       }
-      // Set QR scanner after getting camera stream
       initializeScanner();
     } catch (error) {
-      // If permission is denied, show an alert
-      setQrOn(false);
+      console.error("Camera access denied:", error);
+      setQrOn(false); // Ensure qrOn is set to false if camera access is denied
     }
   };
 
-  // Initialize QR Scanner
   const initializeScanner = () => {
     if (videoEl?.current && !scanner.current) {
       scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
@@ -63,45 +48,58 @@ const ScanningTab = () => {
         overlay: qrBoxEl?.current || undefined,
       });
 
-      // Start QR Scanner
-      scanner?.current
-        ?.start()
-        .then(() => setQrOn(true))
+      scanner.current
+        .start()
+        .then(() => setQrOn(true))  // Set qrOn to true when the scanner starts
         .catch((err) => {
-          if (err) setQrOn(false);
+          console.error("Error starting QR scanner:", err);
+          setQrOn(false);  // Set qrOn to false if the scanner fails to start
         });
     }
   };
 
-  // On component mount, request camera access
+  // Cleanup on unmount
   useEffect(() => {
-    requestCameraAccess();
-
+    console.log("FIRST");
     return () => {
-      if (!videoEl?.current) {
-        scanner?.current?.stop();
+      if (scanner?.current) {
+        console.log("Stopping scanner on unmount...");
+        scanner.current.stop();
       }
     };
   }, []);
 
-  // Handle no camera access state
+  // Alert user if the camera is blocked
   useEffect(() => {
-    console.log(qrOn);
-    if (!qrOn)
-      alert(
-        "Camera is blocked or not accessible. Please allow camera in your browser permissions and Reload."
-      );
+    if (!qrOn) {
+      console.log("QR scanner is off or camera is blocked.");
+    }
   }, [qrOn]);
 
   return (
     <div className="qr-reader">
-      {/* QR */}
-      <video ref={videoEl} autoPlay></video>
-      <div ref={qrBoxEl} className="qr-box">
-        {/* Optional overlay like QrFrame.svg can go here */}
-      </div>
+      {/* Conditionally render the button if the QR scanner is off */}
+      {!qrOn && (
+        <button
+          onClick={requestCameraAccess}
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            fontSize: "16px",
+            border: "none",
+            cursor: "pointer",
+            marginTop: "30px"  // This moves the button 30px down
+          }}
+        >
+          Start Camera
+        </button>
+      )}
 
-      {/* Show Data Result if scan is successful */}
+      <video ref={videoEl} autoPlay></video>
+      <div ref={qrBoxEl} className="qr-box"></div>
+
       {scannedResult && (
         <p
           style={{
