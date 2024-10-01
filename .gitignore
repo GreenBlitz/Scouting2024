@@ -24,3 +24,7 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Secret keys
+ssl-key.pem
+ssl.pem
