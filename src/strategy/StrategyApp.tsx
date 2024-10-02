@@ -1,3 +1,4 @@
+import BarChart from "./BarChart";
 import PieChart from "./PieChart";
 import RadarComponent from "./RadarChart";
 import TableChart from "./TableChart";
@@ -35,6 +36,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         widthOfItem={130}
       />
       <PieChart pieData={{ Dror: [90, ""] }} />
+      <BarChart dataSets={[["Lol", { Sigma: [30, "Jimmy"] }]]}></BarChart>
     </>
   );
 };
