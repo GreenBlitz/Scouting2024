@@ -1,5 +1,6 @@
 import "./App.css";
-import StrategyApp from "./strategypage/StrategyApp";
+
+import StrategyApp from "./strategy/StrategyApp";
 
 function App() {
   return <StrategyApp />;
