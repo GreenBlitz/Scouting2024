@@ -1,0 +1,47 @@
+import React from "react";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+interface PieChartProps {
+  pieData: Record<string, [number, string]>;
+}
+
+const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
+  const names = Object.keys(pieData);
+  const data = Object.values(pieData).map(([num, _]) => {
+    return num;
+  });
+  const backgroundColor = Object.values(pieData).map(([_, color]) => {
+    return color;
+  });
+
+  const chartData = {
+    labels: names,
+    datasets: [
+      {
+        data,
+        backgroundColor,
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+      },
+    },
+  };
+
+  console.log(chartData);
+
+  return (
+    <div style={{ width: "100%", maxWidth: "600px" }}>
+      <Pie data={chartData} options={options} />
+    </div>
+  );
+};
+
+export default PieChart;

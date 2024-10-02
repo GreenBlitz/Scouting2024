@@ -1,4 +1,5 @@
-import RadarComponent, { RadarInput } from "./RadarChart";
+import PieChart from "./PieChart";
+import RadarComponent from "./RadarChart";
 import TableChart from "./TableChart";
 
 interface StrategyAppProps {}
@@ -32,7 +33,8 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         idName={"Qual"}
         height={500}
         widthOfItem={130}
-      ></TableChart>
+      />
+      <PieChart pieData={{ Dror: [90, ""] }} />
     </>
   );
 };
