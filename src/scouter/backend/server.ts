@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import ViteExpress from "vite-express";
 import { Db, MongoClient } from "mongodb";
+import ViteExpress from "vite-express";
 
 const app = express();
 
@@ -9,8 +9,6 @@ const port = 4590;
 
 app.use(express.json());
 const mongoURI = "mongodb://0.0.0.0:27017";
-
-//
 
 let db: Db;
 

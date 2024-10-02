@@ -23,8 +23,8 @@ function ScouterApp() {
     <BrowserRouter>
       {renderNavBar()}
       <Routes>
-        <Route path="/ScouterTab" Component={ScouterTab} />
         <Route path="/" Component={MatchList} />
+        <Route path="/ScouterTab" Component={ScouterTab} />
       </Routes>
     </BrowserRouter>
   );
