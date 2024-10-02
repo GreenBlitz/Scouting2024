@@ -13,17 +13,16 @@ const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
   const data = Object.values(pieData).map(([num, _]) => {
     return num;
   });
-  const backgroundColors = Object.values(pieData).map(([_, color]) => {
+  const backgroundColor = Object.values(pieData).map(([_, color]) => {
     return color;
   });
-  console.log(backgroundColors);
 
   const chartData = {
-    names,
+    labels: names,
     datasets: [
       {
         data,
-        backgroundColors,
+        backgroundColor,
       },
     ],
   };
@@ -35,6 +34,8 @@ const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
       },
     },
   };
+
+  console.log(chartData);
 
   return (
     <div style={{ width: "100%", maxWidth: "600px" }}>
