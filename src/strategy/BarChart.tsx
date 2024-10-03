@@ -3,10 +3,10 @@ import { Bar } from "react-chartjs-2";
 
 Chart.register(CategoryScale, LinearScale, BarElement);
 
-type DataSet = Record<string, number>;
+type DataSet = [Color, Record<string, number>];
 type Color = string;
 interface BarChartProps {
-  dataSets: Record<string, [Color, DataSet]>;
+  dataSets: Record<string, DataSet>;
 }
 const BarChart: React.FC<BarChartProps> = ({ dataSets }) => {
   const data = {
