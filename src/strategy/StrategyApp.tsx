@@ -1,4 +1,5 @@
 import BarChart from "./BarChart";
+import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import RadarComponent from "./RadarChart";
 import TableChart from "./TableChart";
@@ -35,7 +36,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         height={500}
         widthOfItem={130}
       />
-      <PieChart pieData={{ Dror: [90, ""] }} />
+      <PieChart pieData={{ Dror: [90, ""], Talmi: [100, "rgb(100,200,30)"] }} />
       <BarChart
         dataSets={{
           1690: [
@@ -50,6 +51,19 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
             {
               Amp: 7,
               Speaker: 5,
+            },
+          ],
+        }}
+      />
+      <LineChart
+        dataSets={{
+          4590: [
+            "rgb(100,200,200)",
+            {
+              Game1: 7,
+              Game2: 5,
+              Game3: 8,
+              Game4: 4,
             },
           ],
         }}
