@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Point } from "../../../Utils";
 import React from "react";
-import ScouterQuery, { localStorageTabName } from "../ScouterQuery";
+import { localStorageTabName } from "../ScouterQuery";
 import CounterQuery from "./CounterQuery";
 interface MapQueryProps {
   name: string;
@@ -12,6 +12,7 @@ interface MapQueryProps {
 }
 interface DataPoint extends Point {
   data: string;
+  successfulness: boolean;
 }
 
 const pointRadius: number = 5;
@@ -28,6 +29,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
+  const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
@@ -36,15 +38,17 @@ const MapQuery: React.FC<MapQueryProps> = ({
     return pressedPrimary !== "";
   }
 
-  function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+  function addPoint(point: Point, successfulness: boolean) {
     if (!isButtonPressed()) {
       return;
     }
     const clickedPoint: DataPoint = {
-      x: event.pageX - event.currentTarget.offsetLeft,
-      y: event.pageY - event.currentTarget.offsetTop,
+      x: point.x,
+      y: point.y,
       data: pressedPrimary,
+      successfulness: successfulness,
     };
+    setLastClickedPoint(undefined);
     setDataPoints((prev) => [...prev, clickedPoint]);
   }
 
@@ -69,12 +73,19 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
   }
 
+  function handleClick(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+    setLastClickedPoint({
+      x: event.pageX - event.currentTarget.offsetLeft,
+      y: event.pageY - event.currentTarget.offsetTop,
+    });
+  }
+
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(dataPoints));
     drawPoints();
   }, [dataPoints, addPoint]);
 
-  const buttons = (
+  const buttons = !lastClickedPoint && (
     <div className="map-buttons">
       <div>
         {Object.entries(primaryButtons).map((option, index) => {
@@ -96,11 +107,20 @@ const MapQuery: React.FC<MapQueryProps> = ({
       <button type="button" onClick={removeLastPoint}>
         Undo
       </button>
-      <div className="map-amp">
-        <h2>AMP</h2>
-        <br />
-        <CounterQuery name={name + "/Amp"} />
-      </div>
+    </div>
+  );
+
+  const successfulnessButtons = lastClickedPoint && (
+    <div className="successfulness">
+      <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
+        Successful
+      </button>
+      <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
+        Unsuccessful
+      </button>
+      <button type="button" onClick={() => setLastClickedPoint(undefined)}>
+        Remove
+      </button>
     </div>
   );
 
@@ -108,7 +128,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
     <>
       <br />
       {buttons}
+      {successfulnessButtons}
+      <div className="map-amp">
+        <h2>AMP</h2>
+        <br />
+        <CounterQuery name={name + "/Amp"} />
+      </div>
       <div
+        className="map"
         style={{
           backgroundImage: 'url("' + imagePath + '")',
           backgroundSize: "100% 100%",
@@ -120,7 +147,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
           ref={canvasRef}
           width={width}
           height={height}
-          onClick={addPoint}
+          onClick={handleClick}
         />
         <input
           type="hidden"
@@ -129,6 +156,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
           value={JSON.stringify(dataPoints)}
         />
       </div>
+      {}
+      <br />
     </>
   );
 };
