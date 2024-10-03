@@ -1,8 +1,8 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+Chart.register(ArcElement, Tooltip, Legend);
 
 interface PieChartProps {
   pieData: Record<string, [number, string]>;
@@ -34,8 +34,6 @@ const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
       },
     },
   };
-
-  console.log(chartData);
 
   return (
     <div style={{ width: "100%", maxWidth: "600px" }}>
