@@ -3,26 +3,24 @@ import { Bar } from "react-chartjs-2";
 
 Chart.register(CategoryScale, LinearScale, BarElement);
 
-type DataSet = [string,Record<string, [number, string]>];
+type DataSet = Record<string, number>;
+type Color = string;
 interface BarChartProps {
-  dataSets: DataSet[];
+  dataSets: Record<string, [Color, DataSet]>;
 }
 const BarChart: React.FC<BarChartProps> = ({ dataSets }) => {
   const data = {
-    labels: Object.keys(dataSets[0][1]),
-    datasets: [
-      {
-        label: "Population (millions)",
-        backgroundColor: [
-          "#3e95cd",
-          "#8e5ea2",
-          "#3cba9f",
-          "#e8c3b9",
-          "#c45850",
-        ],
-        data: [2478, 5267, 734, 784, 433],
-      },
-    ],
+    labels: Object.keys(Object.values(dataSets)[0][1]),
+
+    datasets: Object.entries(dataSets).map(([dataSetName, dataSetValue]) => {
+      return {
+        label: dataSetName,
+        backgroundColor: [...Array(Object.values(dataSetValue[1]).length)].map(
+          () => dataSetValue[0]
+        ),
+        data: Object.values(dataSetValue[1]),
+      };
+    }),
   };
 
   return (

@@ -36,7 +36,24 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         widthOfItem={130}
       />
       <PieChart pieData={{ Dror: [90, ""] }} />
-      <BarChart dataSets={[["Lol", { Sigma: [30, "Jimmy"] }]]}></BarChart>
+      <BarChart
+        dataSets={{
+          1690: [
+            "rgb(244,200,200)",
+            {
+              Amp: 6,
+              Speaker: 10,
+            },
+          ],
+          4590: [
+            "rgb(100,200,200)",
+            {
+              Amp: 7,
+              Speaker: 5,
+            },
+          ],
+        }}
+      />
     </>
   );
 };
