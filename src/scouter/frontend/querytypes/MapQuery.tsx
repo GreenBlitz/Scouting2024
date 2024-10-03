@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Point } from "../../../Utils";
 import React from "react";
-import { localStorageTabName } from "../ScouterQuery";
+import ScouterQuery, { localStorageTabName } from "../ScouterQuery";
+import CounterQuery from "./CounterQuery";
 interface MapQueryProps {
   name: string;
   width: number;
   height: number;
   imagePath: string;
   primaryButtons: Record<string, string>;
-  secondaryButtons?: Record<string, string[]>;
 }
 interface DataPoint extends Point {
-  data: Record<string, string>;
+  data: string;
 }
 
 const pointRadius: number = 5;
@@ -22,39 +22,28 @@ const MapQuery: React.FC<MapQueryProps> = ({
   height,
   imagePath,
   primaryButtons,
-  secondaryButtons,
 }) => {
   const localStorageKey = localStorageTabName + name + "/Points";
   const [dataPoints, setDataPoints] = useState<DataPoint[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
-  const [pressedSeconderies] = useState<Record<string, string>>({});
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
 
-  function areButtonsPressed(): boolean {
-    if (pressedPrimary === "") return false;
-    for (let key of Object.entries(secondaryButtons || {})) {
-      if (!pressedSeconderies[key[0]]) {
-        return false;
-      }
-    }
-    return true;
+  function isButtonPressed(): boolean {
+    return pressedPrimary !== "";
   }
 
   function addPoint(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    if (!areButtonsPressed()) {
+    if (!isButtonPressed()) {
       return;
     }
     const clickedPoint: DataPoint = {
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
-      data: {
-        primary: pressedPrimary,
-        ...pressedSeconderies,
-      },
+      data: pressedPrimary,
     };
     setDataPoints((prev) => [...prev, clickedPoint]);
   }
@@ -73,7 +62,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     }
     context.clearRect(0, 0, width, height);
     for (let point of dataPoints) {
-      context.fillStyle = primaryButtons[point.data["primary"]];
+      context.fillStyle = primaryButtons[point.data];
       context.beginPath();
       context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
       context.fill();
@@ -86,8 +75,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }, [dataPoints, addPoint]);
 
   const buttons = (
-    <>
-      <div className={name + "-primary"}>
+    <div className="map-buttons">
+      <div>
         {Object.entries(primaryButtons).map((option, index) => {
           const buttonName = option[0];
           return (
@@ -104,26 +93,15 @@ const MapQuery: React.FC<MapQueryProps> = ({
           );
         })}
       </div>
-      <div className={name + "-secondary"}>
-        {Object.entries(secondaryButtons || {}).map((button, buttonIndex) =>
-          button[1].map((option, optionIndex) => (
-            <React.Fragment key={optionIndex + "," + buttonIndex}>
-              <input
-                type="radio"
-                name={name + "-" + button[0]}
-                id={option}
-                value={option}
-                onChange={() => (pressedSeconderies[button[0]] = option)}
-              />
-              <label htmlFor={option}>{option}</label>
-            </React.Fragment>
-          ))
-        )}
-      </div>
       <button type="button" onClick={removeLastPoint}>
         Undo
       </button>
-    </>
+      <div className="map-amp">
+        <h2>AMP</h2>
+        <br />
+        <CounterQuery name={name + "/Amp"} />
+      </div>
+    </div>
   );
 
   return (

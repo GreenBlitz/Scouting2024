@@ -8,13 +8,15 @@ function ScouterTab() {
   const navigate = useNavigate();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    const formData = new FormData(event.currentTarget);
     event.preventDefault();
-    let formValues: Record<string, string> = {};
-    for (let [key, value] of formData.entries()) {
-      formValues[key] = value.toString();
-    }
-    clearQueryStorage();
+    const formValues: Record<string, string> = {};
+    Object.keys(localStorage)
+      .filter((item) => item.startsWith(localStorageTabName))
+      .forEach((item) => {
+        formValues[item.slice(localStorageTabName.length)] =
+          localStorage.getItem(item) + "";
+        localStorage.removeItem(item);
+      });
     navigate("/", { state: formValues });
   }
 
@@ -46,9 +48,8 @@ function ScouterTab() {
         name="CRESCENDO"
         width={640}
         height={340}
-        imagePath="./src/assets/Crescendo Map.png"
-        primaryButtons={{ Amp: "yellow", Speaker: "blue", Pass: "purple" }}
-        secondaryButtons={{ Successfulness: ["Successful", "Unsuccessful"] }}
+        imagePath="./src/assets/Crescendo Map Blue.png"
+        primaryButtons={{ Speaker: "yellow", Pass: "purple" }}
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>

@@ -48,7 +48,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
         );
     }
   }
-
+  
   return (
     <div className="scouter-query">
       <h2>{name}</h2>

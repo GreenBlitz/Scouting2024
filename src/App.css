@@ -15,22 +15,35 @@
   }
 }
 
+.map-amp {
+  h3,
+  h2,
+  button {
+    display: inline;
+    right: 40%;
+    position: relative;
+  }
+}
+.map-buttons {
+  grid-gap: 0px;
+}
+
 .scouter-nav-bar {
-    background: #333;
-    padding: 1rem;
-    position: fixed;  
-    top: 0;           
-    left: 0;
-    right: 0;
-    z-index: 1000;  
+  background: #333;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .scouter-nav-bar ul {
   list-style: none;
   display: flex;
   justify-content: center; /* Center the items */
-  margin: 0;       /* Reset default margin */
-  padding: 0;      /* Reset default padding */
+  margin: 0; /* Reset default margin */
+  padding: 0; /* Reset default padding */
 }
 
 .scouter-nav-bar li {
