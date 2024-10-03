@@ -31,7 +31,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
-  const [lastClickedPoint, setLastClickedEvent] = useState<Point>();
+  const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
@@ -50,7 +50,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       data: pressedPrimary,
       successfulness: successfulness,
     };
-    setLastClickedEvent(undefined);
+    setLastClickedPoint(undefined);
     setDataPoints((prev) => [...prev, clickedPoint]);
   }
 
@@ -80,7 +80,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
     };
-    setLastClickedEvent(clickedPoint);
+    setLastClickedPoint(clickedPoint);
   }
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
         Unsuccessful
       </button>
-      <button type="button" onClick={() => setLastClickedEvent(undefined)}>
+      <button type="button" onClick={() => setLastClickedPoint(undefined)}>
         Remove
       </button>
     </div>
