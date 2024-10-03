@@ -66,6 +66,15 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
               Game4: 4,
             },
           ],
+          1690: [
+            "rgb(200,100,200)",
+            {
+              Game1: 13,
+              Game2: 8,
+              Game3: 9,
+              Game4: 7,
+            },
+          ],
         }}
       />
     </>
