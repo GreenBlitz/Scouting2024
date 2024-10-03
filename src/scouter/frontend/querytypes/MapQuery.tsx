@@ -5,6 +5,7 @@ import { localStorageTabName } from "../ScouterQuery";
 import CounterQuery from "./CounterQuery";
 interface MapQueryProps {
   name: string;
+  side: "blue" | "red";
   width: number;
   height: number;
   imagePath: string;
@@ -23,13 +24,14 @@ const MapQuery: React.FC<MapQueryProps> = ({
   height,
   imagePath,
   primaryButtons,
+  side,
 }) => {
   const localStorageKey = localStorageTabName + name + "/Points";
   const [dataPoints, setDataPoints] = useState<DataPoint[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedPrimary, setPressedPrimary] = useState<string>("");
-  const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
+  const [lastClickedPoint, setLastClickedEvent] = useState<Point>();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
@@ -48,7 +50,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       data: pressedPrimary,
       successfulness: successfulness,
     };
-    setLastClickedPoint(undefined);
+    setLastClickedEvent(undefined);
     setDataPoints((prev) => [...prev, clickedPoint]);
   }
 
@@ -74,10 +76,11 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   function handleClick(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    setLastClickedPoint({
+    const clickedPoint = {
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
-    });
+    };
+    setLastClickedEvent(clickedPoint);
   }
 
   useEffect(() => {
@@ -85,7 +88,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     drawPoints();
   }, [dataPoints, addPoint]);
 
-  const buttons = !lastClickedPoint && (
+  const buttons = (
     <div className="map-buttons">
       <div>
         {Object.entries(primaryButtons).map((option, index) => {
@@ -107,18 +110,23 @@ const MapQuery: React.FC<MapQueryProps> = ({
       <button type="button" onClick={removeLastPoint}>
         Undo
       </button>
+      <div className={side === "blue" ? "map-amp-left" : "map-amp-right"}>
+        <h2>AMP</h2>
+        <br />
+        <CounterQuery name={name + "/Amp"} />
+      </div>
     </div>
   );
 
   const successfulnessButtons = lastClickedPoint && (
-    <div className="successfulness">
+    <div className="succesfulness">
       <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
         Successful
       </button>
       <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
         Unsuccessful
       </button>
-      <button type="button" onClick={() => setLastClickedPoint(undefined)}>
+      <button type="button" onClick={() => setLastClickedEvent(undefined)}>
         Remove
       </button>
     </div>
@@ -128,14 +136,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     <>
       <br />
       {buttons}
-      {successfulnessButtons}
-      <div className="map-amp">
-        <h2>AMP</h2>
-        <br />
-        <CounterQuery name={name + "/Amp"} />
-      </div>
       <div
-        className="map"
         style={{
           backgroundImage: 'url("' + imagePath + '")',
           backgroundSize: "100% 100%",
@@ -156,7 +157,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
           value={JSON.stringify(dataPoints)}
         />
       </div>
-      {}
+      {successfulnessButtons}
+
       <br />
     </>
   );

@@ -46,8 +46,9 @@ function ScouterTab() {
       />
       <MapQuery
         name="CRESCENDO"
-        width={640}
-        height={340}
+        side="blue"
+        width={540}
+        height={240}
         imagePath="./src/assets/Crescendo Map Blue.png"
         primaryButtons={{ Speaker: "yellow", Pass: "purple" }}
       />

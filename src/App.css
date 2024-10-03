@@ -15,12 +15,29 @@
   }
 }
 
-.map-amp {
+.succesfulness {
+  position: absolute;
+  top: 80%;
+  left: 45%;
+  width: 80px;
+}
+
+.map-amp-left {
   h3,
   h2,
   button {
     display: inline;
     right: 40%;
+    position: relative;
+  }
+}
+
+.map-amp-right {
+  h3,
+  h2,
+  button {
+    display: inline;
+    left: 40%;
     position: relative;
   }
 }
