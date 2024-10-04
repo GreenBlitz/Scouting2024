@@ -8,7 +8,7 @@ const hostname = "0.0.0.0";
 const port = 4590;
 
 app.use(express.json());
-const mongoURI = "mongodb://0.0.0.0:27017";
+const mongoURI = "mongodb://mongo:27017";
 
 let db: Db;
 
