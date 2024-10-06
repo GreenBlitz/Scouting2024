@@ -7,6 +7,7 @@ interface StrategyAppProps {}
 const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>();
 
+  console.log(matches);
   const team4590: Team = {
     Q1: { Speaker: "8", Amp: "4", Trap: "Scored", Climb: "Self", Pass: "4" },
     Q2: {
