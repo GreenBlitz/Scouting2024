@@ -1,7 +1,14 @@
-import { Chart, LineElement, PointElement } from "chart.js";
+import {
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
 
-Chart.register(LineElement, PointElement);
+Chart.register(LineElement, PointElement, CategoryScale, LinearScale, Legend);
 
 type DataSet = [Color, Record<string, number>];
 type Color = string;
