@@ -36,7 +36,7 @@ const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
   };
 
   return (
-    <div style={{ width: "100%", maxWidth: "600px" }}>
+    <div>
       <Pie data={chartData} options={options} />
     </div>
   );
