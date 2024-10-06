@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { Db, MongoClient } from "mongodb";
 import ViteExpress from "vite-express";
+import cors from "cors";
 
 const app = express();
 
@@ -8,6 +9,7 @@ const hostname = "0.0.0.0";
 const port = 4590;
 
 app.use(express.json());
+app.use(cors());
 const mongoURI = "mongodb://mongo:27017";
 
 let db: Db;
