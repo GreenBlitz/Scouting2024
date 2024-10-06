@@ -17,7 +17,7 @@ interface DataPoint extends Point {
 }
 
 const pointRadius: number = 5;
-
+const succesfulnessOffset = [20, -60];
 const MapQuery: React.FC<MapQueryProps> = ({
   name,
   width,
@@ -76,6 +76,9 @@ const MapQuery: React.FC<MapQueryProps> = ({
   }
 
   function handleClick(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+    if (!isButtonPressed()) {
+      return;
+    }
     const clickedPoint = {
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
@@ -119,7 +122,21 @@ const MapQuery: React.FC<MapQueryProps> = ({
   );
 
   const successfulnessButtons = lastClickedPoint && (
-    <div className="succesfulness">
+    <div
+      className="succesfulness"
+      style={{
+        left: canvasRef.current
+          ? canvasRef.current.offsetLeft +
+            lastClickedPoint.x +
+            succesfulnessOffset[0]
+          : 0,
+        top: canvasRef.current
+          ? canvasRef.current.offsetTop +
+            lastClickedPoint.y +
+            succesfulnessOffset[1]
+          : 0,
+      }}
+    >
       <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
         Successful
       </button>
