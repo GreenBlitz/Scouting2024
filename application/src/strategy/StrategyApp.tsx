@@ -1,9 +1,12 @@
+import { useState } from "react";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 
 type Team = Record<string, Record<string, string>>;
 interface StrategyAppProps {}
 const StrategyApp: React.FC<StrategyAppProps> = () => {
+  const [matches, setMatches] = useState<Record<string, string>[]>();
+
   const team4590: Team = {
     Q1: { Speaker: "8", Amp: "4", Trap: "Scored", Climb: "Self", Pass: "4" },
     Q2: {
@@ -39,6 +42,28 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
     });
     return dataSet;
   }
+  async function updateMatchesByCriteria(field?: string, value?: string) {
+    const searchedField = field && value ? `/${field}/${value}` : ``;
+    fetch(`http://192.168.1.126:4590/Matches${searchedField}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setMatches(data);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
   return (
     <>
       <LineChart
@@ -68,6 +93,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
           "Not On Stage": "red",
         })}
       />
+      <button onClick={() => updateMatchesByCriteria()}>Sigma</button>
     </>
   );
 };
