@@ -14,8 +14,10 @@ type DataSet = [Color, Record<string, number>];
 type Color = string;
 interface LineChartProps {
   dataSets: Record<string, DataSet>;
+  height: number;
+  width: number;
 }
-const LineChart: React.FC<LineChartProps> = ({ dataSets }) => {
+const LineChart: React.FC<LineChartProps> = ({ dataSets, height, width }) => {
   const data = {
     labels: Object.keys(Object.values(dataSets)[0][1]),
 
@@ -31,7 +33,12 @@ const LineChart: React.FC<LineChartProps> = ({ dataSets }) => {
 
   return (
     <div style={{ width: "100%", maxWidth: "600px" }}>
-      <Line data={data} />
+      <Line
+        height={height}
+        width={width}
+        data={data}
+        options={{ maintainAspectRatio: true, responsive: true }}
+      />
     </div>
   );
 };
