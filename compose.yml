@@ -1,0 +1,33 @@
+services:
+  application:
+    build:
+      context: application
+    ports:
+      - 5173:5173
+      - 4590:4590
+    stdin_open: true
+    volumes:
+      - ./application:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      - express-mongo
+    depends_on:
+      - mongo
+  mongo:
+    restart: always
+    image: mongo:8.0.0
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+    attach: false
+
+networks:
+  react-express:
+  express-mongo:
+
+volumes:
+  mongo_data:
