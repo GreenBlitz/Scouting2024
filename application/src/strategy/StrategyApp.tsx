@@ -2,50 +2,70 @@ import { useState } from "react";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 
-type Team = Record<string, Record<string, string>>;
+type TeamData = Record<string, Record<string, string>>;
+const matchName = "Qual";
+const mapName = "CRESCENDO";
 interface StrategyAppProps {}
+
+function getTeamData(teamMatches: Record<string, string>[]): TeamData {
+  const teamData: TeamData = {};
+  teamMatches.forEach((match) => {
+    const points: any[] = JSON.parse(match[mapName]);
+    const matchNumber = match[matchName];
+    function countData(data: string) {
+      return (
+        points.filter(
+          (point) =>
+            point["data"]["primary"] === data &&
+            point["data"]["Successfulness"] === "Successful"
+        ).length + ""
+      );
+    }
+    teamData[matchNumber] = {
+      Speaker: countData("Speaker"),
+      Amp: countData("Amp"),
+      Pass: countData("Pass"),
+    };
+
+    Object.entries(match)
+      .filter(([key, _]) => key !== matchName && key !== mapName)
+      .forEach(([key, value]) => (teamData[matchNumber][key] = value));
+  });
+  return teamData;
+}
+
+function getAsLine(team: TeamData, data: string) {
+  const dataSet: Record<string, number> = {};
+  Object.entries(team).forEach(([qual, match]) => {
+    dataSet[qual] = parseInt(match[data]);
+  });
+  return dataSet;
+}
+
+function getAsPie(
+  team: TeamData,
+  data: string,
+  colorMap: Record<string, string>
+) {
+  const dataSet: Record<string, [number, string]> = {};
+  Object.entries(team).forEach(([_, match]) => {
+    const dataValue = match[data];
+    if (!dataSet[dataValue]) {
+      dataSet[dataValue] = [0, colorMap[dataValue]];
+    }
+    dataSet[dataValue][0]++;
+  });
+  return dataSet;
+}
 const StrategyApp: React.FC<StrategyAppProps> = () => {
-  const [matches, setMatches] = useState<Record<string, string>[]>();
+  const [matches, setMatches] = useState<Record<string, string>[]>([]);
 
-  console.log(matches);
-  const team4590: Team = {
-    Q1: { Speaker: "8", Amp: "4", Trap: "Scored", Climb: "Self", Pass: "4" },
-    Q2: {
-      Speaker: "2",
-      Amp: "9",
-      Trap: "Not Scored",
-      Climb: "Team",
-      Pass: "1",
-    },
-    Q3: { Speaker: "5", Amp: "4", Trap: "Missed", Climb: "Park", Pass: "3" },
-  };
+  const teamData = getTeamData(matches);
+  console.log(teamData);
 
-  function getAsLine(team: Team, data: string) {
-    const dataSet: Record<string, number> = {};
-    Object.entries(team).forEach(([qual, match]) => {
-      dataSet[qual] = parseInt(match[data]);
-    });
-    return dataSet;
-  }
-
-  function getAsPie(
-    team: Team,
-    data: string,
-    colorMap: Record<string, string>
-  ) {
-    const dataSet: Record<string, [number, string]> = {};
-    Object.entries(team).forEach(([_, match]) => {
-      const dataValue = match[data];
-      if (!dataSet[dataValue]) {
-        dataSet[dataValue] = [0, colorMap[dataValue]];
-      }
-      dataSet[dataValue][0]++;
-    });
-    return dataSet;
-  }
   async function updateMatchesByCriteria(field?: string, value?: string) {
     const searchedField = field && value ? `/${field}/${value}` : ``;
-    fetch(`http://192.168.1.126:4590/Matches${searchedField}`, {
+    fetch(`http://192.168.68.63:4590/Matches${searchedField}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -71,14 +91,14 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         height={300}
         width={400}
         dataSets={{
-          Speaker: ["pink", getAsLine(team4590, "Speaker")],
-          Amp: ["yellow", getAsLine(team4590, "Amp")],
-          Pass: ["purple", getAsLine(team4590, "Pass")],
+          Speaker: ["pink", getAsLine(teamData, "Speaker")],
+          Amp: ["yellow", getAsLine(teamData, "Amp")],
+          Pass: ["purple", getAsLine(teamData, "Pass")],
         }}
       />
       <h2>Trap</h2>
       <PieChart
-        pieData={getAsPie(team4590, "Trap", {
+        pieData={getAsPie(teamData, "Trap", {
           Scored: "purple",
           Missed: "cyan",
           "Not Scored": "yellow",
@@ -86,7 +106,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       />
       <h2>Climb</h2>
       <PieChart
-        pieData={getAsPie(team4590, "Climb", {
+        pieData={getAsPie(teamData, "Climb", {
           Self: "purple",
           Harmony: "cyan",
           Team: "yellow",
