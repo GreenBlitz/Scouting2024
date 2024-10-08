@@ -11,10 +11,10 @@ const QRReader = () => {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
-  const [qrOn, setQrOn] = useState<boolean>(false);
 
-  // Result
-  const [scannedResult, setScannedResult] = useState<string | undefined>("");
+  const [qrOn, setQrOn] = useState<boolean>(false);
+  
+
 
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
@@ -24,10 +24,11 @@ const QRReader = () => {
     console.log(result);
 
     const DecodedData = btoa(result.data)
+    console.log("AFTER" + DecodedData)
+    console.log("LAST" + JSON.parse(DecodedData))
 
-    setScannedResult(DecodedData);
-
-    navigate("/", { state: { result: DecodedData } });
+    navigate("/", { state: JSON.parse(DecodedData)  });
+    
 
 
 
@@ -36,6 +37,7 @@ const QRReader = () => {
 
   // Fail
   const onScanFail = (err: string | Error) => {
+    console.log("I FUCKING FAILED")
     console.log(err);
   };
 
@@ -89,7 +91,7 @@ const QRReader = () => {
     };
   }, []);
 
-  // Handle no camera access state
+  // Handle no camera access state sdfdsfs
   useEffect(() => {
     if (!qrOn)
       alert(
@@ -98,28 +100,7 @@ const QRReader = () => {
   }, [qrOn]);
 
   return (
-    <div className="qr-reader">
-      {/* QR */}
-      <video ref={videoEl} autoPlay></video>
-      <div ref={qrBoxEl} className="qr-box">
-        {/* Optional overlay like QrFrame.svg can go here */}
-      </div>
-
-      {/* Show Data Result if scan is successful */}
-      {scannedResult && (
-        <p
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 99999,
-            color: "white",
-          }}
-        >
-          Scanned Result: {scannedResult}
-        </p>
-      )}
-    </div>
+   console.log("Finished, a")
   );
 };
 

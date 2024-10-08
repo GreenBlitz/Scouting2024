@@ -1,9 +1,8 @@
 import express, { Request, Response } from "express";
-import ViteExpress from "vite-express";
 import { Db, MongoClient } from "mongodb";
 import fs from 'fs';
 import path from 'path';
-import https from 'https';  // Import HTTPS module
+import https from 'https';
 
 const app = express();
 const hostname = "0.0.0.0";
@@ -14,6 +13,9 @@ const sslOptions = {
   key: fs.readFileSync(path.resolve('/home/aviv/Scouting2024/', 'ssl-key.pem')),   // Path to the key file
   cert: fs.readFileSync(path.resolve('/home/aviv/Scouting2024/', 'ssl.pem'))       // Path to the certificate file
 };
+
+// Serve static files from the Vite build output (dist folder)
+app.use(express.static(path.resolve(__dirname, 'dist')));
 
 app.use(express.json());
 
@@ -57,6 +59,11 @@ app.get("/Matches", async (req, res) => {
   }
 });
 
+// Serve the frontend for any route that isn't an API
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
+
 // Create HTTPS server
 const httpsServer = https.createServer(sslOptions, app);
 
@@ -64,6 +71,3 @@ const httpsServer = https.createServer(sslOptions, app);
 httpsServer.listen(port, hostname, () => {
   console.log(`HTTPS Server is listening on https://${hostname}:${port}`);
 });
-
-// Bind ViteExpress to the HTTPS server
-ViteExpress.bind(app, httpsServer);
