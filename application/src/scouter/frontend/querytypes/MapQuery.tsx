@@ -10,10 +10,13 @@ interface MapQueryProps {
   height: number;
   imagePath: string;
 }
+
 interface DataPoint extends Point {
   data: string;
   successfulness: boolean;
 }
+
+type PassingPoint = [DataPoint, Point];
 
 const pointRadius: number = 5;
 const succesfulnessOffset = [20, -60];
@@ -31,11 +34,13 @@ const MapQuery: React.FC<MapQueryProps> = ({
   side,
 }) => {
   const localStorageKey = localStorageTabName + name + "/Points";
-  const [dataPoints, setDataPoints] = useState<DataPoint[]>(
+  const [dataPoints, setDataPoints] = useState<(DataPoint | PassingPoint)[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
   const [pressedButton, setPressedButton] = useState<string>("");
   const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
+
+  const [passingPoint, setPassingPoint] = useState<DataPoint>();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const context = canvasRef.current ? canvasRef.current.getContext("2d") : null;
@@ -48,6 +53,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
     if (!isButtonPressed()) {
       return;
     }
+
     const clickedPoint: DataPoint = {
       x: point.x,
       y: point.y,
@@ -55,6 +61,10 @@ const MapQuery: React.FC<MapQueryProps> = ({
       successfulness: successfulness,
     };
     setLastClickedPoint(undefined);
+    if (pressedButton === "Pass") {
+      setPassingPoint(clickedPoint);
+      return;
+    }
     setDataPoints((prev) => [...prev, clickedPoint]);
   }
 
@@ -71,11 +81,24 @@ const MapQuery: React.FC<MapQueryProps> = ({
       return;
     }
     context.clearRect(0, 0, width, height);
+
     for (let point of dataPoints) {
-      context.fillStyle = crescendoButtons[point.data];
-      context.beginPath();
-      context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
-      context.fill();
+      const isPassing = (point as DataPoint).x === undefined;
+      if (isPassing) {
+        const [startPoint, endPoint] = point as PassingPoint;
+        context.strokeStyle = crescendoButtons["Pass"];
+        context.beginPath();
+        context.moveTo(startPoint.x, startPoint.y);
+        context.lineTo(endPoint.x, endPoint.y);
+        context.lineWidth = pointRadius;
+        context.stroke();
+      } else {
+        point = point as DataPoint;
+        context.fillStyle = crescendoButtons[point.data];
+        context.beginPath();
+        context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
+        context.fill();
+      }
     }
   }
 
@@ -83,13 +106,16 @@ const MapQuery: React.FC<MapQueryProps> = ({
     if (!isButtonPressed()) {
       return;
     }
-    if (pressedButton === "Pass") {
-      
-    }
+
     const clickedPoint = {
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
     };
+    if (passingPoint) {
+      setDataPoints((prev) => [...prev, [passingPoint, clickedPoint]]);
+      setPassingPoint(undefined);
+      return;
+    }
     setLastClickedPoint(clickedPoint);
   }
 
@@ -100,26 +126,38 @@ const MapQuery: React.FC<MapQueryProps> = ({
 
   const buttons = (
     <div className="map-buttons">
-      <div>
-        {Object.entries(crescendoButtons).map((option, index) => {
-          const buttonName = option[0];
-          return (
-            <React.Fragment key={index}>
-              <input
-                type="radio"
-                name={name + "-buttons"}
-                id={buttonName}
-                value={buttonName}
-                onChange={() => setPressedButton(buttonName)}
-              />
-              <label htmlFor={buttonName}>{buttonName}</label>
-            </React.Fragment>
-          );
-        })}
-      </div>
-      <button type="button" onClick={removeLastPoint}>
-        Undo
-      </button>
+      {passingPoint ? (
+        <>
+          Set Passing Destination
+          <br />
+          <button type="button" onClick={() => setPassingPoint(undefined)}>
+            Undo Pass
+          </button>
+        </>
+      ) : (
+        <div>
+          {Object.entries(crescendoButtons).map((option, index) => {
+            const buttonName = option[0];
+            return (
+              <React.Fragment key={index}>
+                <input
+                  type="radio"
+                  name={name + "-buttons"}
+                  id={buttonName}
+                  value={buttonName}
+                  onChange={() => setPressedButton(buttonName)}
+                />
+                <label htmlFor={buttonName}>{buttonName}</label>
+              </React.Fragment>
+            );
+          })}
+          <br />
+          <button type="button" onClick={removeLastPoint}>
+            Undo
+          </button>
+        </div>
+      )}
+
       <div className={side === "blue" ? "map-amp-left" : "map-amp-right"}>
         <h2>AMP</h2>
         <br />
@@ -127,7 +165,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
         <h3> HIT</h3>
         <br />
         <CounterQuery name={name + "/Amp/Miss"} color="#8f0a0e" />
-        <h3>MISS</h3>
+        <h3> MISS</h3>
       </div>
     </div>
   );
