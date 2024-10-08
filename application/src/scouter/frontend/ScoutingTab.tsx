@@ -50,7 +50,6 @@ function ScouterTab() {
         width={540}
         height={240}
         imagePath="./src/assets/Crescendo Map Blue.png"
-        primaryButtons={{ Speaker: "yellow", Pass: "purple" }}
       />
       <button type="submit">Submit</button>
       <button type="reset">Reset</button>
