@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
+import MapChart, { DataPoint, PassingPoint } from "./MapChart";
 
 type TeamData = Record<string, Record<string, string>>;
 const matchName = "Qual";
@@ -85,6 +86,17 @@ function getAccuracy(
   return (sum1 / (sum1 + sum2)) * 100;
 }
 
+function getAllPoints(matches: Record<string, string>[]) {
+  let points: (DataPoint | PassingPoint)[] = [];
+  Object.values(matches).forEach((match) => {
+    const mapPoints: (DataPoint | PassingPoint)[] = JSON.parse(
+      match[mapName + "/Points"]
+    );
+    points = [...points, ...mapPoints];
+  });
+  return points;
+}
+
 const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
 
@@ -127,6 +139,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
     "Pass Successful",
     "Pass Unsuccessful"
   );
+
   return (
     <div className="strategy-app">
       <div className="section">
@@ -198,7 +211,15 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
           }}
         />
       </div>
-
+      <div className="section">
+        <h2>Pass Accuracy</h2>
+        <PieChart
+          pieData={{
+            Score: [passAccuracy, "green"],
+            Miss: [100 - passAccuracy, "crimson"],
+          }}
+        />
+      </div>
       <div className="section">
         <h2>Trap Accuracy</h2>
         <PieChart
@@ -208,14 +229,15 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
           }}
         />
       </div>
+      <br />
 
       <div className="section">
-        <h2>Pass Accuracy</h2>
-        <PieChart
-          pieData={{
-            Score: [passAccuracy, "green"],
-            Miss: [100 - passAccuracy, "crimson"],
-          }}
+        <h2>Map</h2>
+        <MapChart
+          width={540}
+          height={240}
+          imagePath={"./src/assets/Crescendo Map.png"}
+          dataPoints={getAllPoints(matches)}
         />
       </div>
 
