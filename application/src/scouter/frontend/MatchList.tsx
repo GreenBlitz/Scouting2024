@@ -7,6 +7,8 @@ import { getServerHostname } from "../../Utils";
 export const matchName = "Qual";
 const matchesTab = "Matches/";
 
+const collapsibleSize = 15;
+
 const MatchList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,8 +55,11 @@ const MatchList: React.FC = () => {
       {matches.length === 0 && <h1>No Matches Saved</h1>}
       {matches.map((match, index) => (
         <Collapsible
-          trigger={`${matchName} ${match[matchName]}`}
+          trigger={`${"ㅤ".repeat(collapsibleSize - match[matchName].length)}${matchName} ${
+            match[matchName]
+          }${"ㅤ".repeat(collapsibleSize - match[matchName].length)}`}
           triggerClassName={"collapsible-trigger"}
+          openedClassName="collapsible-trigger"
           key={index}
         >
           <QRCodeGenerator text={JSON.stringify(match)} />
