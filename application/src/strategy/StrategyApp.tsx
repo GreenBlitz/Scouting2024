@@ -31,6 +31,8 @@ function getTeamData(teamMatches: Record<string, string>[]): TeamData {
       "Pass Unsuccessful": countDataFromMap("Pass", false),
       "Amp Score": match[`${mapName}/Amp/Score`] + "",
       "Amp Miss": match[`${mapName}/Amp/Score`] + "",
+      "Trap Score": match["Trap"] === "Scored" ? "1" : "0",
+      "Trap Miss": match["Trap"] === "Miss" ? "1" : "0",
     };
 
     Object.entries(match)
@@ -63,6 +65,38 @@ function getAsPie(
   });
   return dataSet;
 }
+
+function getAverage(team: TeamData, data: string, recency?: number) {
+  let sum = 0;
+  const matches = Object.values(team);
+  if (recency) {
+    matches.splice(matches.length - recency);
+  }
+  matches.forEach((match) => {
+    sum += parseInt(match[data]);
+  });
+  return sum / matches.length;
+}
+
+function getAccuracy(
+  team: TeamData,
+  data1: string,
+  data2: string,
+  recency?: number
+) {
+  let sum1 = 0;
+  let sum2 = 0;
+  const matches = Object.values(team);
+  if (recency) {
+    matches.splice(matches.length - recency);
+  }
+  matches.forEach((match) => {
+    sum1 += parseInt(match[data1]);
+    sum2 += parseInt(match[data2]);
+  });
+  return (sum1 / (sum1 + sum2)) * 100;
+}
+
 const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
 
@@ -92,40 +126,116 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
   }
 
   useEffect(() => console.log(teamData), [teamData]);
+
+  const ampAccuracy = getAccuracy(teamData, "Amp Score", "Amp Miss");
+  const speakerAccuracy = getAccuracy(
+    teamData,
+    "Speaker Score",
+    "Speaker Miss"
+  );
+  const trapAccuracy = getAccuracy(teamData, "Trap Score", "Trap Miss");
+  const passAccuracy = getAccuracy(
+    teamData,
+    "Pass Successful",
+    "Pass Unsuccessful"
+  );
   return (
-    <>
-      <h2>Scoring</h2>
-      <LineChart
-        height={300}
-        width={400}
-        dataSets={{
-          Speaker: ["pink", getAsLine(teamData, "Speaker Score")],
-          Amp: ["yellow", getAsLine(teamData, "Amp Score")],
-          Pass: ["purple", getAsLine(teamData, "Pass Successful")],
-        }}
-      />
-      <h2>Trap</h2>
-      <PieChart
-        pieData={getAsPie(teamData, "Trap", {
-          Scored: "purple",
-          Missed: "cyan",
-          "Didn't Score": "yellow",
-        })}
-      />
-      <h2>Climb</h2>
-      <PieChart
-        pieData={getAsPie(teamData, "Climb", {
-          "Climbed Alone": "purple",
-          Harmony: "cyan",
-          Team: "yellow",
-          Park: "orange",
-          "Not On Stage": "red",
-        })}
-      />
+    <div className="strategy-app">
+      <div className="section">
+        <h2>Scoring</h2>
+        <LineChart
+          height={300}
+          width={400}
+          dataSets={{
+            Speaker: ["pink", getAsLine(teamData, "Speaker Score")],
+            Amp: ["yellow", getAsLine(teamData, "Amp Score")],
+            Pass: ["purple", getAsLine(teamData, "Pass Successful")],
+          }}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Miss</h2>
+        <LineChart
+          height={300}
+          width={400}
+          dataSets={{
+            Speaker: ["pink", getAsLine(teamData, "Speaker Miss")],
+            Amp: ["yellow", getAsLine(teamData, "Amp Miss")],
+            Pass: ["purple", getAsLine(teamData, "Pass Unsuccessful")],
+          }}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Trap</h2>
+        <PieChart
+          pieData={getAsPie(teamData, "Trap", {
+            Scored: "purple",
+            Miss: "cyan",
+            "Didn't Score": "yellow",
+          })}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Climb</h2>
+        <PieChart
+          pieData={getAsPie(teamData, "Climb", {
+            "Climbed Alone": "purple",
+            Harmony: "cyan",
+            Team: "yellow",
+            Park: "orange",
+            "Not On Stage": "red",
+          })}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Amp Accuracy</h2>
+        <PieChart
+          pieData={{
+            Score: [ampAccuracy, "green"],
+            Miss: [100 - ampAccuracy, "crimson"],
+          }}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Speaker Accuracy</h2>
+        <PieChart
+          pieData={{
+            Score: [speakerAccuracy, "green"],
+            Miss: [100 - speakerAccuracy, "crimson"],
+          }}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Trap Accuracy</h2>
+        <PieChart
+          pieData={{
+            Score: [trapAccuracy, "green"],
+            Miss: [100 - trapAccuracy, "crimson"],
+          }}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Pass Accuracy</h2>
+        <PieChart
+          pieData={{
+            Score: [passAccuracy, "green"],
+            Miss: [100 - passAccuracy, "crimson"],
+          }}
+        />
+      </div>
+
+      <br />
       <button onClick={() => updateMatchesByCriteria("Team Number", "4590")}>
         Update Data
       </button>
-    </>
+    </div>
   );
 };
 
