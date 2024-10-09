@@ -9,7 +9,7 @@ interface ListQueryProps {
 
 const ListQuery: React.FC<ListQueryProps> = ({ name, required, list }) => {
   const localStorageKey = localStorageTabName + name;
-  useEffect(() => localStorage.setItem(localStorageKey, list[0]));
+  useEffect(() => localStorage.setItem(localStorageKey, list[0]), []);
   return (
     <select
       name={name}
