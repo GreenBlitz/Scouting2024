@@ -66,18 +66,6 @@ function getAsPie(
   return dataSet;
 }
 
-function getAverage(team: TeamData, data: string, recency?: number) {
-  let sum = 0;
-  const matches = Object.values(team);
-  if (recency) {
-    matches.splice(matches.length - recency);
-  }
-  matches.forEach((match) => {
-    sum += parseInt(match[data]);
-  });
-  return sum / matches.length;
-}
-
 function getAccuracy(
   team: TeamData,
   data1: string,
