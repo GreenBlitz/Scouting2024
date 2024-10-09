@@ -14,10 +14,11 @@ interface MapChartProps {
 }
 
 const colorMap: Record<string, string> = {
-  Speaker: "yellow",
+  "Speaker Score": "green",
+  "Speaker Miss": "red",
   Pass: "purple",
-  Note: "red",
-  StartPass: "green",
+  Note: "#947325",
+  StartPass: "#155237",
 };
 const pointRadius = 5;
 const MapChart: React.FC<MapChartProps> = ({
@@ -57,6 +58,10 @@ const MapChart: React.FC<MapChartProps> = ({
       }
       point = point as DataPoint;
       context.fillStyle = colorMap[point.data];
+      if (point.data === "Speaker") {
+        context.fillStyle =
+          colorMap[`Speaker ${point.successfulness ? "Score" : "Miss"}`];
+      }
       context.beginPath();
       context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
       context.fill();
