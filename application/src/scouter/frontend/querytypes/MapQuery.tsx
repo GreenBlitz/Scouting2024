@@ -21,7 +21,7 @@ type PassingPoint = [DataPoint, Point];
 const pointRadius: number = 5;
 const succesfulnessOffset = [20, -60];
 
-const crescendoButtons = {
+const crescendoButtons: Record<string, string> = {
   Speaker: "yellow",
   Pass: "purple",
 };
@@ -61,7 +61,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       successfulness: successfulness,
     };
     setLastClickedPoint(undefined);
-    if (pressedButton === "Pass") {
+    if (pressedButton === "Pass" && successfulness) {
       setPassingPoint(clickedPoint);
       return;
     }
