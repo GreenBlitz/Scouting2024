@@ -10,21 +10,22 @@ interface StrategyAppProps {}
 function getTeamData(teamMatches: Record<string, string>[]): TeamData {
   const teamData: TeamData = {};
   teamMatches.forEach((match) => {
-    const points: any[] = JSON.parse(match[mapName]);
+    const points: any[] = JSON.parse(match[mapName + "/Points"]);
     const matchNumber = match[matchName];
-    function countData(data: string) {
+    function countDataFromMap(data: string) {
       return (
-        points.filter(
-          (point) =>
-            point["data"]["primary"] === data &&
-            point["data"]["Successfulness"] === "Successful"
-        ).length + ""
+        points.filter((point) => {
+          if (data === "Pass") {
+            return point[0] && point[0]["data"] === "Pass";
+          }
+          return point["data"] === data && point["successfulness"] === true;
+        }).length + ""
       );
     }
     teamData[matchNumber] = {
-      Speaker: countData("Speaker"),
-      Amp: countData("Amp"),
-      Pass: countData("Pass"),
+      Speaker: countDataFromMap("Speaker"),
+      Pass: countDataFromMap("Pass"),
+      Amp: match[`${mapName}/Amp/Score`] + "",
     };
 
     Object.entries(match)
@@ -61,11 +62,10 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
 
   const teamData = getTeamData(matches);
-  console.log(teamData);
 
   async function updateMatchesByCriteria(field?: string, value?: string) {
     const searchedField = field && value ? `/${field}/${value}` : ``;
-    fetch(`http://192.168.68.63:4590/Matches${searchedField}`, {
+    fetch(`http://192.168.1.126:4590/Matches${searchedField}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -80,6 +80,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       })
       .then((data) => {
         setMatches(data);
+        console.log(data);
       })
       .catch((error) => {
         alert(error.message);
@@ -101,20 +102,22 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         pieData={getAsPie(teamData, "Trap", {
           Scored: "purple",
           Missed: "cyan",
-          "Not Scored": "yellow",
+          "Didn't Score": "yellow",
         })}
       />
       <h2>Climb</h2>
       <PieChart
         pieData={getAsPie(teamData, "Climb", {
-          Self: "purple",
+          "Climbed Alone": "purple",
           Harmony: "cyan",
           Team: "yellow",
           Park: "orange",
           "Not On Stage": "red",
         })}
       />
-      <button onClick={() => updateMatchesByCriteria()}>Sigma</button>
+      <button onClick={() => updateMatchesByCriteria("Team Number", "4590")}>
+        Sigma
+      </button>
     </>
   );
 };
