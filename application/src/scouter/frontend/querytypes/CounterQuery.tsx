@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { localStorageTabName } from "../ScouterQuery";
 import React from "react";
 
@@ -17,6 +17,8 @@ const CounterQuery: React.FC<CounterQueryProps> = ({ name, color }) => {
     localStorage.setItem(localStorageKey, newCount + "");
     setCountState(newCount);
   }
+
+  useEffect(() => localStorage.setItem(localStorageKey, "0"));
 
   return (
     <>

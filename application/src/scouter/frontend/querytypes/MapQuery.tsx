@@ -161,8 +161,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
       <div className={side === "blue" ? "map-amp-left" : "map-amp-right"}>
         <h2>AMP</h2>
         <br />
-        <CounterQuery name={name + "/Amp/Hit"} color="#12a119" />
-        <h3> HIT</h3>
+        <CounterQuery name={name + "/Amp/Score"} color="#12a119" />
+        <h3> SCORE</h3>
         <br />
         <CounterQuery name={name + "/Amp/Miss"} color="#8f0a0e" />
         <h3> MISS</h3>

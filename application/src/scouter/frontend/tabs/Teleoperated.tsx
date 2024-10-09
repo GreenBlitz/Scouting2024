@@ -9,7 +9,7 @@ const Teleoperated: React.FC<TeleoperatedProps> = () => {
       <MapQuery
         name={"CRESCENDO"}
         side={
-          localStorage.getItem("Queries/GameSide") === "Red" ? "red" : "blue"
+          localStorage.getItem("Queries/Game Side") === "Red" ? "red" : "blue"
         }
         width={540}
         height={240}

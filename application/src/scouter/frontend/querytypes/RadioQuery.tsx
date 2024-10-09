@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { localStorageTabName } from "../ScouterQuery";
 
 interface RadioQueryProps {
@@ -9,6 +9,7 @@ interface RadioQueryProps {
 
 const RadioQuery: React.FC<RadioQueryProps> = ({ name, required, list }) => {
   const localStorageKey = localStorageTabName + name;
+  useEffect(() => localStorage.setItem(localStorageKey, ""));
   return list?.map((item, index) => (
     <React.Fragment key={index}>
       <input

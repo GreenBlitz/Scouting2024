@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { localStorageTabName } from "../ScouterQuery";
 
 interface CheckboxQueryProps {
@@ -13,6 +13,8 @@ const CheckboxQuery: React.FC<CheckboxQueryProps> = ({ name, required }) => {
       localStorage.getItem(localStorageKey) === "true" ? "false" : "true";
     localStorage.setItem(localStorageKey, newValue);
   }
+
+  useEffect(() => localStorage.setItem(localStorageKey, "true"));
   return (
     <input
       type="checkbox"
