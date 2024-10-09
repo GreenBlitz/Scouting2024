@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 
@@ -12,20 +12,25 @@ function getTeamData(teamMatches: Record<string, string>[]): TeamData {
   teamMatches.forEach((match) => {
     const points: any[] = JSON.parse(match[mapName + "/Points"]);
     const matchNumber = match[matchName];
-    function countDataFromMap(data: string) {
+    function countDataFromMap(data: string, succesfulness: boolean) {
       return (
         points.filter((point) => {
           if (data === "Pass") {
             return point[0] && point[0]["data"] === "Pass";
           }
-          return point["data"] === data && point["successfulness"] === true;
+          return (
+            point["data"] === data && point["successfulness"] === succesfulness
+          );
         }).length + ""
       );
     }
     teamData[matchNumber] = {
-      Speaker: countDataFromMap("Speaker"),
-      Pass: countDataFromMap("Pass"),
-      Amp: match[`${mapName}/Amp/Score`] + "",
+      "Speaker Score": countDataFromMap("Speaker", true),
+      "Speaker Miss": countDataFromMap("Speaker", false),
+      "Pass Successful": countDataFromMap("Pass", true),
+      "Pass Unsuccessful": countDataFromMap("Pass", false),
+      "Amp Score": match[`${mapName}/Amp/Score`] + "",
+      "Amp Miss": match[`${mapName}/Amp/Score`] + "",
     };
 
     Object.entries(match)
@@ -80,21 +85,23 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       })
       .then((data) => {
         setMatches(data);
-        console.log(data);
       })
       .catch((error) => {
         alert(error.message);
       });
   }
+
+  useEffect(() => console.log(teamData), [teamData]);
   return (
     <>
+      <h2>Scoring</h2>
       <LineChart
         height={300}
         width={400}
         dataSets={{
-          Speaker: ["pink", getAsLine(teamData, "Speaker")],
-          Amp: ["yellow", getAsLine(teamData, "Amp")],
-          Pass: ["purple", getAsLine(teamData, "Pass")],
+          Speaker: ["pink", getAsLine(teamData, "Speaker Score")],
+          Amp: ["yellow", getAsLine(teamData, "Amp Score")],
+          Pass: ["purple", getAsLine(teamData, "Pass Successful")],
         }}
       />
       <h2>Trap</h2>
@@ -116,7 +123,7 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
         })}
       />
       <button onClick={() => updateMatchesByCriteria("Team Number", "4590")}>
-        Sigma
+        Update Data
       </button>
     </>
   );
