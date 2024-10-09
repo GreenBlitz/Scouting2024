@@ -8,6 +8,76 @@ const matchName = "Qual";
 const mapName = "CRESCENDO";
 interface StrategyAppProps {}
 
+const teamList = [
+  "1574\tMisCar",
+  "1576\tVoltrix",
+  "1577\tSteampunk",
+  "1580\tThe Blue Monkeys",
+  "1657\tHamosad",
+  "1690\tOrbit",
+  "1937\tElysium",
+  "1942\tCinderella Tel-Nof",
+  "1943\tNeat Team",
+  "1954\tElectroBunny",
+  "2096\tRoboActive",
+  "2212\tThe Spikes",
+  "2230\tGeneral Angels",
+  "2231\tOnyxTronix",
+  "2630\tThunderbolts",
+  "2679\tAtlantis",
+  "3034\tGalileo",
+  "3065\tJatt High School",
+  "3075\tHa-Dream Team",
+  "3083\tArtemis",
+  "3211\tThe Y Team",
+  "3316\tD-Bug",
+  "3339\tBumbleB",
+  "3388\tFlash in memory of Margarita Gusak",
+  "3835\tVulcan",
+  "4319\tLadies FIRST",
+  "4320\tThe Joker",
+  "4338\tFalcons",
+  "4416\tSkynet",
+  "4586\tPRIMO",
+  "4590\tGreenBlitz",
+  "4661\tCypher",
+  "4744\tNinjas",
+  "5135\tBlack Unicorns",
+  "5291\tEmperius",
+  "5554\tThe Poros Robotics",
+  "5614\tTeam Sycamore",
+  "5635\tDemacia",
+  "5654\tPhoenix",
+  "5715\tDRC",
+  "5747\tAthena",
+  "5928\tMetalBoost",
+  "5951\tMakers Assemble",
+  "5987\tGalaxia in memory of David Zohar",
+  "5990\tTRIGON",
+  "6049\tPegasus",
+  "6104\tDesert Eagles",
+  "6168\talzahrawi",
+  "6230\tTeam Koi",
+  "6738\tExcalibur",
+  "6740\tG3 - Glue Gun & Glitter",
+  "6741\tSpace monkeys",
+  "7039\t❌⭕",
+  "7067\tTeam Streak",
+  "7112\tEverGreen",
+  "7177\tAmal tayibe",
+  "7554\tGreen Rockets",
+  "7845\t8BIT",
+  "8175\tPiece of Mind",
+  "8223\tMariners",
+  "8843\tAmal Space and Aviation Maale Adumim",
+  "9303\tPO®️TAL to GOATland",
+  "9304\tlegend's",
+  "9738\tIonic Bond",
+  "9739\tFirefly",
+  "9740\tCAN://Bus",
+  "9741\tSTORM",
+];
+
 function getTeamData(teamMatches: Record<string, string>[]): TeamData {
   const teamData: TeamData = {};
   teamMatches.forEach((match) => {
@@ -30,8 +100,8 @@ function getTeamData(teamMatches: Record<string, string>[]): TeamData {
       "Speaker Miss": countDataFromMap("Speaker", false),
       "Pass Successful": countDataFromMap("Pass", true),
       "Pass Unsuccessful": countDataFromMap("Pass", false),
-      "Amp Score": match[`${mapName}/Amp/Score`] + "",
-      "Amp Miss": match[`${mapName}/Amp/Score`] + "",
+      "Amp Score": match[`${mapName}/Amp/Score`],
+      "Amp Miss": match[`${mapName}/Amp/Score`],
       "Trap Score": match["Trap"] === "Scored" ? "1" : "0",
       "Trap Miss": match["Trap"] === "Miss" ? "1" : "0",
     };
@@ -99,7 +169,6 @@ function getAllPoints(matches: Record<string, string>[]) {
 
 const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
-
   const teamData = getTeamData(matches);
 
   async function updateMatchesByCriteria(field?: string, value?: string) {
@@ -220,16 +289,6 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
           }}
         />
       </div>
-      <div className="section">
-        <h2>Trap Accuracy</h2>
-        <PieChart
-          pieData={{
-            Score: [trapAccuracy, "green"],
-            Miss: [100 - trapAccuracy, "crimson"],
-          }}
-        />
-      </div>
-      <br />
 
       <div className="section">
         <h2>Map</h2>
@@ -242,9 +301,24 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       </div>
 
       <br />
-      <button onClick={() => updateMatchesByCriteria("Team Number", "4590")}>
-        Update Data
-      </button>
+      <label htmlFor="team number">Team Number</label>
+
+      <select
+        id="team number"
+        name="team number"
+        onChange={(event) =>
+          updateMatchesByCriteria(
+            "Team Number",
+            event.target.value.slice(0, 4) || "0"
+          )
+        }
+      >
+        {teamList.map((item, index) => (
+          <option value={item} key={index}>
+            {item}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
