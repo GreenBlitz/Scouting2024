@@ -7,9 +7,11 @@ import { TeamData } from "../TeamData";
 
 interface TeamTabProps {}
 
-function getAllPoints(matches: Record<string, string>[]) {
+type Match = Record<string, string>;
+
+function getAllPoints(matches: Match[]) {
   let points: (DataPoint | PassingPoint)[] = [];
-  Object.values(matches).forEach((match) => {
+  matches.forEach((match) => {
     const mapPoints: (DataPoint | PassingPoint)[] = JSON.parse(
       match[TeamData.mapName + "/Points"]
     );
@@ -17,10 +19,23 @@ function getAllPoints(matches: Record<string, string>[]) {
   });
   return points;
 }
-const TeamTab: React.FC<TeamTabProps> = () => {
-  const [matches, setMatches] = useState<Record<string, string>[]>([]);
-  const teamData = new TeamData(matches);
 
+function sortMatches(matches: Match[]) {
+  matches.sort(
+    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
+  );
+  return matches;
+}
+
+const TeamTab: React.FC<TeamTabProps> = () => {
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [recency, setRecency] = useState<number>(0);
+
+  const recentMatches = sortMatches([...matches]);
+  if (recency > 0 && recency < recentMatches.length) {
+    recentMatches.splice(0, recentMatches.length - recency);
+  }
+  const teamData = new TeamData(recentMatches);
   useEffect(() => console.log(teamData.matches), [teamData]);
 
   const ampAccuracy = teamData.getAccuracy("Amp Score", "Amp Miss");
@@ -79,7 +94,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
             Team: "yellow",
             Park: "orange",
             "Not On Stage": "red",
-            "Harmony Three Robots": "blue"
+            "Harmony Three Robots": "blue",
           })}
         />
       </div>
@@ -119,7 +134,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
           width={540}
           height={240}
           imagePath={"./src/assets/Crescendo Map.png"}
-          dataPoints={getAllPoints(matches)}
+          dataPoints={getAllPoints(recentMatches)}
         />
       </div>
 
@@ -144,6 +159,16 @@ const TeamTab: React.FC<TeamTabProps> = () => {
           </option>
         ))}
       </select>
+      <label htmlFor="recency">Filter By Recency</label>
+      <input
+        type="number"
+        id="recency"
+        name="recency"
+        onChange={(event) => setRecency(parseInt(event.target.value))}
+        min={1}
+        max={matches.length}
+        defaultValue={matches.length}
+      />
     </div>
   );
 };
