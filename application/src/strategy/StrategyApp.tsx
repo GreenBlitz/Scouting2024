@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./MapChart";
+import TableChart from "./TableChart";
 
 type TeamData = Record<string, Record<string, string>>;
 const matchName = "Qual";
@@ -171,27 +172,29 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
   const teamData = getTeamData(matches);
 
-  async function updateMatchesByCriteria(field?: string, value?: string) {
+  async function getMatchesByCriteria(field?: string, value?: string) {
     const searchedField = field && value ? `/${field}/${value}` : ``;
-    fetch(`http://192.168.1.126:4590/Matches${searchedField}`, {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    const data: Record<string, string>[] = await fetch(
+      `http://192.168.1.126:4590/Matches${searchedField}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then((data) => {
-        setMatches(data);
-      })
       .catch((error) => {
         alert(error.message);
+        return [];
       });
+    return data;
   }
 
   useEffect(() => console.log(teamData), [teamData]);
@@ -291,6 +294,16 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       </div>
 
       <div className="section">
+        <h2>Table</h2>
+        <TableChart
+          matches={getMatchesByCriteria()}
+          idName={"Qual"}
+          height={540}
+          widthOfItem={130}
+        />
+      </div>
+
+      <div className="section">
         <h2>Map</h2>
         <MapChart
           width={540}
@@ -306,10 +319,12 @@ const StrategyApp: React.FC<StrategyAppProps> = () => {
       <select
         id="team number"
         name="team number"
-        onChange={(event) =>
-          updateMatchesByCriteria(
-            "Team Number",
-            event.target.value.slice(0, 4) || "0"
+        onChange={async (event) =>
+          setMatches(
+            await getMatchesByCriteria(
+              "Team Number",
+              event.target.value.slice(0, 4) || "0"
+            )
           )
         }
       >

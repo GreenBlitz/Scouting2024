@@ -1,11 +1,11 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 interface TableChartProps {
-  matches: Record<string, string>[];
+  matches: Record<string, string>[] | Promise<Record<string, string>[]>;
   calculations?: Record<string, (match: Record<string, string>) => string>;
   idName: string;
   height: number;
@@ -19,8 +19,15 @@ const TableChart: React.FC<TableChartProps> = ({
   height,
   widthOfItem,
 }) => {
+  const [matchList, setMatchList] = useState<Record<string, string>[]>([]);
 
-  const matchesData = matches.map((match) => {
+  useEffect(() => {
+    async function updateMatchList() {
+      await setMatchList(await (matches as Promise<Record<string, string>[]>));
+    }
+    updateMatchList();
+  }, []);
+  const matchesData = matchList.map((match) => {
     return { ...match };
   });
 
