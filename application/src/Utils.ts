@@ -59,7 +59,7 @@ export class TeamData {
 
   getAsLine(data: string): Record<string, number> {
     const dataSet: Record<string, number> = {};
-    Object.entries(this).forEach(([qual, match]) => {
+    Object.entries(this.matches).forEach(([qual, match]) => {
       dataSet[qual] = parseInt(match[data]);
     });
     return dataSet;
@@ -67,7 +67,7 @@ export class TeamData {
 
   getAsPie(data: string, colorMap: Record<string, string>) {
     const dataSet: Record<string, [number, string]> = {};
-    Object.entries(this).forEach(([_, match]) => {
+    Object.entries(this.matches).forEach(([_, match]) => {
       const dataValue = match[data];
       if (!dataSet[dataValue]) {
         dataSet[dataValue] = [0, colorMap[dataValue]];
@@ -80,7 +80,7 @@ export class TeamData {
   getAccuracy(data1: string, data2: string, recency?: number) {
     let sum1 = 0;
     let sum2 = 0;
-    const matches = Object.values(this);
+    const matches = Object.values(this.matches);
     if (recency) {
       matches.splice(matches.length - recency);
     }
