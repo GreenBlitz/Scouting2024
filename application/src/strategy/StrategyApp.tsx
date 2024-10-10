@@ -22,7 +22,6 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
       return response.json();
     })
     .catch((error) => {
-      alert(error.message);
       return [];
     });
   return data;

@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
@@ -52,7 +52,7 @@ const TableChart: React.FC<TableChartProps> = ({
         rows={matchesData}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10, 67]}
         sx={{
           border: 0,
         }}

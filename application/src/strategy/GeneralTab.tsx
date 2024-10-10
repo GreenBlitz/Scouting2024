@@ -1,24 +1,48 @@
 import { useEffect, useState } from "react";
 import TableChart from "./charts/TableChart";
-import { getMatchesByCriteria } from "./StrategyApp";
+import { getMatchesByCriteria, teamList } from "./StrategyApp";
+import { TeamData } from "../TeamData";
 
 interface GeneralTabProps {}
 
+function processTeamData(
+  data: TeamData,
+  teamNumber: string
+): Record<string, string> {
+  const table: Record<string, string> = {
+    "Team Number": teamNumber,
+    Amp: data.getAverage("Amp Score") + "",
+  };
+  return table;
+}
 const GeneralTab: React.FC<GeneralTabProps> = () => {
-  const [teamList, setTeamList] = useState<Record<string, string>[]>([]);
+  const [teamTable, setTeamTable] = useState<Record<string, string>[]>([]);
 
+  //bruh this is kinda deep
   useEffect(() => {
-    async function updateMatchList() {
-      setTeamList(await getMatchesByCriteria());
+    async function updateTeamTable() {
+      setTeamTable(
+        await Promise.all(
+          teamList.map(async (team) => {
+            const teamNumber = team.slice(0, team.indexOf(`\t`));
+            return processTeamData(
+              new TeamData(
+                await getMatchesByCriteria("Team Number", teamNumber)
+              ),
+              teamNumber
+            );
+          })
+        )
+      );
     }
-    updateMatchList();
+    updateTeamTable();
   }, []);
   return (
     <>
       <div className="section">
         <h2>Table</h2>
         <TableChart
-          matches={teamList}
+          matches={teamTable}
           idName={"Team Number"}
           height={540}
           widthOfItem={130}

@@ -3,7 +3,7 @@ import LineChart from "./charts/LineChart";
 import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
 import { getMatchesByCriteria, teamList } from "./StrategyApp";
-import { TeamData } from "../Utils";
+import { TeamData } from "../TeamData";
 
 interface TeamTabProps {}
 
