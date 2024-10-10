@@ -13,13 +13,12 @@ interface TableChartProps {
 }
 
 const TableChart: React.FC<TableChartProps> = ({
-  matches: matches,
+  matches,
   idName,
   calculations,
   height,
   widthOfItem,
 }) => {
-  
   const matchesData = matches.map((match) => {
     return { ...match };
   });
@@ -39,7 +38,12 @@ const TableChart: React.FC<TableChartProps> = ({
   });
 
   const columns: GridColDef[] = [...columnNames].map((columnName) => {
-    return { field: columnName, headerName: columnName, width: widthOfItem };
+    return {
+      field: columnName,
+      headerName: columnName,
+      width: widthOfItem,
+      headerClassName: "table-column",
+    };
   });
 
   return (
@@ -49,7 +53,9 @@ const TableChart: React.FC<TableChartProps> = ({
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
-        sx={{ border: 0 }}
+        sx={{
+          border: 0,
+        }}
         getRowId={(row) => row[idName]}
       />
     </Paper>

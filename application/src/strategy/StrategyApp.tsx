@@ -100,7 +100,7 @@ export const teamList = [
 const StrategyApp: React.FC<StrategyAppProps> = () => {
   function renderNavBar() {
     return (
-      <nav className="scouter-nav-bar">
+      <nav className="strategy-nav-bar">
         <ul>
           <li>
             <Link to="/">Team View</Link>

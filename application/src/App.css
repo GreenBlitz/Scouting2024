@@ -24,6 +24,39 @@
   }
 }
 
+.strategy-nav-bar {
+  background: #333;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.strategy-nav-bar ul {
+  list-style: none;
+  display: flex;
+  justify-content: center; /* Center the items */
+  margin: 0; /* Reset default margin */
+  padding: 0; /* Reset default padding */
+}
+
+.strategy-nav-bar li {
+  margin-right: 1rem;
+}
+
+.strategy-nav-bar a {
+  color: white;
+  text-decoration: none;
+}
+
+.strategy-nav-bar a:hover {
+  text-decoration: underline;
+}
+
+.table-column {
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

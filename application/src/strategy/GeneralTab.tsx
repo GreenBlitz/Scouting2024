@@ -8,7 +8,9 @@ const GeneralTab: React.FC<GeneralTabProps> = () => {
   const [teamList, setTeamList] = useState<Record<string, string>[]>([]);
 
   useEffect(() => {
-    async function updateMatchList() {}
+    async function updateMatchList() {
+      setTeamList(await getMatchesByCriteria());
+    }
     updateMatchList();
   }, []);
   return (
