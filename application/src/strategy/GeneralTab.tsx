@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TableChart from "./charts/TableChart";
-import { getMatchesByCriteria, teamList } from "./StrategyApp";
+import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
 import { TeamData } from "../TeamData";
 
 interface GeneralTabProps {}
@@ -26,7 +26,7 @@ const GeneralTab: React.FC<GeneralTabProps> = () => {
     async function updateTeamTable() {
       setTeamTable(
         await Promise.all(
-          teamList.map(async (team) => {
+          FRCTeamList.map(async (team) => {
             const teamNumber = team.slice(0, team.indexOf(`\t`));
             return processTeamData(
               new TeamData(

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LineChart from "./charts/LineChart";
 import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
-import { getMatchesByCriteria, teamList } from "./StrategyApp";
+import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
 import { TeamData } from "../TeamData";
 
 interface TeamTabProps {}
@@ -21,7 +21,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
   const [matches, setMatches] = useState<Record<string, string>[]>([]);
   const teamData = new TeamData(matches);
 
-  useEffect(() => console.log(teamData), [teamData]);
+  useEffect(() => console.log(teamData.matches), [teamData]);
 
   const ampAccuracy = teamData.getAccuracy("Amp Score", "Amp Miss");
   const speakerAccuracy = teamData.getAccuracy("Speaker Score", "Speaker Miss");
@@ -79,6 +79,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
             Team: "yellow",
             Park: "orange",
             "Not On Stage": "red",
+            "Harmony Three Robots": "blue"
           })}
         />
       </div>
@@ -137,7 +138,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
           )
         }
       >
-        {teamList.map((item, index) => (
+        {FRCTeamList.map((item, index) => (
           <option value={item} key={index}>
             {item}
           </option>

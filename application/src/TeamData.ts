@@ -14,7 +14,7 @@ export class TeamData {
         return (
           points.filter((point) => {
             if (data === "Pass") {
-              return point[0] && point[0]["data"] === "Pass";
+              return point[0] && point[0]["data"] === "Pass" && point[0]["successfulness"] === succesfulness;
             }
             return (
               point["data"] === data &&

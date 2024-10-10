@@ -6,7 +6,7 @@ interface StrategyAppProps {}
 export async function getMatchesByCriteria(field?: string, value?: string) {
   const searchedField = field && value ? `/${field}/${value}` : ``;
   const data: Record<string, string>[] = await fetch(
-    `http://192.168.1.126:4590/Matches${searchedField}`,
+    `http://localhost:4590/Matches${searchedField}`,
     {
       method: "GET",
       mode: "cors",
@@ -26,7 +26,7 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
     });
   return data;
 }
-export const teamList = [
+export const FRCTeamList = [
   "1574\tMisCar",
   "1576\tVoltrix",
   "1577\tSteampunk",
