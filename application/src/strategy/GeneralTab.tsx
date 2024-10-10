@@ -12,6 +12,9 @@ function processTeamData(
   const table: Record<string, string> = {
     "Team Number": teamNumber,
     Amp: data.getAverage("Amp Score") + "",
+    "Amp Miss": data.getAverage("Amp Miss") + "",
+    Speaker: data.getAverage("Speaker Score") + "",
+    "Speaker Miss": data.getAverage("Speaker Miss") + "",
   };
   return table;
 }
