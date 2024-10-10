@@ -13,8 +13,8 @@ export class TeamData {
       function countDataFromMap(data: string, succesfulness: boolean) {
         return (
           points.filter((point) => {
-            if (data === "Pass") {
-              return point[0] && point[0]["data"] === "Pass" && point[0]["successfulness"] === succesfulness;
+            if (data === "Pass" && point[0]) {
+              return  point[0]["data"] === "Pass" && point[0]["successfulness"] === succesfulness;
             }
             return (
               point["data"] === data &&
