@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 const paginationModel = { page: 0, pageSize: 5 };
 
 interface TableChartProps {
-  matches: Record<string, string>[] | Promise<Record<string, string>[]>;
+  matches: Record<string, string>[];
   calculations?: Record<string, (match: Record<string, string>) => string>;
   idName: string;
   height: number;
@@ -13,21 +13,14 @@ interface TableChartProps {
 }
 
 const TableChart: React.FC<TableChartProps> = ({
-  matches,
+  matches: matches,
   idName,
   calculations,
   height,
   widthOfItem,
 }) => {
-  const [matchList, setMatchList] = useState<Record<string, string>[]>([]);
-
-  useEffect(() => {
-    async function updateMatchList() {
-      await setMatchList(await (matches as Promise<Record<string, string>[]>));
-    }
-    updateMatchList();
-  }, []);
-  const matchesData = matchList.map((match) => {
+  
+  const matchesData = matches.map((match) => {
     return { ...match };
   });
 

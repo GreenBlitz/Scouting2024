@@ -1,16 +1,23 @@
+import { useEffect, useState } from "react";
 import TableChart from "./charts/TableChart";
 import { getMatchesByCriteria } from "./StrategyApp";
 
 interface GeneralTabProps {}
 
 const GeneralTab: React.FC<GeneralTabProps> = () => {
+  const [teamList, setTeamList] = useState<Record<string, string>[]>([]);
+
+  useEffect(() => {
+    async function updateMatchList() {}
+    updateMatchList();
+  }, []);
   return (
     <>
       <div className="section">
         <h2>Table</h2>
         <TableChart
-          matches={getMatchesByCriteria()}
-          idName={"Qual"}
+          matches={teamList}
+          idName={"Team Number"}
           height={540}
           widthOfItem={130}
         />
