@@ -13,10 +13,14 @@ const ScanningTab = () => {
   const [scannedResult, setScannedResult] = useState<string | undefined>("");
 
   const onScanSuccess = (result: QrScanner.ScanResult) => {
-    console.log(result);
-    const DecodedData = btoa(result.data); 
-    setScannedResult(DecodedData);
-    navigate("/", { state: { result: DecodedData } });
+     console.log("raw" + result);
+
+    const DecodedData = result.data //btoa(result.data)
+    console.log("AFTER" + DecodedData)
+    console.log("LAST" + JSON.parse(DecodedData))
+
+    navigate("/", { state: JSON.parse(DecodedData)  });
+    
   };
 
   const onScanFail = (err: string | Error) => {

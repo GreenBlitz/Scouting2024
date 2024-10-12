@@ -11,7 +11,7 @@ const QRReader = () => {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const [qrOn, setQrOn] = useState<boolean>(false);
   
 
@@ -19,7 +19,7 @@ const QRReader = () => {
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
 
-    const navigate = useNavigate();
+   
 
     console.log(result);
 
