@@ -19,8 +19,6 @@ const QRReader = () => {
   // Success
   const onScanSuccess = (result: QrScanner.ScanResult) => {
 
-   
-
     console.log(result);
 
     const DecodedData = btoa(result.data)

@@ -15,7 +15,7 @@ const ScanningTab = () => {
   const onScanSuccess = (result: QrScanner.ScanResult) => {
      console.log("raw" + result);
 
-    const DecodedData = result.data //btoa(result.data)
+    const DecodedData = atob(result.data)
     console.log("AFTER" + DecodedData)
     console.log("LAST" + JSON.parse(DecodedData))
 
