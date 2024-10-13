@@ -124,16 +124,18 @@ const MapQuery: React.FC<MapQueryProps> = ({
     drawPoints();
   }, [dataPoints, addPoint]);
 
-  const buttons = (
-    <div className="map-buttons">
+  const dataOptions = (
+    <div className={"map-options"}>
+      <br />
+      <br />
       {passingPoint ? (
-        <>
+        <div>
           Set Passing Destination
           <br />
           <button type="button" onClick={() => setPassingPoint(undefined)}>
             Undo Pass
           </button>
-        </>
+        </div>
       ) : (
         <div>
           {Object.entries(crescendoButtons).map((option, index) => {
@@ -157,16 +159,18 @@ const MapQuery: React.FC<MapQueryProps> = ({
           </button>
         </div>
       )}
+    </div>
+  );
 
-      <div className={side === "blue" ? "map-amp-left" : "map-amp-right"}>
-        <h2>AMP</h2>
-        <br />
-        <CounterQuery name={name + "/Amp/Score"} color="#12a119" />
-        <h3> SCORE</h3>
-        <br />
-        <CounterQuery name={name + "/Amp/Miss"} color="#8f0a0e" />
-        <h3> MISS</h3>
-      </div>
+  const ampOptions = (
+    <div className={"map-amp"}>
+      <h2>AMP</h2>
+      <br />
+      <CounterQuery name={name + "/Amp/Score"} color="#12a119" />
+      <h3> SCORE</h3>
+      <br />
+      <CounterQuery name={name + "/Amp/Miss"} color="#8f0a0e" />
+      <h3> MISS</h3>
     </div>
   );
 
@@ -201,7 +205,19 @@ const MapQuery: React.FC<MapQueryProps> = ({
   return (
     <>
       <br />
-      {buttons}
+      <div className="map-buttons">
+        {side === "blue" ? (
+          <>
+            {ampOptions}
+            {dataOptions}
+          </>
+        ) : (
+          <>
+            {dataOptions}
+            {ampOptions}
+          </>
+        )}
+      </div>
       <div
         style={{
           backgroundImage: 'url("' + imagePath + '")',

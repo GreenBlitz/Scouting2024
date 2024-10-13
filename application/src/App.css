@@ -22,27 +22,27 @@
   width: 80px;
 }
 
-.map-amp-left {
+.map-amp {
   h3,
   h2,
   button {
     display: inline;
-    right: 40%;
     position: relative;
   }
+  width: 40%; /* Adjust as needed */
+  height: 20%;
+  padding: 20px;
 }
 
-.map-amp-right {
-  h3,
-  h2,
-  button {
-    display: inline;
-    left: 40%;
-    position: relative;
-  }
+.map-options {
+  width: 45%; /* Adjust as needed */
+  height: 20%;
+  padding: 20px;
 }
 .map-buttons {
   grid-gap: 0px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .scouter-nav-bar {
