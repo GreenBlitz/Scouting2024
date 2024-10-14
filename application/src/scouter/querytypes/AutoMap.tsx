@@ -4,7 +4,6 @@ import { Point } from "../../Utils";
 import { localStorageTabName } from "../ScouterQuery";
 
 interface AutoMapProps {
-  imagePath: string;
   side: "blue" | "red";
 }
 interface Note extends Point {
@@ -30,11 +29,16 @@ const redNotePositions: Point[] = [
   { x: 450, y: 40 },
 ];
 
-const width = 540 * 0.8;
+const width = 360 * 0.8;
 const height = 240 * 0.8;
-const AutoMap: React.FC<AutoMapProps> = ({ imagePath, side }) => {
+const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
   const localStorageKey = localStorageTabName + "Automap/Notes";
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const imagePath =
+    side === "blue"
+      ? "./src/assets/Blue Auto Map.png"
+      : "./src/assets/Red Auto Map.png";
 
   function getNotes(): Note[] {
     const newNotes: Note[] = notePositions

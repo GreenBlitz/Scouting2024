@@ -4,7 +4,6 @@ import AutoMap from "../querytypes/AutoMap";
 interface AutonomousProps {}
 
 const Autonomous: React.FC<AutonomousProps> = () => {
-  const imagePath = "./src/assets/Crescendo Map.png";
 
   return (
     <>
@@ -20,7 +19,6 @@ const Autonomous: React.FC<AutonomousProps> = () => {
       </div>
       <br />
       <AutoMap
-        imagePath={imagePath}
         side={
           localStorage.getItem("Queries/Game Side") === "Red" ? "red" : "blue"
         }
