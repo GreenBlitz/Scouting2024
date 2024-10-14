@@ -25,6 +25,7 @@ const crescendoButtons: Record<string, string> = {
   Speaker: "green",
   Pass: "purple",
 };
+const defaultButton = "Speaker";
 
 const MapQuery: React.FC<MapQueryProps> = ({
   name,
@@ -37,7 +38,8 @@ const MapQuery: React.FC<MapQueryProps> = ({
   const [dataPoints, setDataPoints] = useState<(DataPoint | PassingPoint)[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
-  const [pressedButton, setPressedButton] = useState<string>("Speaker");
+
+  const [pressedButton, setPressedButton] = useState<string>(defaultButton);
   const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
 
   const [passingPoint, setPassingPoint] = useState<DataPoint>();
@@ -115,9 +117,12 @@ const MapQuery: React.FC<MapQueryProps> = ({
       x: event.pageX - event.currentTarget.offsetLeft,
       y: event.pageY - event.currentTarget.offsetTop,
     };
+
     if (passingPoint) {
       setDataPoints((prev) => [...prev, [passingPoint, clickedPoint]]);
       setPassingPoint(undefined);
+      setPressedButton(defaultButton);
+
       return;
     }
     setLastClickedPoint(clickedPoint);
@@ -144,7 +149,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
         <div>
           {Object.entries(crescendoButtons).map((option, index) => {
             const buttonName = option[0];
-            if (buttonName === "Speaker") {
+            if (buttonName === defaultButton) {
               return (
                 <React.Fragment key={index}>
                   <input
