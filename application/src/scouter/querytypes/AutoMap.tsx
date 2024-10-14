@@ -10,13 +10,9 @@ interface Note extends Point {
   color: "green" | "red" | "orange";
 }
 const noteRadius = 10;
-const notePositions: Point[] = [
-  { x: 280, y: 250 },
-  { x: 280, y: 200 },
-  { x: 280, y: 150 },
-  { x: 280, y: 100 },
-  { x: 280, y: 50 },
-];
+const notePositions: Point[] = [250, 200, 150, 100, 50].map((height) => {
+  return { x: 280, y: height };
+});
 const blueNotePositions: Point[] = [
   { x: 90, y: 150 },
   { x: 90, y: 100 },
@@ -44,11 +40,15 @@ const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
           color: "orange",
         };
       });
+    const previousSide =
+      localStorage.getItem(localStorageTabName + "AutoMap/Side") || side;
+    console.log(previousSide);
     const previousNotesJson = localStorage.getItem(localStorageKey);
     const previousNotes: Note[] = previousNotesJson
       ? JSON.parse(previousNotesJson)
       : newNotes;
-    return previousNotes;
+    const notes = side != previousSide ? newNotes : previousNotes;
+    return notes;
   }
 
   const [notes, setNotes] = useState<Note[]>(getNotes());
@@ -95,6 +95,7 @@ const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
   useEffect(() => {
     drawNotes();
     localStorage.setItem(localStorageKey, JSON.stringify(notes));
+    localStorage.setItem(localStorageTabName + "AutoMap/Side", side);
   }, [notes, canvasRef]);
 
   function drawNote(note: Note, context: CanvasRenderingContext2D) {
