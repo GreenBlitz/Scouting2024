@@ -25,7 +25,7 @@ try {
 app.use(express.json());
 app.use(cors());
 
-const mongoURI = "mongodb://0.0.0.0:27017";
+const mongoURI = "mongodb://mongo:27017";
 
 let db: Db;
 
