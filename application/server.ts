@@ -1,36 +1,33 @@
 import express, { Request, Response } from "express";
 import { Db, MongoClient } from "mongodb";
-<<<<<<<< HEAD:server.ts
-import fs from 'fs';
-import path from 'path';
-import https from 'https';
-========
 import ViteExpress from "vite-express";
+import fs from "fs";
+import path from "path";
+import https from "https";
 import cors from "cors";
->>>>>>>> scouter:application/src/scouter/backend/server.ts
 
 const app = express();
 const hostname = "0.0.0.0";
 const port = 4590;
 
 // SSL options for HTTPS
-const sslOptions = {
-  key: fs.readFileSync(path.resolve('/home/aviv/Scouting2024/', 'ssl-key.pem')),   // Path to the key file
-  cert: fs.readFileSync(path.resolve('/home/aviv/Scouting2024/', 'ssl.pem'))       // Path to the certificate file
-};
-
-// Serve static files from the Vite build output (dist folder)
-app.use(express.static(path.resolve(__dirname, 'dist')));
+export let sslOptions;
+try {
+  sslOptions = {
+    key: fs.readFileSync(
+      path.resolve("/home/aviv/Scouting2024/", "ssl-key.pem")
+    ), // Path to the key file
+    cert: fs.readFileSync(path.resolve("/home/aviv/Scouting2024/", "ssl.pem")), // Path to the certificate file
+  };
+} catch {
+  sslOptions = { key: "", cert: "" };
+}
 
 app.use(express.json());
-<<<<<<<< HEAD:server.ts
+app.use(cors());
 
 const mongoURI = "mongodb://0.0.0.0:27017";
-========
-app.use(cors());
-const mongoURI = "mongodb://mongo:27017";
 
->>>>>>>> scouter:application/src/scouter/backend/server.ts
 let db: Db;
 
 // Connect to MongoDB
@@ -84,12 +81,6 @@ app.get("/Matches", async (req, res) => {
   }
 });
 
-<<<<<<<< HEAD:server.ts
-// Serve the frontend for any route that isn't an API
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-});
-========
 app.get("/Matches/:type/:value", async (req, res) => {
   if (!db) {
     return res.status(500).send("Database not connected");
@@ -108,15 +99,24 @@ app.get("/Matches/:type/:value", async (req, res) => {
   }
 });
 
-const server = app.listen(port, hostname, () =>
-  console.log(`Server is listening on ${hostname}:${port}`)
-);
->>>>>>>> scouter:application/src/scouter/backend/server.ts
+if (sslOptions.key !== "") {
+  // Serve static files from the Vite build output (dist folder)
+  app.use(express.static(path.resolve(__dirname, "dist")));
+  // Serve the frontend for any route that isn't an API
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+  });
+  // Create HTTPS server
+  const httpsServer = https.createServer(sslOptions, app);
 
-// Create HTTPS server
-const httpsServer = https.createServer(sslOptions, app);
+  // Start the HTTPS server
+  httpsServer.listen(port, hostname, () => {
+    console.log(`HTTPS Server is listening on https://${hostname}:${port}`);
+  });
+} else {
+  const server = app.listen(port, hostname, () =>
+    console.log(`Server is listening on ${hostname}:${port}`)
+  );
 
-// Start the HTTPS server
-httpsServer.listen(port, hostname, () => {
-  console.log(`HTTPS Server is listening on https://${hostname}:${port}`);
-});
+  ViteExpress.bind(app, server);
+}

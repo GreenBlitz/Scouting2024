@@ -13,10 +13,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "qr-scanner": "^1.4.2",
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "mongodb": "^6.9.0",
+    "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.0.1",
     "react": "^18.3.1",

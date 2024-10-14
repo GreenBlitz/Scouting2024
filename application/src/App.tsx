@@ -1,5 +1,5 @@
 import React from "react";
-import ScouterApp from "./scouter/frontend/ScouterApp";
+import ScouterApp from "./scouter/ScouterApp";
 import "./App.css";
 
 const App: React.FC = () => {
