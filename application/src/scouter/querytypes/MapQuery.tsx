@@ -144,6 +144,21 @@ const MapQuery: React.FC<MapQueryProps> = ({
         <div>
           {Object.entries(crescendoButtons).map((option, index) => {
             const buttonName = option[0];
+            if (buttonName === "Speaker") {
+              return (
+                <React.Fragment key={index}>
+                  <input
+                    type="radio"
+                    name={name + "-buttons"}
+                    id={buttonName}
+                    value={buttonName}
+                    onChange={() => setPressedButton(buttonName)}
+                    defaultChecked
+                  />
+                  <label htmlFor={buttonName}>{buttonName}</label>
+                </React.Fragment>
+              );
+            }
             return (
               <React.Fragment key={index}>
                 <input
