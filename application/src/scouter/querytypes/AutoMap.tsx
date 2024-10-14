@@ -29,8 +29,9 @@ const redNotePositions: Point[] = [
   { x: 450, y: 80 },
   { x: 450, y: 40 },
 ];
-const width = 540;
-const height = 240;
+
+const width = 540 * 0.8;
+const height = 240 * 0.8;
 const AutoMap: React.FC<AutoMapProps> = ({ imagePath, side }) => {
   const localStorageKey = localStorageTabName + "Automap/Notes";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,7 +42,7 @@ const AutoMap: React.FC<AutoMapProps> = ({ imagePath, side }) => {
       : notePositions
           .concat(side === "blue" ? blueNotePositions : redNotePositions)
           .map((note) => {
-            return { x: note.x, y: note.y, color: "orange" };
+            return { x: note.x * 0.8, y: note.y * 0.8, color: "orange" };
           })
   );
 
@@ -119,7 +120,7 @@ const AutoMap: React.FC<AutoMapProps> = ({ imagePath, side }) => {
         height: height,
       }}
     >
-      <canvas ref={canvasRef} width={540} height={240} onClick={handleClick} />
+      <canvas ref={canvasRef} width={width} height={height} onClick={handleClick} />
     </div>
   );
 };

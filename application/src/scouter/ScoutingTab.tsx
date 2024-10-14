@@ -62,6 +62,9 @@ function ScouterTab() {
         </button>
       )}
       <br />
+      <br />
+      <br />
+      <br />
       <button type="button" onClick={handleReset}>
         Reset
       </button>

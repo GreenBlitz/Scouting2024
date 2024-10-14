@@ -11,8 +11,8 @@ const Teleoperated: React.FC<TeleoperatedProps> = () => {
         side={
           localStorage.getItem("Queries/Game Side") === "Red" ? "red" : "blue"
         }
-        width={540}
-        height={240}
+        width={540 * 0.8}
+        height={240 * 0.8}
         imagePath={"./src/assets/Crescendo Map.png"}
       />
     </>
