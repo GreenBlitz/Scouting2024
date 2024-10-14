@@ -225,7 +225,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
 
   return (
     <>
-      <br />
       <div className="map-buttons">
         {side === "blue" ? (
           <>

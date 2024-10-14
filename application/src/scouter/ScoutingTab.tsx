@@ -64,9 +64,7 @@ function ScouterTab() {
         </button>
       )}
       <br />
-      <br />
-      <br />
-      <br />
+
       {areYouSure ? (
         <>
           <h2>Are You Sure?</h2>
@@ -78,9 +76,14 @@ function ScouterTab() {
           </button>
         </>
       ) : (
-        <button type="button" onClick={() => setAreYouSure(true)}>
-          Reset
-        </button>
+        <>
+          <br />
+          <br />
+          <br />
+          <button type="button" onClick={() => setAreYouSure(true)}>
+            Reset
+          </button>
+        </>
       )}
     </div>
   );
