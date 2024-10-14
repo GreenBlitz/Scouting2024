@@ -20,7 +20,12 @@ const Autonomous: React.FC<AutonomousProps> = () => {
         </div>
       </div>
       <br />
-      <AutoMap imagePath={imagePath} />
+      <AutoMap
+        imagePath={imagePath}
+        side={
+          localStorage.getItem("Queries/Game Side") === "Red" ? "red" : "blue"
+        }
+      />
     </>
   );
 };
