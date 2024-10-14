@@ -13,9 +13,8 @@ const PreMatch: React.FC<PreGameProps> = () => {
       <ScouterQuery
         queryType="list"
         name={"Starting Position"}
-        list={["Amp Side", "Middle", "Source Side"]}
+        list={["Amp Side", "Middle", "Source Side", "No Show"]}
       />
-      <ScouterQuery queryType="checkbox" name="No Show" />
     </>
   );
 };

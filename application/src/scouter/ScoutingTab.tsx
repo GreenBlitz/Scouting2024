@@ -46,7 +46,7 @@ function ScouterTab() {
           type="button"
           onClick={() => setSectionNumber(currentSectionNumber - 1)}
         >
-          {sections[currentSectionNumber - 1].name}
+          Back
         </button>
       )}
       {currentSectionNumber === sections.length - 1 ? (
@@ -58,7 +58,7 @@ function ScouterTab() {
           type="button"
           onClick={() => setSectionNumber(currentSectionNumber + 1)}
         >
-          {sections[currentSectionNumber + 1].name}
+          Next
         </button>
       )}
       <br />

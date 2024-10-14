@@ -22,7 +22,7 @@ const pointRadius: number = 5;
 const succesfulnessOffset = [20, -60];
 
 const crescendoButtons: Record<string, string> = {
-  Speaker: "yellow",
+  Speaker: "green",
   Pass: "purple",
 };
 
@@ -94,7 +94,11 @@ const MapQuery: React.FC<MapQueryProps> = ({
         context.stroke();
       } else {
         point = point as DataPoint;
-        context.fillStyle = crescendoButtons[point.data];
+        if (point.data === "Speaker" && !point.successfulness) {
+          context.fillStyle = "red";
+        } else {
+          context.fillStyle = crescendoButtons[point.data];
+        }
         context.beginPath();
         context.arc(point.x, point.y, pointRadius, 0, 2 * Math.PI);
         context.fill();
