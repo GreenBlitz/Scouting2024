@@ -4,17 +4,20 @@ import AutoMap from "../querytypes/AutoMap";
 interface AutonomousProps {}
 
 const Autonomous: React.FC<AutonomousProps> = () => {
-
   return (
     <>
       <div className="map-buttons">
         <div className="speaker-auto">
-          <CounterQuery name={"Speaker/Auto/Score"} color="#12a119" />
           <h3>SCORE </h3>
+          <br />
+
+          <CounterQuery name={"Speaker/Auto/Score"} color="#12a119" />
         </div>
         <div className="speaker-auto">
-          <CounterQuery name={"Speaker/Auto/Miss"} color="#8f0a0e" />
           <h3>MISS</h3>
+          <br />
+
+          <CounterQuery name={"Speaker/Auto/Miss"} color="#8f0a0e" />
         </div>
       </div>
       <br />

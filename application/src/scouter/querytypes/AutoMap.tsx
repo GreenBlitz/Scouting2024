@@ -11,26 +11,20 @@ interface Note extends Point {
 }
 const noteRadius = 10;
 const notePositions: Point[] = [
-  { x: 270, y: 120 },
-  { x: 270, y: 80 },
-  { x: 270, y: 40 },
-  { x: 270, y: 160 },
-  { x: 270, y: 200 },
+  { x: 280, y: 250 },
+  { x: 280, y: 200 },
+  { x: 280, y: 150 },
+  { x: 280, y: 100 },
+  { x: 280, y: 50 },
 ];
 const blueNotePositions: Point[] = [
-  { x: 90, y: 120 },
-  { x: 90, y: 80 },
-  { x: 90, y: 40 },
-];
-
-const redNotePositions: Point[] = [
-  { x: 450, y: 120 },
-  { x: 450, y: 80 },
-  { x: 450, y: 40 },
+  { x: 90, y: 150 },
+  { x: 90, y: 100 },
+  { x: 90, y: 50 },
 ];
 
 const width = 360 * 0.8;
-const height = 240 * 0.8;
+const height = 240;
 const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
   const localStorageKey = localStorageTabName + "Automap/Notes";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,21 +36,19 @@ const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
 
   function getNotes(): Note[] {
     const newNotes: Note[] = notePositions
-      .concat(side === "blue" ? blueNotePositions : redNotePositions)
+      .concat(blueNotePositions)
       .map((note) => {
-        return { x: note.x * 0.8, y: note.y * 0.8, color: "orange" };
+        return {
+          x: side === "blue" ? note.x * 0.8 : width - note.x * 0.8,
+          y: note.y * 0.8,
+          color: "orange",
+        };
       });
     const previousNotesJson = localStorage.getItem(localStorageKey);
     const previousNotes: Note[] = previousNotesJson
       ? JSON.parse(previousNotesJson)
       : newNotes;
-    return previousNotes.filter((note) => {
-      const trueColorNote =
-        side === "blue" ? blueNotePositions[0] : redNotePositions[0];
-      return note.x === trueColorNote.x;
-    }).length > 0
-      ? previousNotes
-      : newNotes;
+    return previousNotes;
   }
 
   const [notes, setNotes] = useState<Note[]>(getNotes());
