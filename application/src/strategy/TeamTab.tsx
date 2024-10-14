@@ -131,8 +131,8 @@ const TeamTab: React.FC<TeamTabProps> = () => {
       <div className="section">
         <h2>Map</h2>
         <MapChart
-          width={540}
-          height={240}
+          width={540 * 0.8}
+          height={240 * 0.8}
           imagePath={"./src/assets/Crescendo Map.png"}
           dataPoints={getAllPoints(recentMatches)}
         />
