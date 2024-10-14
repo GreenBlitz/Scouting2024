@@ -14,7 +14,11 @@ const CheckboxQuery: React.FC<CheckboxQueryProps> = ({ name, required }) => {
     localStorage.setItem(localStorageKey, newValue);
   }
 
-  useEffect(() => localStorage.setItem(localStorageKey, "false"), []);
+  useEffect(() => {
+    if (!localStorage.getItem(localStorageKey)) {
+      localStorage.setItem(localStorageKey, "false");
+    }
+  });
   return (
     <input
       type="checkbox"

@@ -34,7 +34,10 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
         );
       default:
         const storageName = localStorageTabName + name;
-        useEffect(() => localStorage.setItem(storageName, ""));
+        useEffect(() => {
+          if (!localStorage.getItem(storageName))
+            localStorage.setItem(storageName, "");
+        });
         return (
           <input
             type={queryType}

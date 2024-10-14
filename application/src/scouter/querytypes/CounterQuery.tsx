@@ -18,7 +18,11 @@ const CounterQuery: React.FC<CounterQueryProps> = ({ name, color }) => {
     setCountState(newCount);
   }
 
-  useEffect(() => localStorage.setItem(localStorageKey, "0"), []);
+  useEffect(() => {
+    if (!localStorage.getItem(localStorageKey)) {
+      localStorage.setItem(localStorageKey, "0");
+    }
+  }, []);
 
   return (
     <>

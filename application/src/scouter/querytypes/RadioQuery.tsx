@@ -9,7 +9,11 @@ interface RadioQueryProps {
 
 const RadioQuery: React.FC<RadioQueryProps> = ({ name, required, list }) => {
   const localStorageKey = localStorageTabName + name;
-  useEffect(() => localStorage.setItem(localStorageKey, ""), []);
+  useEffect(() => {
+    if (!localStorage.getItem(localStorageKey)) {
+      localStorage.setItem(localStorageKey, "");
+    }
+  });
   return list?.map((item, index) => (
     <React.Fragment key={index}>
       <input

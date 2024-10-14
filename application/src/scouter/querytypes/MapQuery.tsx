@@ -37,7 +37,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
   const [dataPoints, setDataPoints] = useState<(DataPoint | PassingPoint)[]>(
     JSON.parse(localStorage.getItem(localStorageKey) || "[]")
   );
-  const [pressedButton, setPressedButton] = useState<string>("");
+  const [pressedButton, setPressedButton] = useState<string>("Speaker");
   const [lastClickedPoint, setLastClickedPoint] = useState<Point>();
 
   const [passingPoint, setPassingPoint] = useState<DataPoint>();
@@ -208,13 +208,13 @@ const MapQuery: React.FC<MapQueryProps> = ({
       }}
     >
       <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
-        Successful
+        ✅Score
       </button>
       <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
-        Unsuccessful
+        ❌Miss
       </button>
       <button type="button" onClick={() => setLastClickedPoint(undefined)}>
-        Remove
+        Cancel
       </button>
     </div>
   );
