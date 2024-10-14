@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import { sslOptions } from "./server";
 
 // https://vitejs.dev/config/
 export default defineConfig({
