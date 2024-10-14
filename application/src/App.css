@@ -34,6 +34,16 @@
   padding: 20px;
 }
 
+.speaker-auto {
+  h3,
+  h2,
+  button {
+    display: inline;
+    position: relative;
+  }
+  width: 58%;
+}
+
 .map-options {
   width: 45%; /* Adjust as needed */
   height: 20%;
