@@ -1,12 +1,11 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import "./App.css";
 
-import ScouterTab from "./scouter/ScoutingTab";
-import MatchList from "./scouter/MatchList";
-import ScanningTab from "./scouter/scanner/ScanningTab";
+import ScouterTab from "./ScoutingTab";
+import MatchList from "./MatchList";
 import React from "react";
+import ScanningTab from "./scanner/ScanningTab";
 
-function App() {
+function ScouterApp() {
   function renderNavBar() {
     return (
       <nav className="scouter-nav-bar">
@@ -30,11 +29,11 @@ function App() {
       {renderNavBar()}
       <Routes>
         <Route path="/ScannerTab" Component={ScanningTab} />
-        <Route path="/ScouterTab" Component={ScouterTab} />
         <Route path="/" Component={MatchList} />
+        <Route path="/ScouterTab" Component={ScouterTab} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default ScouterApp;

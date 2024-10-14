@@ -1,8 +1,13 @@
 import express, { Request, Response } from "express";
 import { Db, MongoClient } from "mongodb";
+<<<<<<<< HEAD:server.ts
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
+========
+import ViteExpress from "vite-express";
+import cors from "cors";
+>>>>>>>> scouter:application/src/scouter/backend/server.ts
 
 const app = express();
 const hostname = "0.0.0.0";
@@ -18,8 +23,14 @@ const sslOptions = {
 app.use(express.static(path.resolve(__dirname, 'dist')));
 
 app.use(express.json());
+<<<<<<<< HEAD:server.ts
 
 const mongoURI = "mongodb://0.0.0.0:27017";
+========
+app.use(cors());
+const mongoURI = "mongodb://mongo:27017";
+
+>>>>>>>> scouter:application/src/scouter/backend/server.ts
 let db: Db;
 
 // Connect to MongoDB
@@ -46,6 +57,20 @@ app.post("/Match", async (req: Request, res: Response) => {
   }
 });
 
+//REMEMBER TO ADD AUTHENTICATION BEFORE DEPLOYMENT IN COMPETITION
+app.delete("/Matches", async (req, res) => {
+  if (!db) {
+    return res.status(500).send("Database not connected");
+  }
+  const matchCollection = db.collection("matches");
+  try {
+    const items = await matchCollection.deleteMany();
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 app.get("/Matches", async (req, res) => {
   if (!db) {
     return res.status(500).send("Database not connected");
@@ -59,10 +84,34 @@ app.get("/Matches", async (req, res) => {
   }
 });
 
+<<<<<<<< HEAD:server.ts
 // Serve the frontend for any route that isn't an API
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
+========
+app.get("/Matches/:type/:value", async (req, res) => {
+  if (!db) {
+    return res.status(500).send("Database not connected");
+  }
+  const matchCollection = db.collection("matches");
+  try {
+    const items = (await matchCollection.find().toArray()).filter((item) => {
+      if (req.params.type) {
+        return item[req.params.type] === req.params.value;
+      }
+      return true;
+    });
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+const server = app.listen(port, hostname, () =>
+  console.log(`Server is listening on ${hostname}:${port}`)
+);
+>>>>>>>> scouter:application/src/scouter/backend/server.ts
 
 // Create HTTPS server
 const httpsServer = https.createServer(sslOptions, app);

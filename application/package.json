@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "vite --host",
     "full": "npx tsc -b tsconfig.json&& node compiled/server.js",
+    "docker-up": "cd .. && docker-compose up ",
+    "docker": "cd .. && docker-compose build && docker-compose up",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "qr-scanner": "^1.4.2",
+    "cors": "^2.8.5",
     "express": "^4.21.0",
     "mongodb": "^6.9.0",
     "qrcode": "^1.5.4",

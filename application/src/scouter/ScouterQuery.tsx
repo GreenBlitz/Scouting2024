@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CheckboxQuery from "./querytypes/CheckboxQuery";
 import CounterQuery from "./querytypes/CounterQuery";
 import ListQuery from "./querytypes/ListQuery";
@@ -34,6 +34,7 @@ const ScouterQuery: React.FC<ScouterQueryProps> = ({
         );
       default:
         const storageName = localStorageTabName + name;
+        useEffect(() => localStorage.setItem(storageName, ""));
         return (
           <input
             type={queryType}
