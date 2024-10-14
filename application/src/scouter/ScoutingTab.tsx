@@ -14,6 +14,8 @@ function ScouterTab() {
   const navigate = useNavigate();
   const [currentSectionNumber, setSectionNumber] = useState<number>(0);
 
+  const [areYouSure, setAreYouSure] = useState<boolean>(false);
+
   function handleSubmit() {
     const formValues: Record<string, string> = {};
     Object.keys(localStorage)
@@ -65,9 +67,21 @@ function ScouterTab() {
       <br />
       <br />
       <br />
-      <button type="button" onClick={handleReset}>
-        Reset
-      </button>
+      {areYouSure ? (
+        <>
+          <h2>Are You Sure?</h2>
+          <button type="button" onClick={handleReset}>
+            Yes
+          </button>
+          <button type="button" onClick={() => setAreYouSure(false)}>
+            No
+          </button>
+        </>
+      ) : (
+        <button type="button" onClick={() => setAreYouSure(true)}>
+          Reset
+        </button>
+      )}
     </div>
   );
 }
