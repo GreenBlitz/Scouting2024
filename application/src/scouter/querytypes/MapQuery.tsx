@@ -196,9 +196,13 @@ const MapQuery: React.FC<MapQueryProps> = ({
       className="succesfulness"
       style={{
         left: canvasRef.current
-          ? canvasRef.current.offsetLeft +
-            lastClickedPoint.x +
-            succesfulnessOffset[0]
+          ? canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
+            ? canvasRef.current.offsetLeft +
+              lastClickedPoint.x +
+              succesfulnessOffset[0]
+            : canvasRef.current.offsetLeft +
+              lastClickedPoint.x -
+              succesfulnessOffset[0]
           : 0,
         top: canvasRef.current
           ? canvasRef.current.offsetTop +
