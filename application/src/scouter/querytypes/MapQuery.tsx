@@ -19,7 +19,7 @@ interface DataPoint extends Point {
 type PassingPoint = [DataPoint, Point];
 
 const pointRadius: number = 5;
-const succesfulnessOffset = [20, -60];
+const succesfulnessOffset = [80, -60];
 
 const crescendoButtons: Record<string, string> = {
   Speaker: "green",
@@ -196,37 +196,44 @@ const MapQuery: React.FC<MapQueryProps> = ({
     </div>
   );
 
-  const successfulnessButtons = lastClickedPoint && (
-    <div
-      className="succesfulness"
-      style={{
-        left: canvasRef.current
-          ? canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
+  function getSuccesfulness(offsetLeft: number, offsetTop: number) {
+    if (!lastClickedPoint) {
+      return <></>;
+    }
+    return (
+      <div
+        className="succesfulness"
+        style={{
+          left: canvasRef.current
             ? canvasRef.current.offsetLeft +
               lastClickedPoint.x +
-              succesfulnessOffset[0]
-            : canvasRef.current.offsetLeft +
-              lastClickedPoint.x -
-              succesfulnessOffset[0]
-          : 0,
-        top: canvasRef.current
-          ? canvasRef.current.offsetTop +
-            lastClickedPoint.y +
-            succesfulnessOffset[1]
-          : 0,
-      }}
-    >
-      <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
-        ✅Score
-      </button>
-      <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
-        ❌Miss
-      </button>
-      <button type="button" onClick={() => setLastClickedPoint(undefined)}>
-        Cancel
-      </button>
-    </div>
-  );
+              offsetLeft -
+              40
+            : 0,
+          top: canvasRef.current
+            ? canvasRef.current.offsetTop + lastClickedPoint.y + offsetTop
+            : 0,
+        }}
+      >
+        <button type="button" onClick={() => addPoint(lastClickedPoint, true)}>
+          ✅Score
+        </button>
+        <button type="button" onClick={() => addPoint(lastClickedPoint, false)}>
+          ❌Miss
+        </button>
+        <button type="button" onClick={() => setLastClickedPoint(undefined)}>
+          Cancel
+        </button>
+      </div>
+    );
+  }
+
+  const successfulnessButtons =
+    canvasRef.current &&
+    lastClickedPoint &&
+    canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
+      ? getSuccesfulness(succesfulnessOffset[0], succesfulnessOffset[1])
+      : getSuccesfulness(-succesfulnessOffset[0], succesfulnessOffset[1]);
 
   return (
     <>
