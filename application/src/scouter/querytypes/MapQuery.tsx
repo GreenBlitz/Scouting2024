@@ -3,7 +3,6 @@ import { Point } from "../../Utils";
 import React from "react";
 import { localStorageTabName } from "../ScouterQuery";
 import CounterQuery from "./CounterQuery";
-import "./RadioButtons.css";
 interface MapQueryProps {
   name: string;
   side: "blue" | "red";
@@ -162,9 +161,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
                     defaultChecked
                     className="cool-radio-input"
                   />
-                  <label htmlFor={buttonName} className="cool-radio-label">
-                    {buttonName}
-                  </label>
+                  <label htmlFor={buttonName}>{buttonName}</label>
                 </React.Fragment>
               );
             }
@@ -176,6 +173,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
                   id={buttonName}
                   value={buttonName}
                   onChange={() => setPressedButton(buttonName)}
+                  className="cool-radio-input"
                 />
                 <label htmlFor={buttonName}>{buttonName}</label>
               </React.Fragment>
@@ -213,7 +211,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
             ? canvasRef.current.offsetLeft +
               lastClickedPoint.x +
               offsetLeft -
-              50
+              60
             : 0,
           top: canvasRef.current
             ? canvasRef.current.offsetTop + lastClickedPoint.y + offsetTop
@@ -271,7 +269,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
       </div>
       {canvasRef.current &&
       lastClickedPoint &&
-      canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
+      canvasRef.current.offsetLeft + lastClickedPoint.x < width
         ? getSuccesfulness(succesfulnessOffset[0], succesfulnessOffset[1])
         : getSuccesfulness(-succesfulnessOffset[0], succesfulnessOffset[1])}
 

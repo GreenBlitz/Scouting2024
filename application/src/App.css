@@ -93,6 +93,11 @@
   border-style: solid;
 }
 
+.cool-radio-input {
+  height: 20px;
+  width: 20px;
+}
+
 .card {
   padding: 2em;
 }
