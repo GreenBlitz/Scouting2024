@@ -3,6 +3,7 @@ import { Point } from "../../Utils";
 import React from "react";
 import { localStorageTabName } from "../ScouterQuery";
 import CounterQuery from "./CounterQuery";
+import "./RadioButtons.css";
 interface MapQueryProps {
   name: string;
   side: "blue" | "red";
@@ -146,10 +147,10 @@ const MapQuery: React.FC<MapQueryProps> = ({
           </button>
         </div>
       ) : (
-        <div>
+        <div className="cool-radio">
           {Object.entries(crescendoButtons).map((option, index) => {
             const buttonName = option[0];
-            if (buttonName === defaultButton) {
+            if (buttonName === pressedButton) {
               return (
                 <React.Fragment key={index}>
                   <input
@@ -159,8 +160,11 @@ const MapQuery: React.FC<MapQueryProps> = ({
                     value={buttonName}
                     onChange={() => setPressedButton(buttonName)}
                     defaultChecked
+                    className="cool-radio-input"
                   />
-                  <label htmlFor={buttonName}>{buttonName}</label>
+                  <label htmlFor={buttonName} className="cool-radio-label">
+                    {buttonName}
+                  </label>
                 </React.Fragment>
               );
             }
@@ -177,6 +181,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
               </React.Fragment>
             );
           })}
+          <br />
           <br />
           <button type="button" onClick={removeLastPoint}>
             Undo
@@ -208,7 +213,7 @@ const MapQuery: React.FC<MapQueryProps> = ({
             ? canvasRef.current.offsetLeft +
               lastClickedPoint.x +
               offsetLeft -
-              40
+              50
             : 0,
           top: canvasRef.current
             ? canvasRef.current.offsetTop + lastClickedPoint.y + offsetTop
@@ -227,13 +232,6 @@ const MapQuery: React.FC<MapQueryProps> = ({
       </div>
     );
   }
-
-  const successfulnessButtons =
-    canvasRef.current &&
-    lastClickedPoint &&
-    canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
-      ? getSuccesfulness(succesfulnessOffset[0], succesfulnessOffset[1])
-      : getSuccesfulness(-succesfulnessOffset[0], succesfulnessOffset[1]);
 
   return (
     <>
@@ -271,7 +269,11 @@ const MapQuery: React.FC<MapQueryProps> = ({
           value={JSON.stringify(dataPoints)}
         />
       </div>
-      {successfulnessButtons}
+      {canvasRef.current &&
+      lastClickedPoint &&
+      canvasRef.current.offsetLeft + lastClickedPoint.x < width / 2
+        ? getSuccesfulness(succesfulnessOffset[0], succesfulnessOffset[1])
+        : getSuccesfulness(-succesfulnessOffset[0], succesfulnessOffset[1])}
 
       <br />
     </>

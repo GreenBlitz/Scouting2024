@@ -20,6 +20,9 @@
   top: 80%;
   left: 45%;
   width: 80px;
+  button {
+    font-size: 20px;
+  }
 }
 
 .map-amp {
