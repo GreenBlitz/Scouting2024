@@ -8,8 +8,6 @@ application/pnpm-debug.log*
 application/lerna-debug.log*
 
 application/node_modules
-application/dist
-application/dist-ssr
 application/*.local
 application/compiled
 application/package-lock.json

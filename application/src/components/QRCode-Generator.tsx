@@ -10,8 +10,6 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ text }) => {
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(text)
-    console.log("b64" + btoa(text))
     QRCode.toDataURL(btoa(text))
       .then(setQrCodeData)
       .catch((err) => {

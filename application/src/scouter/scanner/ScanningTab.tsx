@@ -10,17 +10,15 @@ const ScanningTab = () => {
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
   const [qrOn, setQrOn] = useState<boolean>(false); // Tracks if the QR scanner is on
-  const [scannedResult, setScannedResult] = useState<string | undefined>("");
 
   const onScanSuccess = (result: QrScanner.ScanResult) => {
-     console.log("raw" + result);
+    console.log("raw " + result.data);
 
-    const DecodedData = atob(result.data)
-    console.log("AFTER" + DecodedData)
-    console.log("LAST" + JSON.parse(DecodedData))
+    const DecodedData = atob(result.data);
+    console.log("AFTER" + DecodedData);
+    console.log("LAST" + JSON.parse(DecodedData));
 
-    navigate("/", { state: JSON.parse(DecodedData)  });
-    
+    navigate("/", { state: JSON.parse(DecodedData) });
   };
 
   const onScanFail = (err: string | Error) => {
@@ -54,10 +52,10 @@ const ScanningTab = () => {
 
       scanner.current
         .start()
-        .then(() => setQrOn(true))  // Set qrOn to true when the scanner starts
+        .then(() => setQrOn(true)) // Set qrOn to true when the scanner starts
         .catch((err) => {
           console.error("Error starting QR scanner:", err);
-          setQrOn(false);  // Set qrOn to false if the scanner fails to start
+          setQrOn(false); // Set qrOn to false if the scanner fails to start
         });
     }
   };
@@ -94,7 +92,7 @@ const ScanningTab = () => {
             fontSize: "16px",
             border: "none",
             cursor: "pointer",
-            marginTop: "30px"  // This moves the button 30px down
+            marginTop: "30px", // This moves the button 30px down
           }}
         >
           Start Camera
@@ -103,20 +101,6 @@ const ScanningTab = () => {
 
       <video ref={videoEl} autoPlay></video>
       <div ref={qrBoxEl} className="qr-box"></div>
-
-      {scannedResult && (
-        <p
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 99999,
-            color: "white",
-          }}
-        >
-          Scanned Result: {scannedResult}
-        </p>
-      )}
     </div>
   );
 };
