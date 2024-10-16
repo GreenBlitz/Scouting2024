@@ -10,15 +10,16 @@ const app = express();
 const hostname = "0.0.0.0";
 const port = 4590;
 
-const pathToDir = "c:\\Users\\User\\Documents\\Full Stack\\";
+const dirName = "C:\\Users\\User\\Documents\\Coding\\Scouting2024\\application";
 // SSL options for HTTPS
 export let sslOptions;
 try {
   sslOptions = {
-    key: fs.readFileSync(path.resolve(pathToDir, "ssl-key.pem")), // Path to the key file
-    cert: fs.readFileSync(path.resolve(pathToDir, "ssl.pem")), // Path to the certificate file
+    key: fs.readFileSync(path.resolve(dirName, "ssl-key.pem")), // Path to the key file
+    cert: fs.readFileSync(path.resolve(dirName, "ssl.pem")), // Path to the certificate file
   };
-} catch {
+} catch(e) {
+  console.log(e)
   sslOptions = { key: "", cert: "" };
 }
 
@@ -99,12 +100,6 @@ app.get("/Matches/:type/:value", async (req, res) => {
 });
 
 if (sslOptions.key !== "") {
-  // Serve static files from the Vite build output (dist folder)
-  app.use(express.static(path.resolve(pathToDir,"\\Scouting2024\\application\\", "dist")));
-  // Serve the frontend for any route that isn't an API
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(pathToDir,"\\Scouting2024\\application\\", "dist", "index.html"));
-  });
   // Create HTTPS server
   const httpsServer = https.createServer(sslOptions, app);
 
@@ -112,6 +107,8 @@ if (sslOptions.key !== "") {
   httpsServer.listen(port, hostname, () => {
     console.log(`HTTPS Server is listening on https://${hostname}:${port}`);
   });
+
+  ViteExpress.bind(app, httpsServer);
 } else {
   const server = app.listen(port, hostname, () =>
     console.log(`Server is listening on ${hostname}:${port}`)
