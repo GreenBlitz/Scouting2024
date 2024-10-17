@@ -43,7 +43,7 @@ function getAutos(matches: Match[]): [NotePercenteges, number][] {
     });
     samieIndex.map((samieIndex) => {
       matchesNotes[samieIndex].map((note, index) => {
-        sums[index] = [note, sums[index][1] + 1];
+        sums[index] = [note, sums[index][1] + (note.color === "green" ? 1 : 0)];
       });
     });
     return sums.map(([note, sum]) => {
@@ -64,6 +64,7 @@ const AutoTab: React.FC<AutoTabProps> = () => {
   if (recency > 0 && recency < recentMatches.length) {
     recentMatches.splice(0, recentMatches.length - recency);
   }
+  console.log(getAutos(recentMatches));
 
   return (
     <>

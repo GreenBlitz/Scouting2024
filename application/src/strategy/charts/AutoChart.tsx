@@ -20,8 +20,9 @@ function drawNote(
   context.beginPath();
   context.arc(note.x, note.y, noteRadius, 0, 2 * Math.PI);
   context.stroke();
-  context.font = `${textSize}px Arial`;
-  context.fillText(percentage + "", note.x, note.y);
+  context.strokeStyle = "white";
+  context.lineWidth = 1;
+  context.strokeText(percentage + "", note.x, note.y);
 }
 
 const AutoChart: React.FC<AutoChartProps> = ({ height, width, notes }) => {
