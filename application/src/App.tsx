@@ -7,6 +7,7 @@ import MatchList from "./scouter/MatchList";
 import ScanningTab from "./scouter/scanner/ScanningTab";
 import GeneralTab from "./strategy/GeneralTab";
 import TeamTab from "./strategy/TeamTab";
+import AutoTab from "./strategy/AutoTab";
 
 export function renderScouterNavBar() {
   return (
@@ -34,6 +35,9 @@ export function renderStrategyNavBar() {
           <Link to="/">Scouter Side</Link>
         </li>
         <li>
+          <Link to="/AutoTab">Auto Data</Link>
+        </li>
+        <li>
           <Link to="/TeamTab">Team Data</Link>
         </li>
         <li>
@@ -53,6 +57,7 @@ const App: React.FC = () => {
         <Route path="/ScouterTab" Component={ScouterTab} />
         <Route path="/TeamTab" Component={TeamTab} />
         <Route path="/GeneralTab" Component={GeneralTab} />
+        <Route path="/AutoTab" Component={AutoTab} />
       </Routes>
     </BrowserRouter>
   );

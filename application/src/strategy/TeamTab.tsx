@@ -2,14 +2,13 @@ import { useState } from "react";
 import LineChart from "./charts/LineChart";
 import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
-import { getMatchesByCriteria, FRCTeamList } from "../Utils";
+import { getMatchesByCriteria, FRCTeamList, Match, sortMatches } from "../Utils";
 import { TeamData } from "../TeamData";
 import React from "react";
 import { renderStrategyNavBar } from "../App";
 
 interface TeamTabProps {}
 
-type Match = Record<string, string>;
 
 function getAllPoints(matches: Match[]) {
   let points: (DataPoint | PassingPoint)[] = [];
@@ -20,13 +19,6 @@ function getAllPoints(matches: Match[]) {
     points = [...points, ...mapPoints];
   });
   return points;
-}
-
-function sortMatches(matches: Match[]) {
-  matches.sort(
-    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
-  );
-  return matches;
 }
 
 const TeamTab: React.FC<TeamTabProps> = () => {

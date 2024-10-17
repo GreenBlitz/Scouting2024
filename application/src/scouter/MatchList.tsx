@@ -40,7 +40,7 @@ const MatchList: React.FC = () => {
   }
 
   function sendMatch(match: Record<string, string>, index: number) {
-    fetch(`http://${getServerHostname()}/Match`, {
+    fetch(`https://${getServerHostname()}/Match`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),

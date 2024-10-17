@@ -20,7 +20,7 @@ export function matchToSheet(match: Record<string, string>) {
 export async function getMatchesByCriteria(field?: string, value?: string) {
   const searchedField = field && value ? `/${field}/${value}` : ``;
   const data: Record<string, string>[] = await fetch(
-    `http://${getServerHostname()}:4590/Matches${searchedField}`,
+    `https://${getServerHostname()}/Matches${searchedField}`,
     {
       method: "GET",
       mode: "cors",
@@ -36,10 +36,21 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
       return response.json();
     })
     .catch((error) => {
+      console.log(error);
       return [];
     });
   return data;
 }
+
+export function sortMatches(matches: Match[]) {
+  matches.sort(
+    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
+  );
+  return matches;
+}
+
+export type Match = Record<string, string>;
+
 export const FRCTeamList = [
   "1574\tMisCar",
   "1576\tVoltrix",
