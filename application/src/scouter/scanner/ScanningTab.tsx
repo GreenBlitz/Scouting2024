@@ -28,7 +28,10 @@ const ScanningTab = () => {
   const requestCameraAccess = async () => {
     console.log("Requesting camera access...");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: "environment" } },
+        audio: false,
+      });
       if (videoEl?.current) {
         console.log("Camera access granted");
         videoEl.current.srcObject = stream;
