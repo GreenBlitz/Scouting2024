@@ -22,11 +22,37 @@ function getAutos(matches: Match[]): [NotePercenteges, number][] {
     return arr1.every((value, index) => value === arr2[index]);
   }
 
-  const samies = [];
-//   bitMap.forEach((bools))
+  const samies: number[][] = [];
+  bitMap.forEach((bools, boolsIndex) => {
+    let isIn = false;
+    samies.forEach((samie) => {
+      if (isBoolArraySame(bitMap[samie[0]], bools)) {
+        isIn = true;
+        samie.push(boolsIndex);
+      }
+    });
+    if (!isIn) {
+      samies.push([boolsIndex]);
+    }
+  });
 
-
-  return [];
+  const percentages: NotePercenteges[] = samies.map((samie) => {
+    const sums: [Note, number][] = matchesNotes[samie[0]].map((note) => {
+      return [note, 0];
+    });
+    samie.map((samieIndex) => {
+      matchesNotes[samieIndex].map((note, index) => {
+        sums[index] = [note, sums[index][1] + 1];
+      });
+    });
+    return sums.map(([note, sum]) => {
+      return [note, sum / samie.length];
+    });
+  });
+  return percentages.map((percentage, index) => [
+    percentage,
+    samies[index].length,
+  ]);
 }
 
 const AutoTab: React.FC<AutoTabProps> = () => {
