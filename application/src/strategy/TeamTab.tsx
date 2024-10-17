@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LineChart from "./charts/LineChart";
 import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
-import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
+import { getMatchesByCriteria, FRCTeamList } from "../Utils";
 import { TeamData } from "../TeamData";
 import React from "react";
+import { renderStrategyNavBar } from "../App";
 
 interface TeamTabProps {}
 
@@ -37,11 +38,9 @@ const TeamTab: React.FC<TeamTabProps> = () => {
     recentMatches.splice(0, recentMatches.length - recency);
   }
   const teamData = new TeamData(recentMatches);
-  useEffect(() => console.log(teamData.matches), [teamData]);
 
   const ampAccuracy = teamData.getAccuracy("Amp Score", "Amp Miss");
   const speakerAccuracy = teamData.getAccuracy("Speaker Score", "Speaker Miss");
-  const trapAccuracy = teamData.getAccuracy("Trap Score", "Trap Miss");
   const passAccuracy = teamData.getAccuracy(
     "Pass Successful",
     "Pass Unsuccessful"
@@ -49,6 +48,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
 
   return (
     <div className="strategy-app">
+      {renderStrategyNavBar()}
       <div className="section">
         <h2>Scoring</h2>
         <LineChart

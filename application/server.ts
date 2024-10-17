@@ -18,8 +18,8 @@ try {
     key: fs.readFileSync(path.resolve(dirName, "ssl-key.pem")), // Path to the key file
     cert: fs.readFileSync(path.resolve(dirName, "ssl.pem")), // Path to the certificate file
   };
-} catch(e) {
-  console.log(e)
+} catch (exception) {
+  console.log(exception);
   sslOptions = { key: "", cert: "" };
 }
 
@@ -99,20 +99,10 @@ app.get("/Matches/:type/:value", async (req, res) => {
   }
 });
 
-if (sslOptions.key !== "") {
-  // Create HTTPS server
-  const httpsServer = https.createServer(sslOptions, app);
+const server = (
+  sslOptions.key === "" ? app : https.createServer(sslOptions, app)
+).listen(port, hostname, () =>
+  console.log(`Server is listening on ${hostname}:${port}`)
+);
 
-  // Start the HTTPS server
-  httpsServer.listen(port, hostname, () => {
-    console.log(`HTTPS Server is listening on https://${hostname}:${port}`);
-  });
-
-  ViteExpress.bind(app, httpsServer);
-} else {
-  const server = app.listen(port, hostname, () =>
-    console.log(`Server is listening on ${hostname}:${port}`)
-  );
-
-  ViteExpress.bind(app, server);
-}
+ViteExpress.bind(app, server);

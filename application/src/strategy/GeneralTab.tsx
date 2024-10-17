@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import TableChart from "./charts/TableChart";
-import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
+import { getMatchesByCriteria, FRCTeamList } from "../Utils";
 import { TeamData } from "../TeamData";
 import React from "react";
+import { renderStrategyNavBar } from "../App";
 
 interface GeneralTabProps {}
 
@@ -43,6 +44,7 @@ const GeneralTab: React.FC<GeneralTabProps> = () => {
   }, []);
   return (
     <>
+      {renderStrategyNavBar()}
       <div className="section">
         <h2>Table</h2>
         <TableChart

@@ -3,6 +3,7 @@ import Collapsible from "react-collapsible";
 import React, { useState } from "react";
 import QRCodeGenerator from "../components/QRCode-Generator";
 import { getServerHostname } from "../Utils";
+import { renderScouterNavBar } from "../App";
 
 export const matchName = "Qual";
 const matchesTab = "Matches/";
@@ -52,6 +53,7 @@ const MatchList: React.FC = () => {
 
   return (
     <div className="match-list">
+      {renderScouterNavBar()}
       {matches.length === 0 && <h1>No Matches Saved</h1>}
       {matches.map((match, index) => (
         <Collapsible

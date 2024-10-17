@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./QRStyles.css";
 import QrScanner from "qr-scanner";
 import React from "react";
+import { renderScouterNavBar } from "../../App";
 
 const ScanningTab = () => {
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ const ScanningTab = () => {
 
   return (
     <div className="qr-reader">
+      {renderScouterNavBar()}
       {/* Conditionally render the button if the QR scanner is off */}
       {!qrOn && (
         <button

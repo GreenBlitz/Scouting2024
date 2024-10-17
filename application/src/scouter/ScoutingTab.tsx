@@ -1,12 +1,11 @@
-import ScouterQuery, { localStorageTabName } from "./ScouterQuery";
+import { localStorageTabName } from "./ScouterQuery";
 import { useNavigate } from "react-router-dom";
-import MapQuery from "./querytypes/MapQuery";
-import { matchName } from "./MatchList";
 import React, { useState } from "react";
 import PreMatch from "./tabs/PreMatch";
 import Autonomous from "./tabs/Autonomous";
 import Teleoperated from "./tabs/Teleoperated";
 import PostMatch from "./tabs/PostMatch";
+import { renderScouterNavBar } from "../App";
 
 const sections: React.FC[] = [PreMatch, Autonomous, Teleoperated, PostMatch];
 
@@ -41,6 +40,7 @@ function ScouterTab() {
 
   return (
     <div className="scouting-tab">
+      {renderScouterNavBar()}
       <h1>{sections[currentSectionNumber].name}</h1>
       {sections[currentSectionNumber].apply({})}
       {currentSectionNumber !== 0 && (

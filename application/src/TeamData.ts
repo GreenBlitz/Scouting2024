@@ -90,13 +90,10 @@ export class TeamData {
     return dataSet;
   }
 
-  getAccuracy(data1: string, data2: string, recency?: number) {
+  getAccuracy(data1: string, data2: string) {
     let sum1 = 0;
     let sum2 = 0;
     const matches = Object.values(this.matches);
-    if (recency) {
-      matches.splice(matches.length - recency);
-    }
     matches.forEach((match) => {
       sum1 += parseInt(match[data1]);
       sum2 += parseInt(match[data2]);
