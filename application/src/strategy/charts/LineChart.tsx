@@ -6,6 +6,7 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
+import React from "react";
 import { Line } from "react-chartjs-2";
 
 Chart.register(LineElement, PointElement, CategoryScale, LinearScale, Legend);

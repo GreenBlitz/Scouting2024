@@ -1,6 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import TeamTab from "./TeamTab";
 import GeneralTab from "./GeneralTab";
+import React from "react";
 
 interface StrategyAppProps {}
 export async function getMatchesByCriteria(field?: string, value?: string) {

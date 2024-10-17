@@ -1,4 +1,5 @@
 import { Chart, CategoryScale, LinearScale, BarElement } from "chart.js";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 
 Chart.register(CategoryScale, LinearScale, BarElement);

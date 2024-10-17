@@ -1,4 +1,5 @@
 import { Point } from "chart.js";
+import React from "react";
 import { useEffect, useRef } from "react";
 
 export interface DataPoint extends Point {

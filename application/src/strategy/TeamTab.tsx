@@ -4,6 +4,7 @@ import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
 import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
 import { TeamData } from "../TeamData";
+import React from "react";
 
 interface TeamTabProps {}
 

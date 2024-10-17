@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TableChart from "./charts/TableChart";
 import { getMatchesByCriteria, FRCTeamList } from "./StrategyApp";
 import { TeamData } from "../TeamData";
+import React from "react";
 
 interface GeneralTabProps {}
 

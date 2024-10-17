@@ -1,8 +1,9 @@
-import StrategyApp from "./strategy/StrategyApp";
+import React from "react";
 import "./App.css";
+import StrategyApp from "./strategy/StrategyApp";
 
-function App() {
+const App: React.FC = () => {
   return <StrategyApp />;
-}
+};
 
 export default App;
