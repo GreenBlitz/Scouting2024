@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
-import { Point } from "../../Utils";
+import { Point } from "chart.js";
 import { localStorageTabName } from "../ScouterQuery";
+import { autoBlueNotePositions, autoNotePositions, Note } from "../../Utils";
 
 interface AutoMapProps {
   side: "blue" | "red";
 }
-interface Note extends Point {
-  color: "green" | "red" | "orange";
-}
 const noteRadius = 10;
-const notePositions: Point[] = [250, 200, 150, 100, 50].map((height) => {
-  return { x: 280, y: height };
-});
-const blueNotePositions: Point[] = [
-  { x: 90, y: 150 },
-  { x: 90, y: 100 },
-  { x: 90, y: 50 },
-];
 
 const width = 360 * 0.8;
 const height = 240;
@@ -31,8 +21,8 @@ const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
       : "./src/assets/Red Auto Map.png";
 
   function getNotes(): Note[] {
-    const newNotes: Note[] = notePositions
-      .concat(blueNotePositions)
+    const newNotes: Note[] = autoNotePositions
+      .concat(autoBlueNotePositions)
       .map((note) => {
         return {
           x: side === "blue" ? note.x * 0.8 : width - note.x * 0.8,

@@ -1,7 +1,4 @@
-export interface Point {
-  x: number;
-  y: number;
-}
+import { Point } from "chart.js";
 
 export const getServerHostname = () => {
   return location.host;
@@ -50,6 +47,16 @@ export function sortMatches(matches: Match[]) {
 }
 
 export type Match = Record<string, string>;
+export interface Note extends Point {
+  color: "green" | "red" | "orange";
+}
+
+export const autoNotePositions: Point[] = [250, 200, 150, 100, 50].map((height) => {
+  return { x: 280, y: height };
+});
+export const autoBlueNotePositions: Point[] = [150, 100, 50].map((height) => {
+  return { x: 90, y: height };
+});
 
 export const FRCTeamList = [
   "1574\tMisCar",

@@ -1,9 +1,33 @@
 import React, { useState } from "react";
 import { renderStrategyNavBar } from "../App";
-import { FRCTeamList, getMatchesByCriteria, Match, sortMatches } from "../Utils";
-import { TeamData } from "../TeamData";
+import {
+  FRCTeamList,
+  getMatchesByCriteria,
+  Match,
+  Note,
+  sortMatches,
+} from "../Utils";
+import AutoChart from "./charts/AutoChart";
 
 interface AutoTabProps {}
+type NotePercenteges = [Note, number][];
+function getAutos(matches: Match[]): [NotePercenteges, number][] {
+  const matchesNotes: Note[][] = matches.map((match) =>
+    JSON.parse(match["Automap/Notes"])
+  );
+  const bitMap = matchesNotes.map((matchNotes) =>
+    matchNotes.map((note) => note.color !== "orange")
+  );
+  function isBoolArraySame(arr1: boolean[], arr2: boolean[]) {
+    return arr1.every((value, index) => value === arr2[index]);
+  }
+
+  const samies = [];
+//   bitMap.forEach((bools))
+
+
+  return [];
+}
 
 const AutoTab: React.FC<AutoTabProps> = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -13,13 +37,19 @@ const AutoTab: React.FC<AutoTabProps> = () => {
   if (recency > 0 && recency < recentMatches.length) {
     recentMatches.splice(0, recentMatches.length - recency);
   }
-  const teamData = new TeamData(recentMatches);
 
   return (
     <>
       {renderStrategyNavBar()}
       <br />
       <label htmlFor="team number">Team Number</label>
+
+      {getAutos(recentMatches).map((auto, index) => (
+        <React.Fragment key={index}>
+          <h2>{auto[1]}</h2>
+          <AutoChart width={360 * 0.8} height={240} notes={auto[0]} />
+        </React.Fragment>
+      ))}
 
       <select
         id="team number"
