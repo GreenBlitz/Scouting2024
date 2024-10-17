@@ -22,36 +22,37 @@ function getAutos(matches: Match[]): [NotePercenteges, number][] {
     return arr1.every((value, index) => value === arr2[index]);
   }
 
-  const samies: number[][] = [];
+  //bro don't even try to debug from here on out
+  const samieIndexes: number[][] = [];
   bitMap.forEach((bools, boolsIndex) => {
     let isIn = false;
-    samies.forEach((samie) => {
+    samieIndexes.forEach((samie) => {
       if (isBoolArraySame(bitMap[samie[0]], bools)) {
         isIn = true;
         samie.push(boolsIndex);
       }
     });
     if (!isIn) {
-      samies.push([boolsIndex]);
+      samieIndexes.push([boolsIndex]);
     }
   });
 
-  const percentages: NotePercenteges[] = samies.map((samie) => {
-    const sums: [Note, number][] = matchesNotes[samie[0]].map((note) => {
+  const percentages: NotePercenteges[] = samieIndexes.map((samieIndex) => {
+    const sums: [Note, number][] = matchesNotes[samieIndex[0]].map((note) => {
       return [note, 0];
     });
-    samie.map((samieIndex) => {
+    samieIndex.map((samieIndex) => {
       matchesNotes[samieIndex].map((note, index) => {
         sums[index] = [note, sums[index][1] + 1];
       });
     });
     return sums.map(([note, sum]) => {
-      return [note, sum / samie.length];
+      return [note, sum / samieIndex.length];
     });
   });
   return percentages.map((percentage, index) => [
     percentage,
-    samies[index].length,
+    samieIndexes[index].length,
   ]);
 }
 
