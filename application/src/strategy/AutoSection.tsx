@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { renderStrategyNavBar } from "../App";
 import {
   autoBlueNotePositions,
-  FRCTeamList,
-  getMatchesByCriteria,
   Match,
   Note,
-  sortMatches,
 } from "../Utils";
 import AutoChart from "./charts/AutoChart";
 import { width as autoMapWidth } from "../scouter/querytypes/AutoMap";
