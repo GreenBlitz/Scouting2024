@@ -90,6 +90,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
           dataPoints={getAllPoints(recentMatches)}
         />
       </div>
+      <br />
 
       <div className="section">
         <h2>Scoring</h2>

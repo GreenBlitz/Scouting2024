@@ -113,8 +113,10 @@
   display: flex;
 }
 .team-picker {
-  select, input, label {
-    height: 200px;
+  select,
+  input,
+  label {
+    font-size: 20px;
   }
 }
 .collapsible-trigger {

@@ -126,4 +126,5 @@ export const FRCTeamList = [
   "9739\tFirefly",
   "9740\tCAN://Bus",
   "9741\tSTORM",
+  "9999\tAAMIREEEE"
 ];
