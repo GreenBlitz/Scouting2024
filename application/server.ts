@@ -11,8 +11,9 @@ const hostname = "0.0.0.0";
 const port = 4590;
 
 const dirName = "/app";
+
 // SSL options for HTTPS
-export let sslOptions;
+let sslOptions;
 try {
   sslOptions = {
     key: fs.readFileSync(path.resolve(dirName, "ssl-key.pem")), // Path to the key file
@@ -105,4 +106,5 @@ const server = (
   console.log(`Server is listening on ${hostname}:${port}`)
 );
 
-ViteExpress.bind(app, server);
+  ViteExpress.bind(app, server);
+

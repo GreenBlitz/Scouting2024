@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Point } from "../../Utils";
+import { Point } from "chart.js";
 import React from "react";
 import { localStorageTabName } from "../ScouterQuery";
 import CounterQuery from "./CounterQuery";

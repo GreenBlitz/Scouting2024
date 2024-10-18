@@ -7,6 +7,7 @@ import MatchList from "./scouter/MatchList";
 import ScanningTab from "./scouter/scanner/ScanningTab";
 import GeneralTab from "./strategy/GeneralTab";
 import TeamTab from "./strategy/TeamTab";
+import AutoTab from "./strategy/AutoSection";
 
 export function renderScouterNavBar() {
   return (

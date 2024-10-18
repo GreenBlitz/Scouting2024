@@ -1,7 +1,4 @@
-export interface Point {
-  x: number;
-  y: number;
-}
+import { Point } from "chart.js";
 
 export const getServerHostname = () => {
   return location.host;
@@ -20,7 +17,7 @@ export function matchToSheet(match: Record<string, string>) {
 export async function getMatchesByCriteria(field?: string, value?: string) {
   const searchedField = field && value ? `/${field}/${value}` : ``;
   const data: Record<string, string>[] = await fetch(
-    `http://${getServerHostname()}:4590/Matches${searchedField}`,
+    `https://${getServerHostname()}/Matches${searchedField}`,
     {
       method: "GET",
       mode: "cors",
@@ -36,10 +33,31 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
       return response.json();
     })
     .catch((error) => {
+      console.log(error);
       return [];
     });
   return data;
 }
+
+export function sortMatches(matches: Match[]) {
+  matches.sort(
+    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
+  );
+  return matches;
+}
+
+export type Match = Record<string, string>;
+export interface Note extends Point {
+  color: "green" | "red" | "orange";
+}
+
+export const autoNotePositions: Point[] = [250, 200, 150, 100, 50].map((height) => {
+  return { x: 280, y: height };
+});
+export const autoBlueNotePositions: Point[] = [150, 100, 50].map((height) => {
+  return { x: 90, y: height };
+});
+
 export const FRCTeamList = [
   "1574\tMisCar",
   "1576\tVoltrix",
@@ -108,4 +126,5 @@ export const FRCTeamList = [
   "9739\tFirefly",
   "9740\tCAN://Bus",
   "9741\tSTORM",
+  "9999\tAAMIREEEE"
 ];
