@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { renderStrategyNavBar } from "../App";
 import {
+  autoBlueNotePositions,
   FRCTeamList,
   getMatchesByCriteria,
   Match,
@@ -8,13 +9,21 @@ import {
   sortMatches,
 } from "../Utils";
 import AutoChart from "./charts/AutoChart";
+import { width as autoMapWidth } from "../scouter/querytypes/AutoMap";
 
 interface AutoTabProps {}
 type NotePercenteges = [Note, number][];
 function getAutos(matches: Match[]): [NotePercenteges, number][] {
-  const matchesNotes: Note[][] = matches.map((match) =>
-    JSON.parse(match["Automap/Notes"])
-  );
+  const matchesNotes: Note[][] = matches.map((match) => {
+    const notes: Note[] = JSON.parse(match["Automap/Notes"]);
+    return notes.some(
+      (note) => note.x === autoMapWidth - autoBlueNotePositions[0].x
+    )
+      ? notes.map((note) => {
+          return { x: autoMapWidth - note.x, y: note.y, color: note.color } as Note;
+        })
+      : notes;
+  });
   const bitMap = matchesNotes.map((matchNotes) =>
     matchNotes.map((note) => note.color !== "orange")
   );
@@ -60,24 +69,31 @@ const AutoTab: React.FC<AutoTabProps> = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [recency, setRecency] = useState<number>(0);
 
-  const recentMatches = sortMatches([...matches]);
-  if (recency > 0 && recency < recentMatches.length) {
-    recentMatches.splice(0, recentMatches.length - recency);
-  }
-  console.log(getAutos(recentMatches));
+  const [autos, setAutos] = useState<[NotePercenteges, number][]>([]);
+
+  useEffect(() => {
+    const recentMatches = sortMatches([...matches]);
+    if (recency > 0 && recency < recentMatches.length) {
+      recentMatches.splice(0, recentMatches.length - recency);
+    }
+    setAutos(getAutos(recentMatches));
+    console.log(recentMatches);
+  }, [matches, recency]);
+
+  console.log(autos);
 
   return (
     <>
       {renderStrategyNavBar()}
       <br />
-      <label htmlFor="team number">Team Number</label>
 
-      {getAutos(recentMatches).map((auto, index) => (
+      {autos.map((auto, index) => (
         <React.Fragment key={index}>
           <h2>{auto[1]}</h2>
-          <AutoChart width={360 * 0.8} height={240} notes={auto[0]} />
+          <AutoChart notes={auto[0]} />
         </React.Fragment>
       ))}
+      <label htmlFor="team number">Team Number</label>
 
       <select
         id="team number"

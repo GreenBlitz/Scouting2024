@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Note } from "../../Utils";
+import { width, height } from "../../scouter/querytypes/AutoMap";
 
 interface AutoChartProps {
-  width: number;
-  height: number;
   notes: [Note, number][];
 }
 
@@ -25,7 +24,7 @@ function drawNote(
   context.strokeText(percentage + "", note.x, note.y);
 }
 
-const AutoChart: React.FC<AutoChartProps> = ({ height, width, notes }) => {
+const AutoChart: React.FC<AutoChartProps> = ({ notes }) => {
   const imagePath = "./src/assets/Blue Auto Map.png";
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,7 +41,7 @@ const AutoChart: React.FC<AutoChartProps> = ({ height, width, notes }) => {
     notes.forEach((note) => drawNote(note[0], note[1], context));
   }
 
-  useEffect(() => drawNotes(), []);
+  useEffect(() => drawNotes(), [drawNotes, notes]);
   return (
     <div
       style={{

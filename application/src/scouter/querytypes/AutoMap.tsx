@@ -9,8 +9,8 @@ interface AutoMapProps {
 }
 const noteRadius = 10;
 
-const width = 360 * 0.8;
-const height = 240;
+export const width = 360 * 0.8;
+export const height = 240;
 const AutoMap: React.FC<AutoMapProps> = ({ side }) => {
   const localStorageKey = localStorageTabName + "Automap/Notes";
   const canvasRef = useRef<HTMLCanvasElement>(null);
