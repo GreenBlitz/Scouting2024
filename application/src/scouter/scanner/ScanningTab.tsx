@@ -4,6 +4,7 @@ import "./QRStyles.css";
 import QrScanner from "qr-scanner";
 import React from "react";
 import { renderScouterNavBar } from "../../App";
+import * as serde from "../../Serde"
 
 const ScanningTab = () => {
   const navigate = useNavigate();
@@ -15,11 +16,10 @@ const ScanningTab = () => {
   const onScanSuccess = (result: QrScanner.ScanResult) => {
     console.log("raw " + result.data);
 
-    const DecodedData = atob(result.data);
-    console.log("AFTER" + DecodedData);
-    console.log("LAST" + JSON.parse(DecodedData));
+    const DecodedData = serde.serdeRecord(serde.qrSerde).deserializer(new TextEncoder().encode(result.data))[0];
+    console.log("decoded: " + DecodedData);
 
-    navigate("/", { state: JSON.parse(DecodedData) });
+    navigate("/", { state: DecodedData });
   };
 
   const onScanFail = (err: string | Error) => {
