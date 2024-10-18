@@ -7,7 +7,7 @@ interface AutoChartProps {
 }
 
 const noteRadius = 10;
-const textSize = 5;
+const textSize = 1;
 function drawNote(
   note: Note,
   percentage: number,
@@ -20,8 +20,12 @@ function drawNote(
   context.arc(note.x, note.y, noteRadius, 0, 2 * Math.PI);
   context.stroke();
   context.strokeStyle = "white";
-  context.lineWidth = 1;
-  context.strokeText(percentage + "", note.x, note.y);
+  context.lineWidth = textSize;
+  context.strokeText(
+    (percentage * 100 + "").slice(0, 4),
+    note.x - 2,
+    note.y - 2
+  );
 }
 
 const AutoChart: React.FC<AutoChartProps> = ({ notes }) => {

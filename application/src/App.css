@@ -109,6 +109,14 @@
   text-decoration: underline;
 }
 
+.auto-chart {
+  display: flex;
+}
+.team-picker {
+  select, input, label {
+    height: 200px;
+  }
+}
 .collapsible-trigger {
   border-style: solid;
 }
