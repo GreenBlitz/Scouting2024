@@ -11,7 +11,7 @@ import TeamTab from "./strategy/TeamTab";
 function getHiddenImage(path: string) {
   return (
     <div
-      style={{ backgroundImage: 'url("' + path + '")', width: 1, height: 1 }}
+      style={{ backgroundImage: 'url("' + path + '")', width: 0, height: 0 }}
     />
   );
 }
@@ -19,9 +19,9 @@ function getHiddenImage(path: string) {
 export function renderScouterNavBar() {
   return (
     <nav className="nav-bar">
-      {getHiddenImage("./assets/Crescendo Map.png")}
-      {getHiddenImage("./assets/Blue Auto Map.png")}
-      {getHiddenImage("./assets/Red Auto Map.png")}
+      {getHiddenImage(".src/assets/Crescendo Map.png")}
+      {getHiddenImage(".src/assets/Blue Auto Map.png")}
+      {getHiddenImage(".src/assets/Red Auto Map.png")}
       <ul>
         <li>
           <Link to="/">Match List</Link>
