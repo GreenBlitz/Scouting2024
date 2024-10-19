@@ -51,9 +51,11 @@ export interface Note extends Point {
   color: "green" | "red" | "orange";
 }
 
-export const autoNotePositions: Point[] = [250, 200, 150, 100, 50].map((height) => {
-  return { x: 280, y: height };
-});
+export const autoNotePositions: Point[] = [250, 200, 150, 100, 50].map(
+  (height) => {
+    return { x: 280, y: height };
+  }
+);
 export const autoBlueNotePositions: Point[] = [150, 100, 50].map((height) => {
   return { x: 90, y: height };
 });
@@ -126,5 +128,19 @@ export const FRCTeamList = [
   "9739\tFirefly",
   "9740\tCAN://Bus",
   "9741\tSTORM",
-  "9999\tAAMIREEEE"
+  "9985\tOff-Season Demo Team 9986",
+  "9986\tOff-Season Demo Team 9986",
+  "9987\tOff-Season Demo Team 9986",
+  "9988\tOff-Season Demo Team 9986",
+  "9989\tOff-Season Demo Team 9986",
+  "9990\tOff-Season Demo Team 9986",
+  "9991\tOff-Season Demo Team 9986",
+  "9992\tOff-Season Demo Team 9986",
+  "9993\tOff-Season Demo Team 9986",
+  "9994\tOff-Season Demo Team 9986",
+  "9995\tOff-Season Demo Team 9986",
+  "9996\tOff-Season Demo Team 9986",
+  "9997\tOff-Season Demo Team 9986",
+  "9998\tOff-Season Demo Team 9986",
+  "9999\tOff-Season Demo Team 9986",
 ];

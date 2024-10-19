@@ -58,6 +58,7 @@ export function renderStrategyNavBar() {
 }
 
 const App: React.FC = () => {
+  
   return (
     <BrowserRouter>
       <Routes>
