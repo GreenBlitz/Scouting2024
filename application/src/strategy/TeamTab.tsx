@@ -183,7 +183,8 @@ const TeamTab: React.FC<TeamTabProps> = () => {
         <h1>Autonomus</h1>
         <AutoTab matches={recentMatches} />
       </div>
-      <div className="section">
+      <br />
+      <div>
         <h1>Comments</h1>
         {getComments(recentMatches).map((comment) => (
           <h3>{comment}</h3>
