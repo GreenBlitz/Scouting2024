@@ -11,7 +11,7 @@ import TeamTab from "./strategy/TeamTab";
 function getHiddenImage(path: string) {
   return (
     <div
-      style={{ backgroundImage: 'url("' + path + '")', width: 0, height: 0 }}
+      style={{ backgroundImage: 'url("' + path + '")', width: 1, height: 1 }}
     />
   );
 }
