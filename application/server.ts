@@ -10,7 +10,7 @@ const app = express();
 const hostname = "0.0.0.0";
 const port = 4590;
 
-const dirName = "Scouting2024\\Application";
+const dirName = "/root/Scouting2024/Application";
 
 // SSL options for HTTPS
 let sslOptions;
