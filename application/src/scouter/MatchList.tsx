@@ -45,7 +45,10 @@ const MatchList: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(match),
     })
-      .then(() => removeMatch(match?.[matchName], index))
+      .then(() => {
+        alert("Succesfully Sent Match✅");
+        removeMatch(match?.[matchName], index);
+      })
       .catch(() => {
         alert("Unable To Send Match.");
       });

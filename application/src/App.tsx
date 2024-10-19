@@ -32,9 +32,6 @@ export function renderStrategyNavBar() {
     <nav className="nav-bar">
       <ul>
         <li>
-          <Link to="/">Scouter Side</Link>
-        </li>
-        <li>
           <Link to="/TeamTab">Team Data</Link>
         </li>
         <li>

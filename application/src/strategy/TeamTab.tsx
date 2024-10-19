@@ -26,6 +26,12 @@ function getAllPoints(matches: Match[]) {
   return points;
 }
 
+function getComments(matches: Match[]) {
+  return matches
+    .map((match) => match["Comment"])
+    .filter((comment) => comment !== "");
+}
+
 const TeamTab: React.FC<TeamTabProps> = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [recency, setRecency] = useState<number>(0);
@@ -176,6 +182,12 @@ const TeamTab: React.FC<TeamTabProps> = () => {
       <div className="section">
         <h1>Autonomus</h1>
         <AutoTab matches={recentMatches} />
+      </div>
+      <div className="section">
+        <h1>Comments</h1>
+        {getComments(recentMatches).map((comment) => (
+          <h3>{comment}</h3>
+        ))}
       </div>
     </div>
   );
