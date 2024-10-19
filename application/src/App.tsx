@@ -13,11 +13,10 @@ function getHiddenImage(path: string) {
     <div
       style={{
         backgroundImage: 'url("' + path + '")',
-        width: 100,
-        height: 100,
+        width: 0,
+        height: 0,
       }}
     >
-      <canvas width={100} height={100}></canvas>
     </div>
   );
 }
