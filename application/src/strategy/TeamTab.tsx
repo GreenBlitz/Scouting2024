@@ -26,10 +26,10 @@ function getAllPoints(matches: Match[]) {
   return points;
 }
 
-function getComments(matches: Match[]) {
+function getComments(matches: Match[]): [string, string][] {
   return matches
-    .map((match) => match["Comment"])
-    .filter((comment) => comment !== "");
+    .map((match) => [match["Comment"], match["Qual"]])
+    .filter(([comment, qual]) => comment !== "") as [string, string][];
 }
 
 const TeamTab: React.FC<TeamTabProps> = () => {
@@ -187,7 +187,7 @@ const TeamTab: React.FC<TeamTabProps> = () => {
       <div>
         <h1>Comments</h1>
         {getComments(recentMatches).map((comment) => (
-          <h3>{comment}</h3>
+          <h3>{comment[0] + "...Qual number" + comment[1]}</h3>
         ))}
       </div>
     </div>
