@@ -4,7 +4,8 @@ import "./QRStyles.css";
 import QrScanner from "qr-scanner";
 import React from "react";
 import { renderScouterNavBar } from "../../App";
-import * as serde from "../../Serde"
+import * as serde from "../../Serde";
+import {decode} from "uint8-to-base64";
 
 const ScanningTab = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const ScanningTab = () => {
   const onScanSuccess = (result: QrScanner.ScanResult) => {
     console.log("raw " + result.data);
 
-    const DecodedData = serde.serdeRecord(serde.qrSerde).deserializer(new TextEncoder().encode(result.data))[0];
+    const DecodedData = serde.serdeRecord(serde.qrSerde).deserializer(decode(result.data))[0];
     console.log("decoded: " + DecodedData);
 
     navigate("/", { state: DecodedData });
@@ -40,7 +41,21 @@ const ScanningTab = () => {
       initializeScanner();
     } catch (error) {
       console.error("Camera access denied:", error);
-      setQrOn(false); // Ensure qrOn is set to false if camera access is denied
+      console.log("trying non environment facing camera");
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+        if (videoEl?.current) {
+          console.log("Camera access granted");
+          videoEl.current.srcObject = stream;
+        }
+        initializeScanner();
+      } catch (error) {
+        console.error("Camera access denied:", error);
+        setQrOn(false); // Ensure qrOn is set to false if camera access is denied
+      }
     }
   };
 
