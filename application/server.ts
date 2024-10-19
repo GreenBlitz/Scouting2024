@@ -10,7 +10,7 @@ const app = express();
 const hostname = "0.0.0.0";
 const port = 4590;
 
-const dirName = "/app";
+const dirName = "Scouting2024\\Application";
 
 // SSL options for HTTPS
 let sslOptions;
@@ -106,5 +106,4 @@ const server = (
   console.log(`Server is listening on ${hostname}:${port}`)
 );
 
-  ViteExpress.bind(app, server);
-
+ViteExpress.bind(app, server);

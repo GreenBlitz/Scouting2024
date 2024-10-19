@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-
     "dev": "vite --host",
-    "full": "npx tsc -b tsconfig.json&& node compiled/server.js",
+    "build-server": "npx tsc -b tsconfig.json",
+    "run-server": "node compiled/server.js",
+    "full": "npm run build-server && npm run run-server",
     "docker-up": "cd .. && docker-compose up ",
     "docker": "cd .. && docker-compose build && docker-compose up",
     "build": "tsc -b && vite build",
@@ -46,7 +47,6 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
