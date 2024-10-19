@@ -8,12 +8,20 @@ import ScanningTab from "./scouter/scanner/ScanningTab";
 import GeneralTab from "./strategy/GeneralTab";
 import TeamTab from "./strategy/TeamTab";
 
+function getHiddenImage(path: string) {
+  return (
+    <div
+      style={{ backgroundImage: 'url("' + path + '")', width: 0, height: 0 }}
+    />
+  );
+}
+
 export function renderScouterNavBar() {
   return (
     <nav className="nav-bar">
-      <img src="./assets/Crescendo Map.png" width={0} height={0} />
-      <img src="./assets/Blue Auto Map.png" width={0} height={0} />
-      <img src="./assets/Red Auto Map.png" width={0} height={0} />
+      {getHiddenImage("./assets/Crescendo Map.png")}
+      {getHiddenImage("./assets/Blue Auto Map.png")}
+      {getHiddenImage("./assets/Red Auto Map.png")}
       <ul>
         <li>
           <Link to="/">Match List</Link>
@@ -32,7 +40,6 @@ export function renderScouterNavBar() {
 export function renderStrategyNavBar() {
   return (
     <nav className="nav-bar">
-
       <ul>
         <li>
           <Link to="/TeamTab">Team Data</Link>
