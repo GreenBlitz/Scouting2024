@@ -109,6 +109,16 @@
   text-decoration: underline;
 }
 
+.auto-chart {
+  display: flex;
+}
+.team-picker {
+  select,
+  input,
+  label {
+    font-size: 20px;
+  }
+}
 .collapsible-trigger {
   border-style: solid;
 }

@@ -17,6 +17,8 @@ function processTeamData(
     "Amp Miss": data.getAverage("Amp Miss") + "",
     Speaker: data.getAverage("Speaker Score") + "",
     "Speaker Miss": data.getAverage("Speaker Miss") + "",
+    "Auto Speaker": data.getAverage("Speaker/Auto/Score") + "",
+    "Auto Speaker Miss": data.getAverage("Speaker/Auto/Miss") + "",
   };
   return table;
 }

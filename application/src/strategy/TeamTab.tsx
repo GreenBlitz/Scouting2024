@@ -2,14 +2,18 @@ import { useState } from "react";
 import LineChart from "./charts/LineChart";
 import PieChart from "./charts/PieChart";
 import MapChart, { DataPoint, PassingPoint } from "./charts/MapChart";
-import { getMatchesByCriteria, FRCTeamList } from "../Utils";
+import {
+  getMatchesByCriteria,
+  FRCTeamList,
+  Match,
+  sortMatches,
+} from "../Utils";
 import { TeamData } from "../TeamData";
 import React from "react";
 import { renderStrategyNavBar } from "../App";
+import AutoTab from "./AutoSection";
 
 interface TeamTabProps {}
-
-type Match = Record<string, string>;
 
 function getAllPoints(matches: Match[]) {
   let points: (DataPoint | PassingPoint)[] = [];
@@ -20,13 +24,6 @@ function getAllPoints(matches: Match[]) {
     points = [...points, ...mapPoints];
   });
   return points;
-}
-
-function sortMatches(matches: Match[]) {
-  matches.sort(
-    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
-  );
-  return matches;
 }
 
 const TeamTab: React.FC<TeamTabProps> = () => {
@@ -49,6 +46,52 @@ const TeamTab: React.FC<TeamTabProps> = () => {
   return (
     <div className="strategy-app">
       {renderStrategyNavBar()}
+      <br />
+      <br />
+      <div className="team-picker">
+        <label htmlFor="team number">Team Number</label>
+
+        <select
+          id="team number"
+          name="team number"
+          onChange={async (event) =>
+            setMatches(
+              await getMatchesByCriteria(
+                "Team Number",
+                event.target.value.slice(0, 4) || "0"
+              )
+            )
+          }
+        >
+          {FRCTeamList.map((item, index) => (
+            <option value={item} key={index}>
+              {item}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="recency">Filter By Recency</label>
+        <input
+          type="number"
+          id="recency"
+          name="recency"
+          onChange={(event) => setRecency(parseInt(event.target.value))}
+          min={1}
+          max={matches.length}
+          defaultValue={matches.length}
+        />
+      </div>
+
+      <div className="section">
+        <h2>Map</h2>
+        <MapChart
+          width={540 * 0.8}
+          height={240 * 0.8}
+          imagePath={"./src/assets/Crescendo Map.png"}
+          dataPoints={getAllPoints(recentMatches)}
+        />
+      </div>
+      <br />
+
       <div className="section">
         <h2>Scoring</h2>
         <LineChart
@@ -129,47 +172,11 @@ const TeamTab: React.FC<TeamTabProps> = () => {
         />
       </div>
 
-      <div className="section">
-        <h2>Map</h2>
-        <MapChart
-          width={540 * 0.8}
-          height={240 * 0.8}
-          imagePath={"./src/assets/Crescendo Map.png"}
-          dataPoints={getAllPoints(recentMatches)}
-        />
-      </div>
-
       <br />
-      <label htmlFor="team number">Team Number</label>
-
-      <select
-        id="team number"
-        name="team number"
-        onChange={async (event) =>
-          setMatches(
-            await getMatchesByCriteria(
-              "Team Number",
-              event.target.value.slice(0, 4) || "0"
-            )
-          )
-        }
-      >
-        {FRCTeamList.map((item, index) => (
-          <option value={item} key={index}>
-            {item}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="recency">Filter By Recency</label>
-      <input
-        type="number"
-        id="recency"
-        name="recency"
-        onChange={(event) => setRecency(parseInt(event.target.value))}
-        min={1}
-        max={matches.length}
-        defaultValue={matches.length}
-      />
+      <div className="section">
+        <h1>Autonomus</h1>
+        <AutoTab matches={recentMatches} />
+      </div>
     </div>
   );
 };
