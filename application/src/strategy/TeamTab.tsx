@@ -125,6 +125,18 @@ const TeamTab: React.FC<TeamTabProps> = () => {
       </div>
 
       <div className="section">
+        <h2>Auto</h2>
+        <LineChart
+          height={300}
+          width={400}
+          dataSets={{
+            Score: ["green", teamData.getAsLine("Speaker/Auto/Score")],
+            Miss: ["red", teamData.getAsLine("Speaker/Auto/Miss")]
+          }}
+        />
+      </div>
+
+      <div className="section">
         <h2>Trap</h2>
         <PieChart
           pieData={teamData.getAsPie("Trap", {
