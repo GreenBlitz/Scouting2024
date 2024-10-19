@@ -24,22 +24,24 @@ function getHiddenImage(path: string) {
 
 export function renderScouterNavBar() {
   return (
-    <nav className="nav-bar">
+    <>
+      <nav className="nav-bar">
+        <ul>
+          <li>
+            <Link to="/">Match List</Link>
+          </li>
+          <li>
+            <Link to="/ScouterTab">Scout Game</Link>
+          </li>
+          <li>
+            <Link to="/ScannerTab">Scan Match</Link>
+          </li>
+        </ul>
+      </nav>
       {getHiddenImage(".src/assets/Crescendo Map.png")}
       {getHiddenImage(".src/assets/Blue Auto Map.png")}
       {getHiddenImage(".src/assets/Red Auto Map.png")}
-      <ul>
-        <li>
-          <Link to="/">Match List</Link>
-        </li>
-        <li>
-          <Link to="/ScouterTab">Scout Game</Link>
-        </li>
-        <li>
-          <Link to="/ScannerTab">Scan Match</Link>
-        </li>
-      </ul>
-    </nav>
+    </>
   );
 }
 
