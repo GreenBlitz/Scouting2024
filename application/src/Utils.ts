@@ -40,6 +40,11 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
 }
 
 export function sortMatches(matches: Match[]) {
+  matches.forEach((match) => matches.forEach((other, index) => {
+    if (match["Qual"] === other["Qual"]) {
+      matches.splice(index,1)
+    }
+  }))
   matches.sort(
     (match1, match2) => {
       return parseInt(match1["Qual"]) - parseInt(match2["Qual"]);
