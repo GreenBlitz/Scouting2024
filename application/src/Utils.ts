@@ -41,7 +41,15 @@ export async function getMatchesByCriteria(field?: string, value?: string) {
 
 export function sortMatches(matches: Match[]) {
   matches.sort(
-    (match1, match2) => parseInt(match1["Qual"]) - parseInt(match2["Qual"])
+    (match1, match2) => {
+      if (match1["Qual"][0] === '-') {
+        return -1;
+      }
+      if (match2["Qual"][0] === '-') {
+        return 1;
+      }
+      return parseInt(match1["Qual"]) - parseInt(match2["Qual"]);
+        }
   );
   return matches;
 }
