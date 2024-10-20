@@ -62,7 +62,7 @@ const MatchList: React.FC = () => {
         <Collapsible
           trigger={`${"ㅤ".repeat(
             collapsibleSize - match[matchName].length
-          )}${matchName} ${match[matchName]}${"ㅤ".repeat(
+          )}${match["Team Number"]} ${matchName} ${match[matchName]} ${"ㅤ".repeat(
             collapsibleSize - match[matchName].length
           )}`}
           triggerClassName={"collapsible-trigger"}
