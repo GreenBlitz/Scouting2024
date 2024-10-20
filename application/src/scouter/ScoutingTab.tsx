@@ -37,6 +37,7 @@ function ScouterTab() {
 
   function handleReset() {
     clearQueryStorage();
+    navigate("/");
   }
 
   return (
