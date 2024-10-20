@@ -37,7 +37,6 @@ function ScouterTab() {
 
   function handleReset() {
     clearQueryStorage();
-    window.location.reload();
   }
 
   return (
