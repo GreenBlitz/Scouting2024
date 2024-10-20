@@ -22,7 +22,9 @@ function ScouterTab() {
       .forEach((item) => {
         formValues[item.slice(localStorageTabName.length)] =
           localStorage.getItem(item) + "";
-        localStorage.removeItem(item);
+        if (item !== "Queries/Scouter Name") {
+          localStorage.removeItem(item);
+        }
       });
     navigate("/", { state: formValues });
   }
