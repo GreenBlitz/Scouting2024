@@ -29,7 +29,7 @@ export class TeamData {
         "Pass Successful": countDataFromMap("Pass", true),
         "Pass Unsuccessful": countDataFromMap("Pass", false),
         "Amp Score": match[`${TeamData.mapName}/Amp/Score`],
-        "Amp Miss": match[`${TeamData.mapName}/Amp/Score`],
+        "Amp Miss": match[`${TeamData.mapName}/Amp/Miss`],
         "Trap Score": match["Trap"] === "Scored" ? "1" : "0",
         "Trap Miss": match["Trap"] === "Miss" ? "1" : "0",
       };
